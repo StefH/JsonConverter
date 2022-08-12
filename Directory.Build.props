@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <VersionPrefix>0.0.1-preview-01</VersionPrefix>
+        <!--<PackageIcon>WireMock.Net-Logo.png</PackageIcon>-->
+        <!--<PackageProjectUrl>https://github.com/WireMock-Net/WireMock.Net</PackageProjectUrl>-->
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <!--<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>-->
+        <RepositoryType>git</RepositoryType>
+        <!--<RepositoryUrl>https://github.com/WireMock-Net/WireMock.Net</RepositoryUrl>-->
+        <!--<ApplicationIcon>../../resources/WireMock.Net-Logo.ico</ApplicationIcon>-->
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+        <GlobalUsings>false</GlobalUsings>
+    </PropertyGroup>
+</Project>
