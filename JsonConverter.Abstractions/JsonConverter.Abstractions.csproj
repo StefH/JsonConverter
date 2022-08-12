@@ -2,6 +2,7 @@
 
   <PropertyGroup>
       <TargetFrameworks>net45;netstandard1.0</TargetFrameworks>
+      <Description>Common interface for Json converters (serialize and deserialize)</Description>
   </PropertyGroup>
 
 </Project>

@@ -2,10 +2,11 @@
 
     <PropertyGroup>
         <TargetFrameworks>net45;netstandard1.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <Description>Implementation for IJsonConverter using Newtonsoft.Json</Description>
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
+        <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
     </ItemGroup>
 
     <ItemGroup>

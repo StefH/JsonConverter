@@ -26,6 +26,18 @@ public class JsonConverter : IJsonConverter
         return jsonSerializer.Deserialize<T>(jsonTextReader);
     }
 
+    public T? Deserialize<T>(string text, IJsonConverterOptions? options = null)
+    {
+        return options == null
+            ? JsonConvert.DeserializeObject<T>(text)
+            : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
+    }
+
+    public Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(Deserialize<T>(text, options));
+    }
+
     public Task<T?> DeserializeAsync<T>(Stream stream, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Deserialize<T>(stream, options));

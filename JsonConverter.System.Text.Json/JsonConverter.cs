@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonConverter.Abstractions;
 using Stef.Validation;
@@ -30,6 +31,11 @@ public class JsonConverter : IJsonConverter
         return JsonSerializer.Deserialize<T>(text, ConvertOptions(options));
     }
 
+    public async Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    {
+        return await JsonSerializer.DeserializeAsync<T>(new MemoryStream(Encoding.UTF8.GetBytes(text)), ConvertOptions(options), cancellationToken);
+    }
+
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         var text = await new StreamReader(stream).ReadToEndAsync().ConfigureAwait(false);
@@ -39,7 +45,7 @@ public class JsonConverter : IJsonConverter
     public Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(IsValidJson(input));
-    } 
+    }
 
     private static bool IsValidJson(string? input)
     {
