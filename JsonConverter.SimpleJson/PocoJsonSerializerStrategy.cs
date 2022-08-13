@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using Stef.Validation;
 
 namespace JsonConverter.SimpleJson;
 
@@ -21,14 +22,14 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
     internal IDictionary<Type, IDictionary<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>>> SetCache;
 
     internal static readonly Type[] EmptyTypes = new Type[0];
-    internal static readonly Type[] ArrayConstructorParameterTypes = new Type[] { typeof(int) };
+    internal static readonly Type[] ArrayConstructorParameterTypes = { typeof(int) };
 
-    private static readonly string[] Iso8601Format = new string[]
-                                                         {
-                                                                 @"yyyy-MM-dd\THH:mm:ss.FFFFFFF\Z",
-                                                                 @"yyyy-MM-dd\THH:mm:ss\Z",
-                                                                 @"yyyy-MM-dd\THH:mm:ssK"
-                                                         };
+    private static readonly string[] Iso8601Format =
+    {
+        @"yyyy-MM-dd\THH:mm:ss.FFFFFFF\Z",
+        @"yyyy-MM-dd\THH:mm:ss\Z",
+        @"yyyy-MM-dd\THH:mm:ssK"
+    };
 
     public PocoJsonSerializerStrategy()
     {
@@ -44,7 +45,7 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
 
     internal virtual ReflectionUtils.ConstructorDelegate ContructorDelegateFactory(Type key)
     {
-        return ReflectionUtils.GetContructor(key, key.IsArray ? ArrayConstructorParameterTypes : EmptyTypes);
+        return ReflectionUtils.GetConstructor(key, key.IsArray ? ArrayConstructorParameterTypes : EmptyTypes);
     }
 
     internal virtual IDictionary<string, ReflectionUtils.GetDelegate> GetterValueFactory(Type type)
@@ -91,16 +92,17 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
         return result;
     }
 
-    public virtual bool TrySerializeNonPrimitiveObject(object input, out object output)
+    public virtual bool TrySerializeNonPrimitiveObject(object? input, out object? output)
     {
-        return TrySerializeKnownTypes(input, out output) || TrySerializeUnknownTypes(input, out output);
+        return TrySerializeKnownTypes(input, out output) || TrySerializeUnknownTypes(input!, out output);
     }
 
     [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-    public virtual object DeserializeObject(object value, Type type)
+    public virtual object? DeserializeObject(object? value, Type type)
     {
-        if (type == null) throw new ArgumentNullException("type");
-        string str = value as string;
+        Guard.NotNull(type);
+
+        string? str = value as string;
 
         if (type == typeof(Guid) && string.IsNullOrEmpty(str))
             return default(Guid);
@@ -108,7 +110,7 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
         if (value == null)
             return null;
 
-        object obj = null;
+        object? obj = null;
 
         if (str != null)
         {
@@ -116,46 +118,58 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
             {
                 if (type == typeof(DateTime) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTime)))
                     return DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+
                 if (type == typeof(DateTimeOffset) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTimeOffset)))
                     return DateTimeOffset.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+
                 if (type == typeof(Guid) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid)))
                     return new Guid(str);
+
                 if (type == typeof(Uri))
                 {
                     bool isValid = Uri.IsWellFormedUriString(str, UriKind.RelativeOrAbsolute);
 
-                    Uri result;
-                    if (isValid && Uri.TryCreate(str, UriKind.RelativeOrAbsolute, out result))
+                    if (isValid && Uri.TryCreate(str, UriKind.RelativeOrAbsolute, out var result))
+                    {
                         return result;
+                    }
 
                     return null;
                 }
 
                 if (type == typeof(string))
+                {
                     return str;
+                }
 
                 return Convert.ChangeType(str, type, CultureInfo.InvariantCulture);
             }
+
+            if (type == typeof(Guid))
+                obj = default(Guid);
+            else if (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid))
+                obj = null;
             else
-            {
-                if (type == typeof(Guid))
-                    obj = default(Guid);
-                else if (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid))
-                    obj = null;
-                else
-                    obj = str;
-            }
+                obj = str;
+
             // Empty string case
             if (!ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(Guid))
+            {
                 return str;
+            }
         }
         else if (value is bool)
+        {
             return value;
+        }
 
         bool valueIsLong = value is long;
         bool valueIsDouble = value is double;
         if ((valueIsLong && type == typeof(long)) || (valueIsDouble && type == typeof(double)))
+        {
             return value;
+        }
+
         if ((valueIsDouble && type != typeof(double)) || (valueIsLong && type != typeof(long)))
         {
             obj = type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(float) || type == typeof(bool) || type == typeof(decimal) || type == typeof(byte) || type == typeof(short)
@@ -164,8 +178,7 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
         }
         else
         {
-            IDictionary<string, object> objects = value as IDictionary<string, object>;
-            if (objects != null)
+            if (value is IDictionary<string, object> objects)
             {
                 IDictionary<string, object> jsonObject = objects;
 
@@ -180,25 +193,28 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
 
                     IDictionary dict = (IDictionary)ConstructorCache[genericType]();
 
-                    foreach (KeyValuePair<string, object> kvp in jsonObject)
+                    foreach (var kvp in jsonObject)
+                    {
                         dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
+                    }
 
                     obj = dict;
                 }
                 else
                 {
                     if (type == typeof(object))
+                    {
                         obj = value;
+                    }
                     else
                     {
                         obj = ConstructorCache[type]();
                         foreach (KeyValuePair<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>> setter in SetCache[type])
                         {
-                            object jsonValue;
-                            if (jsonObject.TryGetValue(setter.Key, out jsonValue))
+                            if (jsonObject.TryGetValue(setter.Key, out var jsonValue))
                             {
                                 jsonValue = DeserializeObject(jsonValue, setter.Value.Key);
-                                setter.Value.Value(obj, jsonValue);
+                                setter.Value.Value(obj, jsonValue!);
                             }
                         }
                     }
@@ -206,33 +222,40 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
             }
             else
             {
-                IList<object> valueAsList = value as IList<object>;
-                if (valueAsList != null)
+                if (value is IList<object> valueAsList)
                 {
                     IList<object> jsonObject = valueAsList;
-                    IList list = null;
+                    IList? list = null;
 
                     if (type.IsArray)
                     {
                         list = (IList)ConstructorCache[type](jsonObject.Count);
                         int i = 0;
                         foreach (object o in jsonObject)
-                            list[i++] = DeserializeObject(o, type.GetElementType());
+                        {
+                            list[i++] = DeserializeObject(o, type.GetElementType()!);
+                        }
                     }
-                    else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
+                    else if (ReflectionUtils.IsTypeGenericCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
                     {
                         Type innerType = ReflectionUtils.GetGenericListElementType(type);
                         list = (IList)(ConstructorCache[type] ?? ConstructorCache[typeof(List<>).MakeGenericType(innerType)])(jsonObject.Count);
                         foreach (object o in jsonObject)
+                        {
                             list.Add(DeserializeObject(o, innerType));
+                        }
                     }
                     obj = list;
                 }
             }
             return obj;
         }
+
         if (ReflectionUtils.IsNullableType(type))
+        {
             return ReflectionUtils.ToNullableType(obj, type);
+        }
+
         return obj;
     }
 
@@ -242,46 +265,59 @@ class PocoJsonSerializerStrategy : IJsonSerializerStrategy
     }
 
     [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Need to support .NET 2")]
-    protected virtual bool TrySerializeKnownTypes(object input, out object output)
+    protected virtual bool TrySerializeKnownTypes(object? input, [NotNullWhen(true)] out object? output)
     {
-        bool returnValue = true;
-        if (input is DateTime)
-            output = ((DateTime)input).ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
-        else if (input is DateTimeOffset)
-            output = ((DateTimeOffset)input).ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
-        else if (input is Guid)
-            output = ((Guid)input).ToString("D");
-        else if (input is Uri)
-            output = input.ToString();
-        else
+        switch (input)
         {
-            Enum inputEnum = input as Enum;
-            if (inputEnum != null)
+            case DateTime dateTime:
+                output = dateTime.ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
+                return true;
+
+            case DateTimeOffset dateTimeOffset:
+                output = dateTimeOffset.ToUniversalTime().ToString(Iso8601Format[0], CultureInfo.InvariantCulture);
+                return true;
+
+            case Guid guid:
+                output = guid.ToString("D");
+                return true;
+
+            case Uri uri:
+                output = uri.ToString();
+                return true;
+
+            case Enum inputEnum:
                 output = SerializeEnum(inputEnum);
-            else
-            {
-                returnValue = false;
-                output = null;
-            }
+                return true;
+
+            default:
+                output = default;
+                return false;
         }
-        return returnValue;
     }
 
     [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Need to support .NET 2")]
-    protected virtual bool TrySerializeUnknownTypes(object input, out object output)
+    protected virtual bool TrySerializeUnknownTypes(object input, [NotNullWhen(true)] out object? output)
     {
-        if (input == null) throw new ArgumentNullException("input");
-        output = null;
-        Type type = input.GetType();
+        Guard.NotNull(input);
+
+        output = default;
+
+        var type = input.GetType();
         if (type.FullName == null)
+        {
             return false;
+        }
+
         IDictionary<string, object> obj = new JsonObject();
         IDictionary<string, ReflectionUtils.GetDelegate> getters = GetCache[type];
-        foreach (KeyValuePair<string, ReflectionUtils.GetDelegate> getter in getters)
+        foreach (var getter in getters)
         {
             if (getter.Value != null)
+            {
                 obj.Add(MapClrMemberNameToJsonFieldName(getter.Key), getter.Value(input));
+            }
         }
+
         output = obj;
         return true;
     }

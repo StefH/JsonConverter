@@ -33,6 +33,6 @@ public
     /// <returns>The json representation of the array.</returns>
     public override string ToString()
     {
-        return JsonConverter.SerializeObject(this) ?? string.Empty;
+        return SimpleJson.SerializeObject(this) ?? string.Empty;
     }
 }

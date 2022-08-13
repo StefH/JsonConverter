@@ -13,6 +13,7 @@ public
 interface IJsonSerializerStrategy
 {
     [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Need to support .NET 2")]
-    bool TrySerializeNonPrimitiveObject(object input, out object output);
-    object DeserializeObject(object value, Type type);
+    bool TrySerializeNonPrimitiveObject(object? input, out object? output);
+    
+    object? DeserializeObject(object? value, Type type);
 }

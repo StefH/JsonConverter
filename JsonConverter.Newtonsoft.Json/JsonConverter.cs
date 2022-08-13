@@ -1,5 +1,4 @@
-﻿using System.Text;
-using JsonConverter.Abstractions;
+﻿using JsonConverter.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stef.Validation;
@@ -11,6 +10,7 @@ public class JsonConverter : IJsonConverter
     public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
+        Guard.Condition(stream, s => s.CanRead);
 
         using var streamReader = new StreamReader(stream);
         using var jsonTextReader = new JsonTextReader(streamReader);
@@ -60,21 +60,9 @@ public class JsonConverter : IJsonConverter
 
     public string Serialize<T>(T source, IJsonConverterOptions? options = null)
     {
-        var jsonSerializer = new JsonSerializer();
-        if (options != null)
-        {
-            var serializerSettings = ConvertOptions(options);
-            jsonSerializer.Formatting = serializerSettings.Formatting;
-            jsonSerializer.NullValueHandling = serializerSettings.NullValueHandling;
-        }
-
-        var stringWriter = new StringWriter(new StringBuilder());
-        using (var jsonWriter = new JsonTextWriter(stringWriter))
-        {
-            jsonSerializer.Serialize(jsonWriter, source);
-        }
-
-        return stringWriter.ToString();
+        return options != null ?
+            JsonConvert.SerializeObject(source, ConvertOptions(options)) :
+            JsonConvert.SerializeObject(source);
     }
 
     public Task<string> SerializeAsync<T>(T source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)

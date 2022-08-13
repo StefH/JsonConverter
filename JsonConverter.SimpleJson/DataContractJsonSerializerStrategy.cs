@@ -25,7 +25,10 @@ class DataContractJsonSerializerStrategy : PocoJsonSerializerStrategy
     {
         bool hasDataContract = ReflectionUtils.GetAttribute(type, typeof(DataContractAttribute)) != null;
         if (!hasDataContract)
+        {
             return base.GetterValueFactory(type);
+        }
+
         string jsonKey;
         IDictionary<string, ReflectionUtils.GetDelegate> result = new Dictionary<string, ReflectionUtils.GetDelegate>();
         foreach (PropertyInfo propertyInfo in ReflectionUtils.GetProperties(type))

@@ -245,7 +245,7 @@ public
     /// </returns>
     public override string ToString()
     {
-        return JsonConverter.SerializeObject(this);
+        return SimpleJson.SerializeObject(this);
     }
 
 #if SIMPLE_JSON_DYNAMIC

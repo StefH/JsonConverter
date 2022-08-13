@@ -14,7 +14,7 @@ public class JsonConverter : IJsonConverter
         Guard.Condition(stream, s => s.CanSeek);
 
         stream.Seek(0L, SeekOrigin.Begin);
-        return JsonSerializer.Deserialize<T>(stream.ToString(), options == null ? null : ConvertOptions(options));
+        return JsonSerializer.Deserialize<T>(stream, options == null ? null : ConvertOptions(options));
     }
 
     public async Task<T?> DeserializeAsync<T>(Stream stream, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
