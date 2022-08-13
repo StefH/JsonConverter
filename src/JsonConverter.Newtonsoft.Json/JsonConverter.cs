@@ -43,18 +43,8 @@ public class JsonConverter : IJsonConverter
         return Task.FromResult(Deserialize<T>(stream, options));
     }
 
-    public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
-    {
-        Guard.NotNull(stream);
-
-        var text = await new StreamReader(stream).ReadToEndAsync().ConfigureAwait(false);
-        return IsValidJson(text);
-    }
-
     public Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default)
     {
-        Guard.NotNull(input);
-
         return Task.FromResult(IsValidJson(input));
     }
 
@@ -70,23 +60,28 @@ public class JsonConverter : IJsonConverter
         return Task.FromResult(Serialize(source, options));
     }
 
-    private static JsonSerializerSettings ConvertOptions(IJsonConverterOptions options)
+    public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
-        return new JsonSerializerSettings
-        {
-            Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Include : NullValueHandling.Ignore
-        };
+        Guard.NotNull(stream);
+
+        return IsValidJson(await stream.ReadAsStringAsync().ConfigureAwait(false));
     }
 
-    private static bool IsValidJson(string? input)
+    public bool IsValidJson(Stream stream)
+    {
+        Guard.NotNull(stream);
+
+        return IsValidJson(stream.ReadAsString());
+    }
+
+    public bool IsValidJson(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
             return false;
         }
 
-        input = input!.Trim();
+        input = input.Trim();
         if ((!input.StartsWith("{") || !input.EndsWith("}")) && (!input.StartsWith("[") || !input.EndsWith("]")))
         {
             return false;
@@ -101,5 +96,14 @@ public class JsonConverter : IJsonConverter
         {
             return false;
         }
+    }
+
+    private static JsonSerializerSettings ConvertOptions(IJsonConverterOptions options)
+    {
+        return new JsonSerializerSettings
+        {
+            Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
+            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Include : NullValueHandling.Ignore
+        };
     }
 }

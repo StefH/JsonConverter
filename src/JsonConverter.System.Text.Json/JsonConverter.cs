@@ -38,8 +38,9 @@ public class JsonConverter : IJsonConverter
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
-        var text = await new StreamReader(stream).ReadToEndAsync().ConfigureAwait(false);
-        return IsValidJson(text);
+        Guard.NotNull(stream);
+
+        return IsValidJson(await stream.ReadAsStringAsync().ConfigureAwait(false));
     }
 
     public Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default)
@@ -47,15 +48,21 @@ public class JsonConverter : IJsonConverter
         return Task.FromResult(IsValidJson(input));
     }
 
-    private static bool IsValidJson(string? input)
+    public bool IsValidJson(Stream stream)
+    {
+        Guard.NotNull(stream);
+
+        return IsValidJson(stream.ReadAsString());
+    }
+
+    public bool IsValidJson(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
             return false;
         }
 
-        input = input!.Trim();
-
+        input = input.Trim();
         if ((!input.StartsWith("{") || !input.EndsWith("}")) && (!input.StartsWith("[") || !input.EndsWith("]")))
         {
             return false;
