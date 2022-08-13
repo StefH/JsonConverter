@@ -50,7 +50,6 @@
 #define SIMPLE_JSON_TYPEINFO
 #endif
 
-using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,10 +62,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 #endif
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using JsonConverter.SimpleJson;
 
 namespace JsonConverter.SimpleJson;
 
