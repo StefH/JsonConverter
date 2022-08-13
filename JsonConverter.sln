@@ -2,16 +2,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.Abstractions", "JsonConverter.Abstractions\JsonConverter.Abstractions.csproj", "{F2712B16-66C4-4E16-AAAA-C8674285165F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Abstractions", "JsonConverter.Abstractions\JsonConverter.Abstractions.csproj", "{F2712B16-66C4-4E16-AAAA-C8674285165F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.Newtonsoft.Json", "JsonConverter.Newtonsoft.Json\JsonConverter.Newtonsoft.Json.csproj", "{CB6F9B43-C778-40D6-A257-117390DDCBD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Newtonsoft.Json", "JsonConverter.Newtonsoft.Json\JsonConverter.Newtonsoft.Json.csproj", "{CB6F9B43-C778-40D6-A257-117390DDCBD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.System.Text.Json", "JsonConverter.System.Text.Json\JsonConverter.System.Text.Json.csproj", "{ADBAFDD1-73CA-4879-A9BA-13E80C4873AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.System.Text.Json", "JsonConverter.System.Text.Json\JsonConverter.System.Text.Json.csproj", "{ADBAFDD1-73CA-4879-A9BA-13E80C4873AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73A0C197-80D9-4392-AB8F-D8F89F5A1DD1}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.SimpleJson", "JsonConverter.SimpleJson\JsonConverter.SimpleJson.csproj", "{C81C32CE-5AE4-4345-A926-18BA075EB6D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{ADBAFDD1-73CA-4879-A9BA-13E80C4873AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADBAFDD1-73CA-4879-A9BA-13E80C4873AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADBAFDD1-73CA-4879-A9BA-13E80C4873AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C81C32CE-5AE4-4345-A926-18BA075EB6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C81C32CE-5AE4-4345-A926-18BA075EB6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C81C32CE-5AE4-4345-A926-18BA075EB6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C81C32CE-5AE4-4345-A926-18BA075EB6D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
