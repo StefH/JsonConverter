@@ -4,6 +4,7 @@ Common interface + implementation for Json Converters:
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
 - [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json)
 - [SimpleJson](https://github.com/facebook-csharp-sdk/simple-json)
+- [NetJSON](https://github.com/rpgmaker/NetJSON)
 
 ## NuGets
 
@@ -13,6 +14,7 @@ Common interface + implementation for Json Converters:
 | **JsonConverter.Newtonsoft.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Newtonsoft.Json)](https://www.nuget.org/packages/JsonConverter.Newtonsoft.Json)
 | **JsonConverter.System.Text.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
 | **JsonConverter.SimpleJson** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
+| **JsonConverter.NetJSON** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
 
 
 
