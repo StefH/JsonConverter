@@ -8,6 +8,8 @@
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <GlobalUsings>false</GlobalUsings>
+        <Authors>Stef Heyenrath</Authors>
+        <Copyright>Copyright © Stef Heyenrath</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
