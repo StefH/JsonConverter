@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net35;net40;net45;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <Description>Implementation for IJsonConverter using NetJSON</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
+        <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NetJSON" Version="1.4.0" />
+        <PackageReference Include="Stef.Validation" Version="0.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
+
+</Project>
