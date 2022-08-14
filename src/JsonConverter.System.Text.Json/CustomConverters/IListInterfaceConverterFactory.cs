@@ -12,9 +12,7 @@ public class IListInterfaceConverterFactory : JsonConverterFactory
 
     public override bool CanConvert(Type typeToConvert) => typeToConvert == typeof (IList<>).MakeGenericType(InterfaceType) && typeToConvert.GenericTypeArguments[0] == InterfaceType;
 
-    public override global::System.Text.Json.Serialization.JsonConverter CreateConverter(
-        Type typeToConvert,
-        JsonSerializerOptions options)
+    public override global::System.Text.Json.Serialization.JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
     {
         return (global::System.Text.Json.Serialization.JsonConverter) Activator.CreateInstance(typeof (ListConverter<>).MakeGenericType(InterfaceType));
     }

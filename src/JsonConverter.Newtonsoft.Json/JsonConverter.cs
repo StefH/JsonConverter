@@ -5,7 +5,7 @@ using Stef.Validation;
 
 namespace JsonConverter.Newtonsoft.Json;
 
-public class JsonConverter : IJsonConverter
+public partial class JsonConverter : IJsonConverter
 {
     public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
     {
@@ -33,33 +33,11 @@ public class JsonConverter : IJsonConverter
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
-    public Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(Deserialize<T>(text, options));
-    }
-
-    public Task<T?> DeserializeAsync<T>(Stream stream, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(Deserialize<T>(stream, options));
-    }
-
     public string Serialize<T>(T source, IJsonConverterOptions? options = null)
     {
         return options != null ?
             JsonConvert.SerializeObject(source, ConvertOptions(options)) :
             JsonConvert.SerializeObject(source);
-    }
-
-    public Task<string> SerializeAsync<T>(T source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(Serialize(source, options));
-    }
-
-    public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
-    {
-        Guard.NotNull(stream);
-
-        return IsValidJson(await stream.ReadAsStringAsync().ConfigureAwait(false));
     }
 
     public bool IsValidJson(Stream stream)
