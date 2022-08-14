@@ -20,391 +20,391 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SimpleJson.Tests
-{
+namespace SimpleJson.Tests;
+
 #if NUNIT
-    using TestClass = NUnit.Framework.TestFixtureAttribute;
-    using TestMethod = NUnit.Framework.TestAttribute;
-    using TestCleanup = NUnit.Framework.TearDownAttribute;
-    using TestInitialize = NUnit.Framework.SetUpAttribute;
-    using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
-    using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
-    using NUnit.Framework;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
+using NUnit.Framework;
 #else
 #if NETFX_CORE
-    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 #else
 #endif
 #endif
 
-    using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
+using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
 
-    [TestClass]
-    public class SerializeObject_Primitive_Tests
+[TestClass]
+public class SerializeObjectPrimitiveTests
+{
+    [TestMethod]
+    public void ObjectSerialization()
     {
-        [TestMethod]
-        public void ObjectSerialization()
-        {
-            object value;
+        object? value = 1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = 1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = 1.1;
+        Assert.AreEqual("1.1", SimpleJson.SerializeObject(value));
 
-            value = 1.1;
-            Assert.AreEqual("1.1", SimpleJson.SerializeObject(value));
+        value = 1.1m;
+        Assert.AreEqual("1.1", SimpleJson.SerializeObject(value));
 
-            value = 1.1m;
-            Assert.AreEqual("1.1", SimpleJson.SerializeObject(value));
+        //value = (float)1.1;
+        //Assert.AreEqual("1.1", SimpleJson.JsonEncode(value));
 
-            //value = (float)1.1;
-            //Assert.AreEqual("1.1", SimpleJson.JsonEncode(value));
+        value = (short)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (short)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (long)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (long)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (byte)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (byte)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (uint)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (uint)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (ushort)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (ushort)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (sbyte)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (sbyte)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = (ulong)1;
+        Assert.AreEqual("1", SimpleJson.SerializeObject(value));
 
-            value = (ulong)1;
-            Assert.AreEqual("1", SimpleJson.SerializeObject(value));
+        value = null;
+        Assert.AreEqual("null", SimpleJson.SerializeObject(value));
 
-            value = null;
-            Assert.AreEqual("null", SimpleJson.SerializeObject(value));
+        //value = DBNull.Value;
+        //Assert.AreEqual("null", SimpleJson.JsonEncode(value));
 
-            //value = DBNull.Value;
-            //Assert.AreEqual("null", SimpleJson.JsonEncode(value));
+        value = "I am a string";
+        Assert.AreEqual(@"""I am a string""", SimpleJson.SerializeObject(value));
 
-            value = "I am a string";
-            Assert.AreEqual(@"""I am a string""", SimpleJson.SerializeObject(value));
+        value = true;
+        Assert.AreEqual("true", SimpleJson.SerializeObject(value));
 
-            value = true;
-            Assert.AreEqual("true", SimpleJson.SerializeObject(value));
+        value = false;
+        Assert.AreEqual("false", SimpleJson.SerializeObject(value));
 
-            value = false;
-            Assert.AreEqual("false", SimpleJson.SerializeObject(value));
+        //value = 'c';
+        //Assert.AreEqual(@"""c""", SimpleJson.JsonEncode(value));
+    }
 
-            //value = 'c';
-            //Assert.AreEqual(@"""c""", SimpleJson.JsonEncode(value));
-        }
+    [TestMethod]
+    public void StringSerialization()
+    {
+        var str = "I am a string";
+        Assert.AreEqual(@"""I am a string""", SimpleJson.SerializeObject(str));
+    }
 
-        [TestMethod]
-        public void StringSerialization()
-        {
-            var str = "I am a string";
-            Assert.AreEqual(@"""I am a string""", SimpleJson.SerializeObject(str));
-        }
-
-        [TestMethod]
-        public void StringEscpaingSerialization()
-        {
-            var v = @"It's a good day
+    [TestMethod]
+    public void StringEscpaingSerialization()
+    {
+        var v = @"It's a good day
 ""sunshine""";
 
-            var json = SimpleJson.SerializeObject(v);
-            Assert.AreEqual(@"""It's a good day\r\n\""sunshine\""""", json);
-        }
+        var json = SimpleJson.SerializeObject(v);
+        Assert.AreEqual(@"""It's a good day\r\n\""sunshine\""""", json);
+    }
 
-        [TestMethod]
+    [TestMethod]
 #if NETFX_CORE
         [Ignore]
 #else
-        [Ignore("not part of the json standard.")]
+    [Ignore("not part of the json standard.")]
 #endif
-        public void CharSerialization()
-        {
-            Assert.AreEqual(@"""c""", SimpleJson.SerializeObject('c'));
-        }
+    public void CharSerialization()
+    {
+        Assert.AreEqual(@"""c""", SimpleJson.SerializeObject('c'));
+    }
 
-        [TestMethod]
-        public void BoolTrueSerialization()
-        {
-            Assert.AreEqual("true", SimpleJson.SerializeObject(true));
-        }
+    [TestMethod]
+    public void BoolTrueSerialization()
+    {
+        Assert.AreEqual("true", SimpleJson.SerializeObject(true));
+    }
 
-        [TestMethod]
-        public void BoolFalseSerialization()
-        {
-            Assert.AreEqual("false", SimpleJson.SerializeObject(false));
-        }
+    [TestMethod]
+    public void BoolFalseSerialization()
+    {
+        Assert.AreEqual("false", SimpleJson.SerializeObject(false));
+    }
 
-        [TestMethod]
-        public void NullSerialization()
-        {
-            Assert.AreEqual("null", SimpleJson.SerializeObject(null));
-        }
+    [TestMethod]
+    public void NullSerialization()
+    {
+        Assert.AreEqual("null", SimpleJson.SerializeObject(null));
+    }
 
 #if !NETFX_CORE
-        [TestMethod]
-        [Ignore("uncomment if(Convert.IsDBNull(input)) in PocoJsonSerializerStrategy.TrySerializeKnownTypes. disabled to improve performance.")]
-        public void DbNullSerialization()
-        {
-            Assert.AreEqual("null", SimpleJson.SerializeObject(System.DBNull.Value));
-        }
+    [TestMethod]
+    [Ignore("uncomment if(Convert.IsDBNull(input)) in PocoJsonSerializerStrategy.TrySerializeKnownTypes. disabled to improve performance.")]
+    public void DbNullSerialization()
+    {
+        Assert.AreEqual("null", SimpleJson.SerializeObject(DBNull.Value));
+    }
 #endif
 
-        [TestMethod]
-        public void Int16Serialization()
+    [TestMethod]
+    public void Int16Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((short)1));
+    }
+
+    [TestMethod]
+    public void UnsingedInt16Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((ushort)1));
+    }
+
+    [TestMethod]
+    public void Int64Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((long)1));
+    }
+
+    [TestMethod]
+    public void UnsingedInt64Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((ulong)1));
+    }
+
+    [TestMethod]
+    public void ByteSerialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((byte)1));
+    }
+
+    [TestMethod]
+    public void SignedByteSerialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((sbyte)1));
+    }
+
+    [TestMethod]
+    public void Int32Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((int)1));
+    }
+
+    [TestMethod]
+    public void UnsignedInt32Serialization()
+    {
+        Assert.AreEqual("1", SimpleJson.SerializeObject((uint)1));
+    }
+
+    [TestMethod]
+    public void DoubleSerialization()
+    {
+        Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1));
+    }
+
+    [TestMethod]
+    public void DecimalSerialization()
+    {
+        Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1m));
+        Assert.AreEqual("1.11", SimpleJson.SerializeObject(1.11m));
+        Assert.AreEqual("1.111", SimpleJson.SerializeObject(1.111m));
+        Assert.AreEqual("1.1111", SimpleJson.SerializeObject(1.1111m));
+        Assert.AreEqual("1.11111", SimpleJson.SerializeObject(1.11111m));
+        Assert.AreEqual("1.111111", SimpleJson.SerializeObject(1.111111m));
+        //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1.0m));
+        //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1.0m));
+        //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1m));
+        //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1m));
+        Assert.AreEqual("1.01", SimpleJson.SerializeObject(1.01m));
+        Assert.AreEqual("1.001", SimpleJson.SerializeObject(1.001m));
+        //Assert.AreEqual("79228162514264337593543950335.0", SimpleJson.JsonEncode(decimal.MaxValue));
+        //Assert.AreEqual("-79228162514264337593543950335.0", SimpleJson.JsonEncode(decimal.MinValue));
+    }
+
+    [TestMethod]
+    public void FloatSerialization()
+    {
+        Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1));
+        Assert.AreEqual("1.11", SimpleJson.SerializeObject(1.11));
+        Assert.AreEqual("1.111", SimpleJson.SerializeObject(1.111));
+        Assert.AreEqual("1.1111", SimpleJson.SerializeObject(1.1111));
+        Assert.AreEqual("1.11111", SimpleJson.SerializeObject(1.11111));
+        Assert.AreEqual("1.111111", SimpleJson.SerializeObject(1.111111));
+        //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1.0));
+        //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1d));
+        //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1d));
+        Assert.AreEqual("1.01", SimpleJson.SerializeObject(1.01));
+        Assert.AreEqual("1.001", SimpleJson.SerializeObject(1.001));
+        //Assert.AreEqual(JsonConvert.PositiveInfinity, SimpleJson.JsonEncode(double.PositiveInfinity));
+        //Assert.AreEqual(JsonConvert.NegativeInfinity, SimpleJson.JsonEncode(double.NegativeInfinity));
+        //Assert.AreEqual(JsonConvert.NaN, SimpleJson.JsonEncode(double.NaN));
+    }
+
+    [TestMethod]
+    public void EmptyObjectSerialization()
+    {
+        Assert.AreEqual("{}", SimpleJson.SerializeObject(new object()));
+    }
+
+    [TestMethod]
+    public void CanParseWithUnicode()
+    {
+        var dog = new { Name = "Ăbbey" };
+
+        var serialized = SimpleJson.SerializeObject(dog);
+
+        var deserialized = (IDictionary<string, object>)SimpleJson.DeserializeObject(serialized!);
+
+        Assert.AreEqual(dog.Name, deserialized["Name"]);
+    }
+
+    [TestMethod]
+    public void CanSerializeArrays()
+    {
+        const string expected = "[1,2,3]";
+
+        var data = new[] { 1, 2, 3 };
+        var serialized = SimpleJson.SerializeObject(data);
+
+        Assert.AreEqual(expected, serialized);
+    }
+
+    [TestMethod]
+    public void CanSerializeEmptyArray()
+    {
+        const string expected = "[]";
+
+        var data = new int[0];
+        var serialized = SimpleJson.SerializeObject(data);
+
+        Assert.AreEqual(expected, serialized);
+    }
+
+    [TestMethod]
+    public void CanSerializeNullArray()
+    {
+        const string expected = "null";
+
+        int[]? data = null;
+        var serialized = SimpleJson.SerializeObject(data);
+
+        Assert.AreEqual(expected, serialized);
+    }
+
+    [TestMethod]
+    public void CanSerializeList()
+    {
+        const string expected = "[\"a\",\"b\",\"c\"]";
+
+        var data = new List<string> { "a", "b", "c" };
+        var serialized = SimpleJson.SerializeObject(data);
+
+        Assert.AreEqual(expected, serialized);
+    }
+
+    [TestMethod]
+    [Ignore]
+    public void CanIgnoreSolidusInStringLiterals()
+    {
+        const string expected = @"What is the phone #/digits?";
+
+        var serialized = SimpleJson.SerializeObject(new
         {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((short)1));
-        }
+            Value = @"What is the phone #\/digits?"
+        });
 
-        [TestMethod]
-        public void UnsingedInt16Serialization()
+        var actual = (IDictionary<string, object>)SimpleJson.DeserializeObject(serialized!);
+
+        Assert.AreEqual(expected, actual["Value"]);
+    }
+
+    [TestMethod]
+    public void SerializeUnicodeTests()
+    {
+        var o = SimpleJson.SerializeObject("न");
+
+        Assert.AreEqual("\"न\"", o);
+    }
+
+    [TestMethod]
+    public void SerializeDictionaryStringObjectTests()
+    {
+        var parameters = new Dictionary<string, object>
         {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((ushort)1));
-        }
+            ["caption"] = string.Empty,
+            ["description"] = "hello world",
+            ["link"] = "http://google.com"
+        };
 
-        [TestMethod]
-        public void Int64Serialization()
+        var result = SimpleJson.SerializeObject(parameters);
+
+        Assert.AreEqual("{\"caption\":\"\",\"description\":\"hello world\",\"link\":\"http://google.com\"}", result);
+    }
+
+    [TestMethod]
+    public void SerializeDictionaryStringStringTests()
+    {
+        var parameters = new Dictionary<string, string>
         {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((long)1));
-        }
+            ["caption"] = string.Empty,
+            ["description"] = "hello world",
+            ["link"] = "http://google.com"
+        };
 
-        [TestMethod]
-        public void UnsingedInt64Serialization()
-        {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((ulong)1));
-        }
+        var result = SimpleJson.SerializeObject(parameters);
 
-        [TestMethod]
-        public void ByteSerialization()
-        {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((byte)1));
-        }
+        Assert.AreEqual("{\"caption\":\"\",\"description\":\"hello world\",\"link\":\"http://google.com\"}", result);
+    }
 
-        [TestMethod]
-        public void SignedByteSerialization()
-        {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((sbyte)1));
-        }
+    [TestMethod]
+    public void SerializeSurrogatePair()
+    {
+        var str = "𩸽 is Arabesque greenling(fish) in japanese";
+        var json = SimpleJson.SerializeObject(str);
 
-        [TestMethod]
-        public void Int32Serialization()
-        {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((int)1));
-        }
+        Assert.AreEqual("\"𩸽 is Arabesque greenling(fish) in japanese\"", json);
+    }
 
-        [TestMethod]
-        public void UnsingedInt32Serialization()
-        {
-            Assert.AreEqual("1", SimpleJson.SerializeObject((uint)1));
-        }
+    [TestMethod]
+    public void SerializeDoubleQuotesCorrectly()
+    {
+        var obj = new { message = "Hi \"Prabir\"" };
+        var json = SimpleJson.SerializeObject(obj);
 
-        [TestMethod]
-        public void DoubleSerialization()
-        {
-            Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1));
-        }
+        Assert.AreEqual("{\"message\":\"Hi \\\"Prabir\\\"\"}", json);
+    }
 
-        [TestMethod]
-        public void DecimalSerialization()
-        {
-            Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1m));
-            Assert.AreEqual("1.11", SimpleJson.SerializeObject(1.11m));
-            Assert.AreEqual("1.111", SimpleJson.SerializeObject(1.111m));
-            Assert.AreEqual("1.1111", SimpleJson.SerializeObject(1.1111m));
-            Assert.AreEqual("1.11111", SimpleJson.SerializeObject(1.11111m));
-            Assert.AreEqual("1.111111", SimpleJson.SerializeObject(1.111111m));
-            //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1.0m));
-            //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1.0m));
-            //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1m));
-            //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1m));
-            Assert.AreEqual("1.01", SimpleJson.SerializeObject(1.01m));
-            Assert.AreEqual("1.001", SimpleJson.SerializeObject(1.001m));
-            //Assert.AreEqual("79228162514264337593543950335.0", SimpleJson.JsonEncode(decimal.MaxValue));
-            //Assert.AreEqual("-79228162514264337593543950335.0", SimpleJson.JsonEncode(decimal.MinValue));
-        }
+    [TestMethod]
+    public void SerializeBigNumberCorrectly()
+    {
+        var json = SimpleJson.SerializeObject(new { object_id = 10150098461530576 });
 
-        [TestMethod]
-        public void FloatSerialization()
-        {
-            Assert.AreEqual("1.1", SimpleJson.SerializeObject(1.1));
-            Assert.AreEqual("1.11", SimpleJson.SerializeObject(1.11));
-            Assert.AreEqual("1.111", SimpleJson.SerializeObject(1.111));
-            Assert.AreEqual("1.1111", SimpleJson.SerializeObject(1.1111));
-            Assert.AreEqual("1.11111", SimpleJson.SerializeObject(1.11111));
-            Assert.AreEqual("1.111111", SimpleJson.SerializeObject(1.111111));
-            //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1.0));
-            //Assert.AreEqual("1.0", SimpleJson.JsonEncode(1d));
-            //Assert.AreEqual("-1.0", SimpleJson.JsonEncode(-1d));
-            Assert.AreEqual("1.01", SimpleJson.SerializeObject(1.01));
-            Assert.AreEqual("1.001", SimpleJson.SerializeObject(1.001));
-            //Assert.AreEqual(JsonConvert.PositiveInfinity, SimpleJson.JsonEncode(double.PositiveInfinity));
-            //Assert.AreEqual(JsonConvert.NegativeInfinity, SimpleJson.JsonEncode(double.NegativeInfinity));
-            //Assert.AreEqual(JsonConvert.NaN, SimpleJson.JsonEncode(double.NaN));
-        }
+        Assert.AreEqual("{\"object_id\":10150098461530576}", json);
+    }
 
-        [TestMethod]
-        public void EmptyObjectSerialization()
-        {
-            Assert.AreEqual("{}", SimpleJson.SerializeObject(new object()));
-        }
+    [TestMethod]
+    public void SerializeNullableTypeThatIsNotNull()
+    {
+        var obj = new Dictionary<string, object>();
+        int? value = 3;
+        obj["value"] = value;
+        var json = SimpleJson.SerializeObject(obj);
 
-        [TestMethod]
-        public void CanParseWithUnicode()
-        {
-            var dog = new { Name = "Ăbbey" };
+        Assert.AreEqual("{\"value\":3}", json);
+    }
 
-            var serialized = SimpleJson.SerializeObject(dog);
+    [TestMethod]
+    public void SerializeNullableTypeThatIsNull()
+    {
+        var obj = new Dictionary<string, object?>();
+        int? value = null;
+        obj["value"] = value;
+        var json = SimpleJson.SerializeObject(obj);
 
-            var deserialized = (IDictionary<string, object>)SimpleJson.DeserializeObject(serialized);
-
-            Assert.AreEqual(dog.Name, deserialized["Name"]);
-        }
-
-        [TestMethod]
-        public void CanSerializeArrays()
-        {
-            const string expected = "[1,2,3]";
-
-            var data = new[] { 1, 2, 3 };
-            var serialized = SimpleJson.SerializeObject(data);
-
-            Assert.AreEqual(expected, serialized);
-        }
-
-        [TestMethod]
-        public void CanSerializeEmptyArray()
-        {
-            const string expected = "[]";
-
-            var data = new int[0];
-            var serialized = SimpleJson.SerializeObject(data);
-
-            Assert.AreEqual(expected, serialized);
-        }
-
-        [TestMethod]
-        public void CanSerializeNullArray()
-        {
-            const string expected = "null";
-
-            int[] data = null;
-            var serialized = SimpleJson.SerializeObject(data);
-
-            Assert.AreEqual(expected, serialized);
-        }
-
-        [TestMethod]
-        public void CanSerializeList()
-        {
-            const string expected = "[\"a\",\"b\",\"c\"]";
-
-            var data = new List<string> { "a", "b", "c" };
-            var serialized = SimpleJson.SerializeObject(data);
-
-            Assert.AreEqual(expected, serialized);
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void CanIgnoreSolidusInStringLiterals()
-        {
-            const string expected = @"What is the phone #/digits?";
-
-            var serialized = SimpleJson.SerializeObject(
-                new
-                {
-                    Value = @"What is the phone #\/digits?"
-                });
-
-            var actual = (IDictionary<string, object>)SimpleJson.DeserializeObject(serialized);
-
-            Assert.AreEqual(expected, actual["Value"]);
-        }
-
-        [TestMethod]
-        public void SerializeUnicodeTests()
-        {
-            var o = SimpleJson.SerializeObject("न");
-
-            Assert.AreEqual("\"न\"", o);
-        }
-
-        [TestMethod]
-        public void SerializeDictionaryStringObjectTests()
-        {
-            var parameters = new Dictionary<string, object>();
-            parameters["caption"] = string.Empty;
-            parameters["description"] = "hello world";
-            parameters["link"] = "http://google.com";
-
-            var result = SimpleJson.SerializeObject(parameters);
-
-            Assert.AreEqual("{\"caption\":\"\",\"description\":\"hello world\",\"link\":\"http://google.com\"}", result);
-        }
-
-        [TestMethod]
-        public void SerializeDictionaryStringStringTests()
-        {
-            var parameters = new Dictionary<string, string>();
-            parameters["caption"] = string.Empty;
-            parameters["description"] = "hello world";
-            parameters["link"] = "http://google.com";
-
-            var result = SimpleJson.SerializeObject(parameters);
-
-            Assert.AreEqual("{\"caption\":\"\",\"description\":\"hello world\",\"link\":\"http://google.com\"}", result);
-        }
-
-        [TestMethod]
-        public void SerializeSurrogatePair()
-        {
-            var str = "𩸽 is Arabesque greenling(fish) in japanese";
-            var json = SimpleJson.SerializeObject(str);
-
-            Assert.AreEqual("\"𩸽 is Arabesque greenling(fish) in japanese\"", json);
-        }
-
-        [TestMethod]
-        public void SerializeDoubleQuotesCorrectly()
-        {
-            var obj = new { message = "Hi \"Prabir\"" };
-            var json = SimpleJson.SerializeObject(obj);
-
-            Assert.AreEqual("{\"message\":\"Hi \\\"Prabir\\\"\"}", json);
-        }
-
-        [TestMethod]
-        public void SerializeBigNumberCorrectly()
-        {
-            var json = SimpleJson.SerializeObject(new { object_id = 10150098461530576 });
-
-            Assert.AreEqual("{\"object_id\":10150098461530576}", json);
-        }
-
-        [TestMethod]
-        public void SerializeNullableTypeThatIsNotNull()
-        {
-            var obj = new Dictionary<string, object>();
-            int? value = 3;
-            obj["value"] = value;
-            var json = SimpleJson.SerializeObject(obj);
-
-            Assert.AreEqual("{\"value\":3}", json);
-        }
-
-        [TestMethod]
-        public void SerializeNullableTypeThatIsNull()
-        {
-            var obj = new Dictionary<string, object>();
-            int? value = null;
-            obj["value"] = value;
-            var json = SimpleJson.SerializeObject(obj);
-
-            Assert.AreEqual("{\"value\":null}", json);
-        }
+        Assert.AreEqual("{\"value\":null}", json);
     }
 }

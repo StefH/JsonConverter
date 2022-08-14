@@ -117,7 +117,7 @@ static class SimpleJson
     /// </summary>
     /// <param name="json">A JSON string.</param>
     /// <returns>An IList&lt;object>, a IDictionary&lt;string,object>, a double, a string, null, true, or false</returns>
-    public static object DeserializeObject(string json)
+    public static object DeserializeObject(string? json)
     {
         if (TryDeserializeObject(json, out var obj))
         {
@@ -156,7 +156,7 @@ static class SimpleJson
         return success;
     }
 
-    public static object? DeserializeObject(string json, Type? type, IJsonSerializerStrategy? jsonSerializerStrategy)
+    public static object? DeserializeObject(string? json, Type? type, IJsonSerializerStrategy? jsonSerializerStrategy)
     {
         var jsonObject = DeserializeObject(json);
         return type == null || jsonObject != null && ReflectionUtils.IsAssignableFrom(jsonObject.GetType(), type)
@@ -164,7 +164,7 @@ static class SimpleJson
             : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
     }
 
-    public static object? DeserializeObject(string json, Type type)
+    public static object? DeserializeObject(string? json, Type type)
     {
         return DeserializeObject(json, type, null);
     }
@@ -174,7 +174,7 @@ static class SimpleJson
         return (T?)DeserializeObject(json, typeof(T), jsonSerializerStrategy);
     }
 
-    public static T? DeserializeObject<T>(string json)
+    public static T? DeserializeObject<T>(string? json)
     {
         return (T?)DeserializeObject(json, typeof(T), null);
     }
@@ -185,14 +185,14 @@ static class SimpleJson
     /// <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
     /// <param name="jsonSerializerStrategy">Serializer strategy to use</param>
     /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
-    public static string? SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy)
+    public static string? SerializeObject(object? json, IJsonSerializerStrategy jsonSerializerStrategy)
     {
-        StringBuilder builder = new StringBuilder(BUILDER_CAPACITY);
+        var builder = new StringBuilder(BUILDER_CAPACITY);
         bool success = SerializeValue(jsonSerializerStrategy, json, builder);
         return success ? builder.ToString() : null;
     }
 
-    public static string? SerializeObject(object json)
+    public static string? SerializeObject(object? json)
     {
         return SerializeObject(json, CurrentJsonSerializerStrategy);
     }
@@ -257,7 +257,7 @@ static class SimpleJson
 
     private static IDictionary<string, object>? ParseObject(char[] json, ref int index, ref bool success)
     {
-        IDictionary<string, object> table = new JsonObject();
+        IDictionary<string, object> dictionary = new JsonObject();
 
         // {
         NextToken(json, ref index);
@@ -279,7 +279,7 @@ static class SimpleJson
             else if (token == TOKEN_CURLY_CLOSE)
             {
                 NextToken(json, ref index);
-                return table;
+                return dictionary;
             }
             else
             {
@@ -306,10 +306,11 @@ static class SimpleJson
                     success = false;
                     return null;
                 }
-                table[name!] = value!;
+                dictionary[name!] = value!;
             }
         }
-        return table;
+
+        return dictionary;
     }
 
     private static JsonArray? ParseArray(char[] json, ref int index, ref bool success)
@@ -349,6 +350,7 @@ static class SimpleJson
                 array.Add(value!);
             }
         }
+
         return array;
     }
 
@@ -382,7 +384,7 @@ static class SimpleJson
 
     private static string? ParseString(char[] json, ref int index, ref bool success)
     {
-        var s = new StringBuilder(BUILDER_CAPACITY);
+        var stringBuilder = new StringBuilder(BUILDER_CAPACITY);
 
         EatWhitespace(json, ref index);
 
@@ -407,23 +409,24 @@ static class SimpleJson
             {
                 if (index == json.Length)
                     break;
+
                 c = json[index++];
                 if (c == '"')
-                    s.Append('"');
+                    stringBuilder.Append('"');
                 else if (c == '\\')
-                    s.Append('\\');
+                    stringBuilder.Append('\\');
                 else if (c == '/')
-                    s.Append('/');
+                    stringBuilder.Append('/');
                 else if (c == 'b')
-                    s.Append('\b');
+                    stringBuilder.Append('\b');
                 else if (c == 'f')
-                    s.Append('\f');
+                    stringBuilder.Append('\f');
                 else if (c == 'n')
-                    s.Append('\n');
+                    stringBuilder.Append('\n');
                 else if (c == 'r')
-                    s.Append('\r');
+                    stringBuilder.Append('\r');
                 else if (c == 't')
-                    s.Append('\t');
+                    stringBuilder.Append('\t');
                 else if (c == 'u')
                 {
                     int remainingLength = json.Length - index;
@@ -444,8 +447,8 @@ static class SimpleJson
                                 {
                                     if (0xDC00 <= lowCodePoint && lowCodePoint <= 0xDFFF) // if low surrogate
                                     {
-                                        s.Append((char)codePoint);
-                                        s.Append((char)lowCodePoint);
+                                        stringBuilder.Append((char)codePoint);
+                                        stringBuilder.Append((char)lowCodePoint);
                                         index += 6; // skip 6 chars
                                         continue;
                                     }
@@ -454,7 +457,7 @@ static class SimpleJson
                             success = false;    // invalid surrogate pair
                             return "";
                         }
-                        s.Append(ConvertFromUtf32((int)codePoint));
+                        stringBuilder.Append(ConvertFromUtf32((int)codePoint));
                         // skip 4 chars
                         index += 4;
                     }
@@ -463,7 +466,7 @@ static class SimpleJson
                 }
             }
             else
-                s.Append(c);
+                stringBuilder.Append(c);
         }
 
         if (!complete)
@@ -472,23 +475,26 @@ static class SimpleJson
             return null;
         }
 
-        return s.ToString();
+        return stringBuilder.ToString();
     }
 
     private static string ConvertFromUtf32(int utf32)
     {
         // http://www.java2s.com/Open-Source/CSharp/2.6.4-mono-.net-core/System/System/Char.cs.htm
         if (utf32 < 0 || utf32 > 0x10FFFF)
-            throw new ArgumentOutOfRangeException("utf32", "The argument must be from 0 to 0x10FFFF.");
+            throw new ArgumentOutOfRangeException(nameof(utf32), "The argument must be from 0 to 0x10FFFF.");
+
         if (0xD800 <= utf32 && utf32 <= 0xDFFF)
-            throw new ArgumentOutOfRangeException("utf32", "The argument must not be in surrogate pair range.");
+            throw new ArgumentOutOfRangeException(nameof(utf32), "The argument must not be in surrogate pair range.");
+
         if (utf32 < 0x10000)
             return new string((char)utf32, 1);
+
         utf32 -= 0x10000;
         return new string(new[] { (char)((utf32 >> 10) + 0xD800), (char)(utf32 % 0x0400 + 0xDC00) });
     }
 
-    static object ParseNumber(char[] json, ref int index, ref bool success)
+    private static object ParseNumber(char[] json, ref int index, ref bool success)
     {
         EatWhitespace(json, ref index);
         int lastIndex = GetLastIndexOfNumber(json, index);

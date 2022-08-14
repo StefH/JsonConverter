@@ -24,7 +24,7 @@ class ReflectionUtils
     public delegate void SetDelegate(object source, object value);
     public delegate object ConstructorDelegate(params object[] args);
 
-    public delegate TValue ThreadSafeDictionaryValueFactory<TKey, TValue>(TKey key);
+    public delegate TValue ThreadSafeDictionaryValueFactory<in TKey, out TValue>(TKey key);
 
 #if SIMPLE_JSON_TYPEINFO
     public static TypeInfo GetTypeInfo(Type type)
@@ -106,14 +106,9 @@ class ReflectionUtils
 
         Type genericDefinition = type.GetGenericTypeDefinition();
 
-        return (genericDefinition == typeof(IList<>)
-            || genericDefinition == typeof(ICollection<>)
-            || genericDefinition == typeof(IEnumerable<>)
-#if SIMPLE_JSON_READONLY_COLLECTIONS
-            || genericDefinition == typeof(IReadOnlyCollection<>)
-            || genericDefinition == typeof(IReadOnlyList<>)
-#endif
-            );
+        return genericDefinition == typeof(IList<>)
+               || genericDefinition == typeof(ICollection<>)
+               || genericDefinition == typeof(IEnumerable<>);
     }
 
     public static bool IsAssignableFrom(Type type1, Type type2)
@@ -265,7 +260,7 @@ class ReflectionUtils
         ParameterInfo[] paramsInfo = constructorInfo.GetParameters();
         ParameterExpression param = Expression.Parameter(typeof(object[]), "args");
         Expression[] argsExp = new Expression[paramsInfo.Length];
-        
+
         for (int i = 0; i < paramsInfo.Length; i++)
         {
             Expression index = Expression.Constant(i);
@@ -277,7 +272,7 @@ class ReflectionUtils
 
         NewExpression newExp = Expression.New(constructorInfo, argsExp);
         Expression<Func<object[], object>> lambda = Expression.Lambda<Func<object[], object>>(newExp, param);
-        
+
         Func<object[], object> compiledLambda = lambda.Compile();
         return args => compiledLambda(args);
     }
@@ -320,14 +315,13 @@ class ReflectionUtils
     }
 
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-
     public static GetDelegate GetGetMethodByExpression(PropertyInfo propertyInfo)
     {
         MethodInfo getMethodInfo = GetGetterMethodInfo(propertyInfo);
         ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
-        UnaryExpression instanceCast = (!IsValueType(propertyInfo.DeclaringType)) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
+        UnaryExpression instanceCast = !IsValueType(propertyInfo.DeclaringType) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
         Func<object, object> compiled = Expression.Lambda<Func<object, object>>(Expression.TypeAs(Expression.Call(instanceCast, getMethodInfo), typeof(object)), instance).Compile();
-        return delegate (object source) { return compiled(source); };
+        return source => compiled(source);
     }
 
     public static GetDelegate GetGetMethodByExpression(FieldInfo fieldInfo)
@@ -335,15 +329,14 @@ class ReflectionUtils
         ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
         MemberExpression member = Expression.Field(Expression.Convert(instance, fieldInfo.DeclaringType), fieldInfo);
         GetDelegate compiled = Expression.Lambda<GetDelegate>(Expression.Convert(member, typeof(object)), instance).Compile();
-        return delegate (object source) { return compiled(source); };
+        return source => compiled(source);
     }
-
 #endif
 
     public static SetDelegate GetSetMethod(PropertyInfo propertyInfo)
     {
 #if SIMPLE_JSON_NO_LINQ_EXPRESSION
-            return GetSetMethodByReflection(propertyInfo);
+        return GetSetMethodByReflection(propertyInfo);
 #else
         return GetSetMethodByExpression(propertyInfo);
 #endif
@@ -352,7 +345,7 @@ class ReflectionUtils
     public static SetDelegate GetSetMethod(FieldInfo fieldInfo)
     {
 #if SIMPLE_JSON_NO_LINQ_EXPRESSION
-            return GetSetMethodByReflection(fieldInfo);
+        return GetSetMethodByReflection(fieldInfo);
 #else
         return GetSetMethodByExpression(fieldInfo);
 #endif
@@ -361,23 +354,22 @@ class ReflectionUtils
     public static SetDelegate GetSetMethodByReflection(PropertyInfo propertyInfo)
     {
         MethodInfo methodInfo = GetSetterMethodInfo(propertyInfo);
-        return delegate (object source, object value) { methodInfo.Invoke(source, new object[] { value }); };
+        return delegate (object source, object value) { methodInfo.Invoke(source, new[] { value }); };
     }
 
     public static SetDelegate GetSetMethodByReflection(FieldInfo fieldInfo)
     {
-        return delegate (object source, object value) { fieldInfo.SetValue(source, value); };
+        return fieldInfo.SetValue;
     }
 
 #if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-
     public static SetDelegate GetSetMethodByExpression(PropertyInfo propertyInfo)
     {
         MethodInfo setMethodInfo = GetSetterMethodInfo(propertyInfo);
         ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
         ParameterExpression value = Expression.Parameter(typeof(object), "value");
-        UnaryExpression instanceCast = (!IsValueType(propertyInfo.DeclaringType)) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
-        UnaryExpression valueCast = (!IsValueType(propertyInfo.PropertyType)) ? Expression.TypeAs(value, propertyInfo.PropertyType) : Expression.Convert(value, propertyInfo.PropertyType);
+        UnaryExpression instanceCast = !IsValueType(propertyInfo.DeclaringType) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
+        UnaryExpression valueCast = !IsValueType(propertyInfo.PropertyType) ? Expression.TypeAs(value, propertyInfo.PropertyType) : Expression.Convert(value, propertyInfo.PropertyType);
         Action<object, object> compiled = Expression.Lambda<Action<object, object>>(Expression.Call(instanceCast, setMethodInfo, valueCast), new ParameterExpression[] { instance, value }).Compile();
         return delegate (object source, object val) { compiled(source, val); };
     }
@@ -394,9 +386,9 @@ class ReflectionUtils
     public static BinaryExpression Assign(Expression left, Expression right)
     {
 #if SIMPLE_JSON_TYPEINFO
-            return Expression.Assign(left, right);
+        return Expression.Assign(left, right);
 #else
-        MethodInfo assign = typeof(Assigner<>).MakeGenericType(left.Type).GetMethod("Assign");
+        MethodInfo? assign = typeof(Assigner<>).MakeGenericType(left.Type).GetMethod("Assign");
         BinaryExpression assignExpr = Expression.Add(left, right, assign);
         return assignExpr;
 #endif
@@ -406,17 +398,16 @@ class ReflectionUtils
     {
         public static T Assign(ref T left, T right)
         {
-            return (left = right);
+            return left = right;
         }
     }
-
 #endif
 
     public sealed class ThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private readonly object _lock = new();
         private readonly ThreadSafeDictionaryValueFactory<TKey, TValue> _valueFactory;
-        private Dictionary<TKey, TValue>? _dictionary;
+        private Dictionary<TKey, TValue> _dictionary = new();
 
         public ThreadSafeDictionary(ThreadSafeDictionaryValueFactory<TKey, TValue> valueFactory)
         {
@@ -425,11 +416,6 @@ class ReflectionUtils
 
         private TValue Get(TKey key)
         {
-            if (_dictionary == null)
-            {
-                return AddValue(key);
-            }
-
             if (!_dictionary.TryGetValue(key, out var value))
             {
                 return AddValue(key);
@@ -443,26 +429,16 @@ class ReflectionUtils
             TValue value = _valueFactory(key);
             lock (_lock)
             {
-                if (_dictionary == null)
+                if (_dictionary.TryGetValue(key, out var val))
                 {
-                    _dictionary = new Dictionary<TKey, TValue>
-                    {
-                        [key] = value
-                    };
+                    return val;
                 }
-                else
-                {
-                    if (_dictionary.TryGetValue(key, out var val))
-                    {
-                        return val;
-                    }
 
-                    var dict = new Dictionary<TKey, TValue>(_dictionary)
-                    {
-                        [key] = value
-                    };
-                    _dictionary = dict;
-                }
+                var dict = new Dictionary<TKey, TValue>(_dictionary)
+                {
+                    [key] = value
+                };
+                _dictionary = dict;
             }
 
             return value;
@@ -475,7 +451,7 @@ class ReflectionUtils
 
         public bool ContainsKey(TKey key)
         {
-            return _dictionary?.ContainsKey(key) == true;
+            return _dictionary.ContainsKey(key);
         }
 
         public ICollection<TKey> Keys => _dictionary.Keys;
@@ -491,10 +467,7 @@ class ReflectionUtils
             return true;
         }
 
-        public ICollection<TValue> Values
-        {
-            get { return _dictionary.Values; }
-        }
+        public ICollection<TValue> Values => _dictionary.Values;
 
         public TValue this[TKey key]
         {

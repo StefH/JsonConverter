@@ -17,46 +17,44 @@
 // <website>https://github.com/facebook-csharp-sdk/simple-json</website>
 //-----------------------------------------------------------------------
 
-namespace SimpleJson.Tests
-{
+namespace SimpleJson.Tests;
 
 #if NUNIT
-    using TestClass = NUnit.Framework.TestFixtureAttribute;
-    using TestMethod = NUnit.Framework.TestAttribute;
-    using TestCleanup = NUnit.Framework.TearDownAttribute;
-    using TestInitialize = NUnit.Framework.SetUpAttribute;
-    using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
-    using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
-    using NUnit.Framework;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
+using NUnit.Framework;
 #else
 #if NETFX_CORE
-    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 #else
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 #endif
 #endif
 
-    using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
+using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
 
-    [TestClass]
-    public class EscapeToJavascriptStringTests
+[TestClass]
+public class EscapeToJavascriptStringTests
+{
+    [TestMethod]
+    public void BackSlash()
     {
-        [TestMethod]
-        public void BackSlash()
-        {
-            var serialized = SimpleJson.SerializeObject("c:\\haha.pl");
-            var result = SimpleJson.EscapeToJavascriptString(serialized);
+        var serialized = SimpleJson.SerializeObject("c:\\haha.pl")!;
+        var result = SimpleJson.EscapeToJavascriptString(serialized);
 
-            Assert.AreEqual("\"c:\\haha.pl\"", result);
-        }
+        Assert.AreEqual("\"c:\\haha.pl\"", result);
+    }
 
-        [TestMethod]
-        public void BackSlashWithT()
-        {
-            var serialized = SimpleJson.SerializeObject("c:\\taha.pl");
-            var result = SimpleJson.EscapeToJavascriptString(serialized);
+    [TestMethod]
+    public void BackSlashWithT()
+    {
+        var serialized = SimpleJson.SerializeObject("c:\\taha.pl")!;
+        var result = SimpleJson.EscapeToJavascriptString(serialized);
 
-            Assert.AreEqual("\"c:\\taha.pl\"", result);
-        }
+        Assert.AreEqual("\"c:\\taha.pl\"", result);
     }
 }

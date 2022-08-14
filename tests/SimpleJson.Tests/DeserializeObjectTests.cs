@@ -246,7 +246,7 @@ bye", pair.Key);
     {
         var json = @"[0372, 0xFA, 0XFA]";
 
-        var o = SimpleJson.DeserializeObject(json);
+        SimpleJson.DeserializeObject(json);
     }
 
     [TestMethod]
@@ -283,7 +283,7 @@ bye", pair.Key);
 #else
     [Ignore("not part of the json standard.")]
 #endif
-    public void ReadHexidecimalWithAllLetters()
+    public void ReadHexadecimalWithAllLetters()
     {
         string json = @"{""text"":0xabcdef12345}";
 
@@ -323,7 +323,7 @@ bye", pair.Key);
     public void DeserializeInvaildEscapedSurrogatePair()
     {
         string json = "\"\\uD867\\u0000 is Arabesque greenling(fish)\"";
-        var o = SimpleJson.DeserializeObject(json);
+        SimpleJson.DeserializeObject(json);
     }
 
     [TestMethod]
@@ -369,12 +369,12 @@ bye", pair.Key);
     public void DeserializeKnownJsonArrayType()
     {
         var json = "[{\"name\":\"road cycling\",\"value\":11},{\"name\":\"football\",\"value\":9}]";
-        var result = SimpleJson.DeserializeObject<JsonArray>(json);
+        var result = SimpleJson.DeserializeObject<JsonArray>(json)!;
 
         Assert.IsNotNull(result);
-        foreach (JsonObject hobby in result)
+        foreach (JsonObject? hobby in result)
         {
-            Assert.IsNotNull(hobby["name"]);
+            Assert.IsNotNull(hobby!["name"]);
             Assert.IsNotNull(hobby["value"]);
         }
     }
@@ -394,7 +394,7 @@ bye", pair.Key);
     public void DeserializeUriCorrectly()
     {
         var json = "{\"url\":\"https://github.com/shiftkey/simple-json/issues/1\"}";
-        var result = SimpleJson.DeserializeObject<ClassWithUri>(json);
+        var result = SimpleJson.DeserializeObject<ClassWithUri>(json)!;
 
         Assert.AreEqual(new Uri("https://github.com/shiftkey/simple-json/issues/1"), result.url);
     }
@@ -403,7 +403,7 @@ bye", pair.Key);
     public void DeserializeInvalidUriCorrectly()
     {
         var json = "{\"url\":\"this is a broken uri\"}";
-        var result = SimpleJson.DeserializeObject<ClassWithUri>(json);
+        var result = SimpleJson.DeserializeObject<ClassWithUri>(json)!;
 
         Assert.IsNull(result.url);
     }

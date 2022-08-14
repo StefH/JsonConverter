@@ -14,7 +14,7 @@ internal
 #else
 public
 #endif
-    class JsonArray : List<object>
+    class JsonArray : List<object?>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="JsonArray"/> class. 
