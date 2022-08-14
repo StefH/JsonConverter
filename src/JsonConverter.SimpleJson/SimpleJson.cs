@@ -76,11 +76,11 @@ namespace JsonConverter.SimpleJson;
 /// </summary>
 [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
-    internal
+internal
 #else
 public
 #endif
-    static class SimpleJson
+static class SimpleJson
 {
     private const int TOKEN_NONE = 0;
     private const int TOKEN_CURLY_OPEN = 1;
@@ -97,8 +97,8 @@ public
     private const int BUILDER_CAPACITY = 2000;
 
     private static readonly char[] EscapeTable;
-    private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-    private static readonly string EscapeCharactersString = new string(EscapeCharacters);
+    private static readonly char[] EscapeCharacters = { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
+    private static readonly string EscapeCharactersString = new(EscapeCharacters);
 
     static SimpleJson()
     {
@@ -119,9 +119,11 @@ public
     /// <returns>An IList&lt;object>, a IDictionary&lt;string,object>, a double, a string, null, true, or false</returns>
     public static object DeserializeObject(string json)
     {
-        object obj;
-        if (TryDeserializeObject(json, out obj))
+        if (TryDeserializeObject(json, out var obj))
+        {
             return obj;
+        }
+
         throw new SerializationException("Invalid JSON string");
     }
 
@@ -135,45 +137,46 @@ public
     /// The object.
     /// </param>
     /// <returns>
-    /// Returns true if successfull otherwise false.
+    /// Returns true if successful otherwise false.
     /// </returns>
-    [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Need to support .NET 2")]
-    public static bool TryDeserializeObject(string json, out object obj)
+    public static bool TryDeserializeObject(string? json, [NotNullWhen(true)] out object? obj)
     {
         bool success = true;
         if (json != null)
         {
-            char[] charArray = json.ToCharArray();
+            var charArray = json.ToCharArray();
             int index = 0;
             obj = ParseValue(charArray, ref index, ref success);
         }
         else
+        {
             obj = null;
+        }
 
         return success;
     }
 
-    public static object DeserializeObject(string json, Type type, IJsonSerializerStrategy jsonSerializerStrategy)
+    public static object? DeserializeObject(string json, Type? type, IJsonSerializerStrategy? jsonSerializerStrategy)
     {
-        object jsonObject = DeserializeObject(json);
+        var jsonObject = DeserializeObject(json);
         return type == null || jsonObject != null && ReflectionUtils.IsAssignableFrom(jsonObject.GetType(), type)
             ? jsonObject
             : (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
     }
 
-    public static object DeserializeObject(string json, Type type)
+    public static object? DeserializeObject(string json, Type type)
     {
         return DeserializeObject(json, type, null);
     }
 
-    public static T DeserializeObject<T>(string json, IJsonSerializerStrategy jsonSerializerStrategy)
+    public static T? DeserializeObject<T>(string json, IJsonSerializerStrategy jsonSerializerStrategy)
     {
-        return (T)DeserializeObject(json, typeof(T), jsonSerializerStrategy);
+        return (T?)DeserializeObject(json, typeof(T), jsonSerializerStrategy);
     }
 
-    public static T DeserializeObject<T>(string json)
+    public static T? DeserializeObject<T>(string json)
     {
-        return (T)DeserializeObject(json, typeof(T), null);
+        return (T?)DeserializeObject(json, typeof(T), null);
     }
 
     /// <summary>
@@ -252,10 +255,9 @@ public
         return sb.ToString();
     }
 
-    static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
+    private static IDictionary<string, object>? ParseObject(char[] json, ref int index, ref bool success)
     {
         IDictionary<string, object> table = new JsonObject();
-        int token;
 
         // {
         NextToken(json, ref index);
@@ -263,14 +265,17 @@ public
         bool done = false;
         while (!done)
         {
-            token = LookAhead(json, index);
+            var token = LookAhead(json, index);
             if (token == TOKEN_NONE)
             {
                 success = false;
                 return null;
             }
-            else if (token == TOKEN_COMMA)
+
+            if (token == TOKEN_COMMA)
+            {
                 NextToken(json, ref index);
+            }
             else if (token == TOKEN_CURLY_CLOSE)
             {
                 NextToken(json, ref index);
@@ -279,12 +284,13 @@ public
             else
             {
                 // name
-                string name = ParseString(json, ref index, ref success);
+                var name = ParseString(json, ref index, ref success);
                 if (!success)
                 {
                     success = false;
                     return null;
                 }
+
                 // :
                 token = NextToken(json, ref index);
                 if (token != TOKEN_COLON)
@@ -292,20 +298,21 @@ public
                     success = false;
                     return null;
                 }
+
                 // value
-                object value = ParseValue(json, ref index, ref success);
+                var value = ParseValue(json, ref index, ref success);
                 if (!success)
                 {
                     success = false;
                     return null;
                 }
-                table[name] = value;
+                table[name!] = value!;
             }
         }
         return table;
     }
 
-    static JsonArray ParseArray(char[] json, ref int index, ref bool success)
+    private static JsonArray? ParseArray(char[] json, ref int index, ref bool success)
     {
         JsonArray array = new JsonArray();
 
@@ -321,8 +328,11 @@ public
                 success = false;
                 return null;
             }
-            else if (token == TOKEN_COMMA)
+
+            if (token == TOKEN_COMMA)
+            {
                 NextToken(json, ref index);
+            }
             else if (token == TOKEN_SQUARED_CLOSE)
             {
                 NextToken(json, ref index);
@@ -330,16 +340,19 @@ public
             }
             else
             {
-                object value = ParseValue(json, ref index, ref success);
+                var value = ParseValue(json, ref index, ref success);
                 if (!success)
+                {
                     return null;
-                array.Add(value);
+                }
+
+                array.Add(value!);
             }
         }
         return array;
     }
 
-    static object ParseValue(char[] json, ref int index, ref bool success)
+    private static object? ParseValue(char[] json, ref int index, ref bool success)
     {
         switch (LookAhead(json, index))
         {
@@ -367,20 +380,21 @@ public
         return null;
     }
 
-    static string ParseString(char[] json, ref int index, ref bool success)
+    private static string? ParseString(char[] json, ref int index, ref bool success)
     {
-        StringBuilder s = new StringBuilder(BUILDER_CAPACITY);
-        char c;
+        var s = new StringBuilder(BUILDER_CAPACITY);
 
         EatWhitespace(json, ref index);
 
         // "
-        c = json[index++];
+        var c = json[index++];
         bool complete = false;
         while (!complete)
         {
             if (index == json.Length)
+            {
                 break;
+            }
 
             c = json[index++];
             if (c == '"')
@@ -388,7 +402,8 @@ public
                 complete = true;
                 break;
             }
-            else if (c == '\\')
+
+            if (c == '\\')
             {
                 if (index == json.Length)
                     break;
@@ -415,8 +430,7 @@ public
                     if (remainingLength >= 4)
                     {
                         // parse the 32 bit hex into an integer codepoint
-                        uint codePoint;
-                        if (!(success = UInt32.TryParse(new string(json, index, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codePoint)))
+                        if (!(success = UInt32.TryParse(new string(json, index, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var codePoint)))
                             return "";
 
                         // convert the integer codepoint to a unicode char and add to string
@@ -426,10 +440,9 @@ public
                             remainingLength = json.Length - index;
                             if (remainingLength >= 6)
                             {
-                                uint lowCodePoint;
-                                if (new string(json, index, 2) == "\\u" && UInt32.TryParse(new string(json, index + 2, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out lowCodePoint))
+                                if (new string(json, index, 2) == "\\u" && UInt32.TryParse(new string(json, index + 2, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var lowCodePoint))
                                 {
-                                    if (0xDC00 <= lowCodePoint && lowCodePoint <= 0xDFFF)    // if low surrogate
+                                    if (0xDC00 <= lowCodePoint && lowCodePoint <= 0xDFFF) // if low surrogate
                                     {
                                         s.Append((char)codePoint);
                                         s.Append((char)lowCodePoint);
@@ -452,11 +465,13 @@ public
             else
                 s.Append(c);
         }
+
         if (!complete)
         {
             success = false;
             return null;
         }
+
         return s.ToString();
     }
 
@@ -470,7 +485,7 @@ public
         if (utf32 < 0x10000)
             return new string((char)utf32, 1);
         utf32 -= 0x10000;
-        return new string(new char[] { (char)((utf32 >> 10) + 0xD800), (char)(utf32 % 0x0400 + 0xDC00) });
+        return new string(new[] { (char)((utf32 >> 10) + 0xD800), (char)(utf32 % 0x0400 + 0xDC00) });
     }
 
     static object ParseNumber(char[] json, ref int index, ref bool success)
@@ -479,19 +494,19 @@ public
         int lastIndex = GetLastIndexOfNumber(json, index);
         int charLength = lastIndex - index + 1;
         object returnNumber;
+
         string str = new string(json, index, charLength);
         if (str.IndexOf(".", StringComparison.OrdinalIgnoreCase) != -1 || str.IndexOf("e", StringComparison.OrdinalIgnoreCase) != -1)
         {
-            double number;
-            success = double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
+            success = double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out var number);
             returnNumber = number;
         }
         else
         {
-            long number;
-            success = long.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
+            success = long.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out var number);
             returnNumber = number;
         }
+
         index = lastIndex + 1;
         return returnNumber;
     }
@@ -516,12 +531,15 @@ public
         return NextToken(json, ref saveIndex);
     }
 
-    [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
     static int NextToken(char[] json, ref int index)
     {
         EatWhitespace(json, ref index);
+
         if (index == json.Length)
+        {
             return TOKEN_NONE;
+        }
+
         char c = json[index];
         index++;
         switch (c)
@@ -553,8 +571,10 @@ public
             case ':':
                 return TOKEN_COLON;
         }
+
         index--;
         int remainingLength = json.Length - index;
+
         // false
         if (remainingLength >= 5)
         {
@@ -564,6 +584,7 @@ public
                 return TOKEN_FALSE;
             }
         }
+
         // true
         if (remainingLength >= 4)
         {
@@ -573,6 +594,7 @@ public
                 return TOKEN_TRUE;
             }
         }
+
         // null
         if (remainingLength >= 4)
         {
@@ -585,43 +607,50 @@ public
         return TOKEN_NONE;
     }
 
-    static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object value, StringBuilder builder)
+    static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object? value, StringBuilder builder)
     {
         bool success = true;
-        string stringValue = value as string;
-        if (stringValue != null)
+        if (value is string stringValue)
+        {
             success = SerializeString(stringValue, builder);
+        }
         else
         {
-            IDictionary<string, object> dict = value as IDictionary<string, object>;
-            if (dict != null)
+            if (value is IDictionary<string, object> dict)
             {
                 success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
             }
             else
             {
-                IDictionary<string, string> stringDictionary = value as IDictionary<string, string>;
-                if (stringDictionary != null)
+                if (value is IDictionary<string, string> stringDictionary)
                 {
                     success = SerializeObject(jsonSerializerStrategy, stringDictionary.Keys, stringDictionary.Values, builder);
                 }
                 else
                 {
-                    IEnumerable enumerableValue = value as IEnumerable;
-                    if (enumerableValue != null)
+                    if (value is IEnumerable enumerableValue)
+                    {
                         success = SerializeArray(jsonSerializerStrategy, enumerableValue, builder);
+                    }
                     else if (IsNumeric(value))
+                    {
                         success = SerializeNumber(value, builder);
-                    else if (value is bool)
-                        builder.Append((bool)value ? "true" : "false");
+                    }
+                    else if (value is bool boolValue)
+                    {
+                        builder.Append(boolValue ? "true" : "false");
+                    }
                     else if (value == null)
+                    {
                         builder.Append("null");
+                    }
                     else
                     {
-                        object serializedObject;
-                        success = jsonSerializerStrategy.TrySerializeNonPrimitiveObject(value, out serializedObject);
+                        success = jsonSerializerStrategy.TrySerializeNonPrimitiveObject(value, out var serializedObject);
                         if (success)
+                        {
                             SerializeValue(jsonSerializerStrategy, serializedObject, builder);
+                        }
                     }
                 }
             }
@@ -637,18 +666,21 @@ public
         bool first = true;
         while (ke.MoveNext() && ve.MoveNext())
         {
-            object key = ke.Current;
-            object value = ve.Current;
+            var key = ke.Current;
+            var value = ve.Current;
             if (!first)
                 builder.Append(",");
-            string stringKey = key as string;
-            if (stringKey != null)
+            if (key is string stringKey)
+            {
                 SerializeString(stringKey, builder);
+            }
             else
             if (!SerializeValue(jsonSerializerStrategy, value, builder)) return false;
             builder.Append(":");
             if (!SerializeValue(jsonSerializerStrategy, value, builder))
+            {
                 return false;
+            }
             first = false;
         }
         builder.Append("}");
@@ -720,22 +752,39 @@ public
         return true;
     }
 
-    static bool SerializeNumber(object number, StringBuilder builder)
+    static bool SerializeNumber(object? number, StringBuilder builder)
     {
-        if (number is long)
-            builder.Append(((long)number).ToString(CultureInfo.InvariantCulture));
-        else if (number is ulong)
-            builder.Append(((ulong)number).ToString(CultureInfo.InvariantCulture));
-        else if (number is int)
-            builder.Append(((int)number).ToString(CultureInfo.InvariantCulture));
-        else if (number is uint)
-            builder.Append(((uint)number).ToString(CultureInfo.InvariantCulture));
-        else if (number is decimal)
-            builder.Append(((decimal)number).ToString(CultureInfo.InvariantCulture));
-        else if (number is float)
-            builder.Append(((float)number).ToString(CultureInfo.InvariantCulture));
-        else
-            builder.Append(Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
+        switch (number)
+        {
+            case long l:
+                builder.Append(l.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            case ulong ul:
+                builder.Append(ul.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            case int i:
+                builder.Append(i.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            case uint ui:
+                builder.Append(ui.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            case decimal d:
+                builder.Append(d.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            case float f:
+                builder.Append(f.ToString(CultureInfo.InvariantCulture));
+                break;
+
+            default:
+                builder.Append(Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
+                break;
+        }
+
         return true;
     }
 
@@ -743,23 +792,29 @@ public
     /// Determines if a given object is numeric in any way
     /// (can be integer, double, null, etc).
     /// </summary>
-    static bool IsNumeric(object value)
+    static bool IsNumeric(object? value)
     {
-        if (value is sbyte) return true;
-        if (value is byte) return true;
-        if (value is short) return true;
-        if (value is ushort) return true;
-        if (value is int) return true;
-        if (value is uint) return true;
-        if (value is long) return true;
-        if (value is ulong) return true;
-        if (value is float) return true;
-        if (value is double) return true;
-        if (value is decimal) return true;
-        return false;
+        switch (value)
+        {
+            case sbyte:
+            case byte:
+            case short:
+            case ushort:
+            case int:
+            case uint:
+            case long:
+            case ulong:
+            case float:
+            case double:
+            case decimal:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
-    private static IJsonSerializerStrategy _currentJsonSerializerStrategy;
+    private static IJsonSerializerStrategy? _currentJsonSerializerStrategy;
     public static IJsonSerializerStrategy CurrentJsonSerializerStrategy
     {
         get
@@ -780,26 +835,14 @@ public
         }
     }
 
-    private static PocoJsonSerializerStrategy _pocoJsonSerializerStrategy;
-    
+    private static PocoJsonSerializerStrategy? _pocoJsonSerializerStrategy;
+
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public static PocoJsonSerializerStrategy PocoJsonSerializerStrategy
-    {
-        get
-        {
-            return _pocoJsonSerializerStrategy ?? (_pocoJsonSerializerStrategy = new PocoJsonSerializerStrategy());
-        }
-    }
+    public static PocoJsonSerializerStrategy PocoJsonSerializerStrategy => _pocoJsonSerializerStrategy ??= new PocoJsonSerializerStrategy();
 
 #if SIMPLE_JSON_DATACONTRACT
-    private static DataContractJsonSerializerStrategy _dataContractJsonSerializerStrategy;
-    [System.ComponentModel.EditorBrowsable(EditorBrowsableState.Advanced)]
-    public static DataContractJsonSerializerStrategy DataContractJsonSerializerStrategy
-    {
-        get
-        {
-            return _dataContractJsonSerializerStrategy ?? (_dataContractJsonSerializerStrategy = new DataContractJsonSerializerStrategy());
-        }
-    }
+    private static DataContractJsonSerializerStrategy? _dataContractJsonSerializerStrategy;
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public static DataContractJsonSerializerStrategy DataContractJsonSerializerStrategy => _dataContractJsonSerializerStrategy ??= new DataContractJsonSerializerStrategy();
 #endif
 }

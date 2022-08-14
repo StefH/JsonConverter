@@ -1,24 +1,34 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net45;netstandard1.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net35;net40;netstandard1.0;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
         <Description>Implementation for IJsonConverter using SimpleJson</Description>
+        <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-        <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_DYNAMIC;SIMPLE_JSON_READONLY_COLLECTIONS</DefineConstants>
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
+        <DefineConstants>$(DefineConstants);</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
+        <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT;SIMPLE_JSON_DYNAMIC</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
         <DefineConstants>$(DefineConstants);SIMPLE_JSON_TYPEINFO;SIMPLE_JSON_NO_LINQ_EXPRESSION</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+        <DefineConstants>$(DefineConstants);SIMPLE_JSON_TYPEINFO</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.3'">
       <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
+      <Compile Include="..\JsonConverter.Newtonsoft.Json\Compatibility\StringExtensions.cs" Link="Compatibility\StringExtensions.cs" />
       <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
     </ItemGroup>
 
@@ -33,6 +43,18 @@
 
     <ItemGroup>
       <Folder Include="Extensions\" />
+      <Folder Include="Compatibility\" />
     </ItemGroup>
+
+    <!-- https://www.meziantou.net/declaring-internalsvisibleto-in-the-csproj.htm -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>SimpleJson.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
 
 </Project>

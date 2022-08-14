@@ -43,11 +43,6 @@ public class JsonConverter : IJsonConverter
         return IsValidJson(await stream.ReadAsStringAsync().ConfigureAwait(false));
     }
 
-    public Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(IsValidJson(input));
-    }
-
     public bool IsValidJson(Stream stream)
     {
         Guard.NotNull(stream);
