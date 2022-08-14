@@ -10,7 +10,7 @@ namespace JsonConverter.SimpleJson;
 [GeneratedCode("simple-json", "1.0.0")]
 [EditorBrowsable(EditorBrowsableState.Never)]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
-    internal
+internal
 #else
 public
 #endif

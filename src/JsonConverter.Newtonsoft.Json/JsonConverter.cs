@@ -43,11 +43,6 @@ public class JsonConverter : IJsonConverter
         return Task.FromResult(Deserialize<T>(stream, options));
     }
 
-    public Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(IsValidJson(input));
-    }
-
     public string Serialize<T>(T source, IJsonConverterOptions? options = null)
     {
         return options != null ?

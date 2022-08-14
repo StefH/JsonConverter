@@ -16,8 +16,6 @@ public interface IJsonConverter
 
     Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default);
 
-    Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default);
-
     bool IsValidJson(Stream stream);
 
     bool IsValidJson(string input);

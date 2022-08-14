@@ -76,11 +76,11 @@ namespace JsonConverter.SimpleJson;
 /// </summary>
 [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
-    internal
+internal
 #else
 public
 #endif
-    static class SimpleJson
+static class SimpleJson
 {
     private const int TOKEN_NONE = 0;
     private const int TOKEN_CURLY_OPEN = 1;
@@ -97,8 +97,8 @@ public
     private const int BUILDER_CAPACITY = 2000;
 
     private static readonly char[] EscapeTable;
-    private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-    private static readonly string EscapeCharactersString = new string(EscapeCharacters);
+    private static readonly char[] EscapeCharacters = { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
+    private static readonly string EscapeCharactersString = new(EscapeCharacters);
 
     static SimpleJson()
     {
