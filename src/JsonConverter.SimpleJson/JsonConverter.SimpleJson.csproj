@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net45;netstandard1.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net45;netstandard1.0;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
         <Description>Implementation for IJsonConverter using SimpleJson</Description>
         <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT</DefineConstants>
     </PropertyGroup>
@@ -14,7 +14,11 @@
         <DefineConstants>$(DefineConstants);SIMPLE_JSON_TYPEINFO;SIMPLE_JSON_NO_LINQ_EXPRESSION</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+        <DefineConstants>$(DefineConstants);SIMPLE_JSON_TYPEINFO</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.3'">
       <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
     </ItemGroup>
 

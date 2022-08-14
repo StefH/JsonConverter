@@ -71,7 +71,7 @@ public class JsonConverter : IJsonConverter
 
     public bool IsValidJson(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
+        if (input.IsNullOrWhiteSpace())
         {
             return false;
         }
