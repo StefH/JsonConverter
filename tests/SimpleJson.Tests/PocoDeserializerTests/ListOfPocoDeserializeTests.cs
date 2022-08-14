@@ -20,61 +20,66 @@
 
 using System.Collections.Generic;
 
-namespace SimpleJson.Tests.PocoDeserializerTests
-{
+namespace SimpleJson.Tests.PocoDeserializerTests;
+
 #if NUNIT
-    using TestClass = NUnit.Framework.TestFixtureAttribute;
-    using TestMethod = NUnit.Framework.TestAttribute;
-    using TestCleanup = NUnit.Framework.TearDownAttribute;
-    using TestInitialize = NUnit.Framework.SetUpAttribute;
-    using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
-    using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
-    using NUnit.Framework;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
+using NUnit.Framework;
 #else
 #if NETFX_CORE
-    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 #else
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 #endif
 #endif
 
-    using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
+using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
 
-    public class ListOfPocoDeserializeTests
+public class ListOfPocoDeserializeTests
+{
+
+    [TestMethod]
+    public void CorrectlyDeserializesListOfPoco()
     {
+        string json = "{\"colleges\":[{\"id\": 16777217,\"value\":\"Harvard\"},{\"id\": 16777218,\"value\":\"Columbia\"}]}";
 
-        [TestMethod]
-        public void CorrectlyDeserializesListOfPoco()
-        {
-            string json = "{\"colleges\":[{\"id\": 16777217,\"value\":\"Harvard\"},{\"id\": 16777218,\"value\":\"Columbia\"}]}";
+        var result = SimpleJson.DeserializeObject<autocomplete_data>(json);
 
-            var result = SimpleJson.DeserializeObject<autocomplete_data>(json);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.colleges);
+        Assert.AreEqual(2, result.colleges.Count);
 
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.colleges);
-            Assert.AreEqual(2, result.colleges.Count);
+        var harvard = result.colleges[0];
+        var columbia = result.colleges[1];
 
-            var harvard = result.colleges[0];
-            var columbia = result.colleges[1];
+        Assert.IsNotNull(harvard);
+        Assert.AreEqual(16777217, harvard.id);
+        Assert.AreEqual("Harvard", harvard.value);
+        Assert.IsNotNull(columbia);
+        Assert.AreEqual(16777218, columbia.id);
+        Assert.AreEqual("Columbia", columbia.value);
+    }
 
-            Assert.IsNotNull(harvard);
-            Assert.AreEqual(16777217, harvard.id);
-            Assert.AreEqual("Harvard", harvard.value);
-            Assert.IsNotNull(columbia);
-            Assert.AreEqual(16777218, columbia.id);
-            Assert.AreEqual("Columbia", columbia.value);
-        }
+    // ReSharper disable once InconsistentNaming
+    class autocomplete_data
+    {
+        // ReSharper disable once InconsistentNaming
+        public List<college> colleges { get; set; }
+    }
 
-        class autocomplete_data
-        {
-            public List<college> colleges { get; set; }
-        }
 
-        class college
-        {
-            public long id { get; set; }
+    // ReSharper disable once InconsistentNaming
+    class college
+    {
+        // ReSharper disable once InconsistentNaming
+        public long id { get; set; }
 
-            public string value { get; set; }
-        }
+        // ReSharper disable once InconsistentNaming
+        public string value { get; set; }
     }
 }

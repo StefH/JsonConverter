@@ -102,17 +102,17 @@ namespace SimpleJson.Tests
         [TestMethod]
         public void StringSerialization()
         {
-            string str = "I am a string";
+            var str = "I am a string";
             Assert.AreEqual(@"""I am a string""", SimpleJson.SerializeObject(str));
         }
 
         [TestMethod]
         public void StringEscpaingSerialization()
         {
-            string v = @"It's a good day
+            var v = @"It's a good day
 ""sunshine""";
 
-            string json = SimpleJson.SerializeObject(v);
+            var json = SimpleJson.SerializeObject(v);
             Assert.AreEqual(@"""It's a good day\r\n\""sunshine\""""", json);
         }
 
@@ -336,7 +336,7 @@ namespace SimpleJson.Tests
         [TestMethod]
         public void SerializeDictionaryStringObjectTests()
         {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            var parameters = new Dictionary<string, object>();
             parameters["caption"] = string.Empty;
             parameters["description"] = "hello world";
             parameters["link"] = "http://google.com";
@@ -349,7 +349,7 @@ namespace SimpleJson.Tests
         [TestMethod]
         public void SerializeDictionaryStringStringTests()
         {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            var parameters = new Dictionary<string, string>();
             parameters["caption"] = string.Empty;
             parameters["description"] = "hello world";
             parameters["link"] = "http://google.com";
@@ -362,8 +362,8 @@ namespace SimpleJson.Tests
         [TestMethod]
         public void SerializeSurrogatePair()
         {
-            string str = "𩸽 is Arabesque greenling(fish) in japanese";
-            string json = SimpleJson.SerializeObject(str);
+            var str = "𩸽 is Arabesque greenling(fish) in japanese";
+            var json = SimpleJson.SerializeObject(str);
 
             Assert.AreEqual("\"𩸽 is Arabesque greenling(fish) in japanese\"", json);
         }
@@ -372,7 +372,7 @@ namespace SimpleJson.Tests
         public void SerializeDoubleQuotesCorrectly()
         {
             var obj = new { message = "Hi \"Prabir\"" };
-            string json = SimpleJson.SerializeObject(obj);
+            var json = SimpleJson.SerializeObject(obj);
 
             Assert.AreEqual("{\"message\":\"Hi \\\"Prabir\\\"\"}", json);
         }
@@ -380,7 +380,7 @@ namespace SimpleJson.Tests
         [TestMethod]
         public void SerializeBigNumberCorrectly()
         {
-            string json = SimpleJson.SerializeObject(new { object_id = 10150098461530576 });
+            var json = SimpleJson.SerializeObject(new { object_id = 10150098461530576 });
 
             Assert.AreEqual("{\"object_id\":10150098461530576}", json);
         }
@@ -391,7 +391,7 @@ namespace SimpleJson.Tests
             var obj = new Dictionary<string, object>();
             int? value = 3;
             obj["value"] = value;
-            string json = SimpleJson.SerializeObject(obj);
+            var json = SimpleJson.SerializeObject(obj);
 
             Assert.AreEqual("{\"value\":3}", json);
         }
@@ -402,7 +402,7 @@ namespace SimpleJson.Tests
             var obj = new Dictionary<string, object>();
             int? value = null;
             obj["value"] = value;
-            string json = SimpleJson.SerializeObject(obj);
+            var json = SimpleJson.SerializeObject(obj);
 
             Assert.AreEqual("{\"value\":null}", json);
         }

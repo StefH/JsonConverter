@@ -17,108 +17,105 @@
 // <website>https://github.com/facebook-csharp-sdk/simple-json</website>
 //-----------------------------------------------------------------------
 
-namespace SimpleJson.Tests.PocoDeserializerTests
-{
-    using System;
+namespace SimpleJson.Tests.PocoDeserializerTests;
+
+using System;
 
 #if NUNIT
-    using TestClass = NUnit.Framework.TestFixtureAttribute;
-    using TestMethod = NUnit.Framework.TestAttribute;
-    using TestCleanup = NUnit.Framework.TearDownAttribute;
-    using TestInitialize = NUnit.Framework.SetUpAttribute;
-    using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
-    using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
-    using NUnit.Framework;
+using TestClass = NUnit.Framework.TestFixtureAttribute;
+using TestMethod = NUnit.Framework.TestAttribute;
+using TestCleanup = NUnit.Framework.TearDownAttribute;
+using TestInitialize = NUnit.Framework.SetUpAttribute;
+using ClassCleanup = NUnit.Framework.TestFixtureAttribute;
+using ClassInitialize = NUnit.Framework.TestFixtureAttribute;
+using NUnit.Framework;
 #else
 #if NETFX_CORE
-    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 #else
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 #endif
 #endif
 
-    using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
+using SimpleJson = JsonConverter.SimpleJson.SimpleJson;
 
-    [TestClass]
-    public class DateTimeDeserializeTests
+[TestClass]
+public class DateTimeDeserializeTests
+{
+    [TestMethod]
+    public void Test()
     {
-        [TestMethod]
-        public void Test()
-        {
-            var json = "\"2004-01-20T05:03:06Z\"";
+        var json = "\"2004-01-20T05:03:06Z\"";
 
-            var result = SimpleJson.DeserializeObject<DateTime>(json);
-            Assert.AreEqual(2004, result.Year);
-            Assert.AreEqual(1, result.Month);
-            Assert.AreEqual(20, result.Day);
-            Assert.AreEqual(5, result.Hour);
-            Assert.AreEqual(3, result.Minute);
-            Assert.AreEqual(6, result.Second);
-            Assert.AreEqual(0, result.Millisecond);
-            Assert.AreEqual(DateTimeKind.Utc, result.Kind);
-        }
-
-        [TestMethod]
-        public void TestWithoutMilisecond()
-        {
-            var json = "{\"Value\":\"2004-01-20T05:03:06Z\"}";
-
-            var result = SimpleJson.DeserializeObject<SerializeDateTimeTypeClass>(json).Value;
-            Assert.AreEqual(2004, result.Year);
-            Assert.AreEqual(1, result.Month);
-            Assert.AreEqual(20, result.Day);
-            Assert.AreEqual(5, result.Hour);
-            Assert.AreEqual(3, result.Minute);
-            Assert.AreEqual(6, result.Second);
-            Assert.AreEqual(0, result.Millisecond);
-            Assert.AreEqual(DateTimeKind.Utc, result.Kind);
-        }
-
-        [TestMethod]
-        public void TestWithMilliSecond()
-        {
-            var json = "{\"Value\":\"2004-01-20T05:03:06.012Z\"}";
-
-            var result = SimpleJson.DeserializeObject<SerializeDateTimeTypeClass>(json).Value;
-            Assert.AreEqual(2004, result.Year);
-            Assert.AreEqual(1, result.Month);
-            Assert.AreEqual(20, result.Day);
-            Assert.AreEqual(5, result.Hour);
-            Assert.AreEqual(3, result.Minute);
-            Assert.AreEqual(6, result.Second);
-            Assert.AreEqual(12, result.Millisecond);
-            Assert.AreEqual(DateTimeKind.Utc, result.Kind);
-        }
-
-        public class SerializeDateTimeTypeClass
-        {
-            public DateTime Value { get; set; }
-        }
-
-     
+        var result = SimpleJson.DeserializeObject<DateTime>(json);
+        Assert.AreEqual(2004, result.Year);
+        Assert.AreEqual(1, result.Month);
+        Assert.AreEqual(20, result.Day);
+        Assert.AreEqual(5, result.Hour);
+        Assert.AreEqual(3, result.Minute);
+        Assert.AreEqual(6, result.Second);
+        Assert.AreEqual(0, result.Millisecond);
+        Assert.AreEqual(DateTimeKind.Utc, result.Kind);
     }
 
-    public class DateOffsetTimeDeserializeTests
+    [TestMethod]
+    public void TestWithoutMilisecond()
     {
-        [TestMethod]
-        public void TestWithMilliSecond()
-        {
-            var json = "{\"Value\":\"2004-01-20T05:03:06.012Z\"}";
+        var json = "{\"Value\":\"2004-01-20T05:03:06Z\"}";
 
-            var result = SimpleJson.DeserializeObject<SerializeDateTimeOffsetTypeClass>(json).Value;
-            Assert.AreEqual(2004, result.Year);
-            Assert.AreEqual(1, result.Month);
-            Assert.AreEqual(20, result.Day);
-            Assert.AreEqual(5, result.Hour);
-            Assert.AreEqual(3, result.Minute);
-            Assert.AreEqual(6, result.Second);
-            Assert.AreEqual(12, result.Millisecond);
-            Assert.AreEqual(TimeSpan.Zero, result.Offset);
-        }
+        var result = SimpleJson.DeserializeObject<SerializeDateTimeTypeClass>(json)!.Value;
+        Assert.AreEqual(2004, result.Year);
+        Assert.AreEqual(1, result.Month);
+        Assert.AreEqual(20, result.Day);
+        Assert.AreEqual(5, result.Hour);
+        Assert.AreEqual(3, result.Minute);
+        Assert.AreEqual(6, result.Second);
+        Assert.AreEqual(0, result.Millisecond);
+        Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+    }
 
-        public class SerializeDateTimeOffsetTypeClass
-        {
-            public DateTimeOffset Value { get; set; }
-        }
+    [TestMethod]
+    public void TestWithMilliSecond()
+    {
+        var json = "{\"Value\":\"2004-01-20T05:03:06.012Z\"}";
+
+        var result = SimpleJson.DeserializeObject<SerializeDateTimeTypeClass>(json)!.Value;
+        Assert.AreEqual(2004, result.Year);
+        Assert.AreEqual(1, result.Month);
+        Assert.AreEqual(20, result.Day);
+        Assert.AreEqual(5, result.Hour);
+        Assert.AreEqual(3, result.Minute);
+        Assert.AreEqual(6, result.Second);
+        Assert.AreEqual(12, result.Millisecond);
+        Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+    }
+
+    public class SerializeDateTimeTypeClass
+    {
+        public DateTime Value { get; set; }
+    }
+}
+
+public class DateOffsetTimeDeserializeTests
+{
+    [TestMethod]
+    public void TestWithMillisecond()
+    {
+        var json = "{\"Value\":\"2004-01-20T05:03:06.012Z\"}";
+
+        var result = SimpleJson.DeserializeObject<SerializeDateTimeOffsetTypeClass>(json)!.Value;
+        Assert.AreEqual(2004, result.Year);
+        Assert.AreEqual(1, result.Month);
+        Assert.AreEqual(20, result.Day);
+        Assert.AreEqual(5, result.Hour);
+        Assert.AreEqual(3, result.Minute);
+        Assert.AreEqual(6, result.Second);
+        Assert.AreEqual(12, result.Millisecond);
+        Assert.AreEqual(TimeSpan.Zero, result.Offset);
+    }
+
+    public class SerializeDateTimeOffsetTypeClass
+    {
+        public DateTimeOffset Value { get; set; }
     }
 }
