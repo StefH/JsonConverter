@@ -5,6 +5,11 @@
         <Description>Implementation for IJsonConverter using Newtonsoft.Json</Description>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
     </ItemGroup>

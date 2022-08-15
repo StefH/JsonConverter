@@ -6,6 +6,11 @@
         <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
         <DefineConstants>$(DefineConstants);</DefineConstants>
     </PropertyGroup>

@@ -5,6 +5,11 @@
         <Description>Implementation for IJsonConverter using System.Text.Json</Description>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <Compile Remove="Extensions\ServiceCollectionExtensions.cs" />
     </ItemGroup>

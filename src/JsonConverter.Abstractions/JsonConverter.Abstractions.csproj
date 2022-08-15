@@ -5,4 +5,9 @@
         <Description>Common interface for Json converters (serialize and deserialize)</Description>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
 </Project>
