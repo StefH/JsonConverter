@@ -33,7 +33,7 @@ public partial class JsonConverter : IJsonConverter
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
-    public string Serialize<T>(T source, IJsonConverterOptions? options = null)
+    public string Serialize(object source, IJsonConverterOptions? options = null)
     {
         return options != null ?
             JsonConvert.SerializeObject(source, ConvertOptions(options)) :

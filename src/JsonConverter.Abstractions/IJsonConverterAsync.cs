@@ -7,7 +7,7 @@ public partial interface IJsonConverter
 
     Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default);
 
-    Task<string> SerializeAsync<T>(T source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default);
+    Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default);
 
     Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default);
 }

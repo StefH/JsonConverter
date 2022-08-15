@@ -16,7 +16,7 @@ public partial class JsonConverter
         return Task.FromResult(Deserialize<T>(stream, options));
     }
 
-    public Task<string> SerializeAsync<T>(T source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Serialize(source, options));
     }

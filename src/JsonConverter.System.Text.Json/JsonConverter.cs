@@ -74,12 +74,12 @@ public class JsonConverter : IJsonConverter
         }
     }
 
-    public string Serialize<T>(T source, IJsonConverterOptions? options)
+    public string Serialize(object source, IJsonConverterOptions? options)
     {
         return JsonSerializer.Serialize(source, ConvertOptions(options));
     }
 
-    public async Task<string> SerializeAsync<T>(T source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public async Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         using var stream = new MemoryStream();
         await JsonSerializer.SerializeAsync(stream, source, options == null ? null : ConvertOptions(options), cancellationToken);
