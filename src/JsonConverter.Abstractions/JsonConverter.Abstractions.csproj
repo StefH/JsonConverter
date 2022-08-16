@@ -3,9 +3,6 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard1.0;net461;net45;net40;net35</TargetFrameworks>
         <Description>Common interface for Json converters (serialize and deserialize)</Description>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
