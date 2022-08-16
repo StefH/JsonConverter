@@ -5,9 +5,9 @@ using NetJson = NetJSON.NetJSON;
 
 namespace JsonConverter.NetJSON;
 
-public partial class JsonConverter : IJsonConverter
+public partial class NetJSONConverter : IJsonConverter
 {
-    public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanRead);
@@ -19,14 +19,14 @@ public partial class JsonConverter : IJsonConverter
             : NetJson.Deserialize<T>(streamReader, ConvertOptions(options));
     }
 
-    public T? Deserialize<T>(string text, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return options == null
             ? NetJson.Deserialize<T>(text)
             : NetJson.Deserialize<T>(text, ConvertOptions(options));
     }
 
-    public string Serialize(object source, IJsonConverterOptions? options = null)
+    public string Serialize(object source, JsonConverterOptions? options = null)
     {
         return options != null ?
             NetJson.Serialize(source, ConvertOptions(options)) :
@@ -64,7 +64,7 @@ public partial class JsonConverter : IJsonConverter
         }
     }
 
-    private static NetJSONSettings ConvertOptions(IJsonConverterOptions options)
+    private static NetJSONSettings ConvertOptions(JsonConverterOptions options)
     {
         return new NetJSONSettings
         {

@@ -4,19 +4,19 @@ using Stef.Validation;
 
 namespace JsonConverter.SimpleJson;
 
-public partial class JsonConverter
+public partial class SimpleJsonConverter
 {
-    public Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public Task<T?> DeserializeAsync<T>(string text, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Deserialize<T>(text, options));
     }
 
-    public Task<T?> DeserializeAsync<T>(Stream stream, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Deserialize<T>(stream, options));
     }
 
-    public Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public Task<string> SerializeAsync(object source, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Serialize(source, options));
     }

@@ -3,9 +3,9 @@ using Stef.Validation;
 
 namespace JsonConverter.SimpleJson;
 
-public partial class JsonConverter : IJsonConverter
+public partial class SimpleJsonConverter : IJsonConverter
 {
-    public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanRead);
@@ -16,12 +16,12 @@ public partial class JsonConverter : IJsonConverter
         return SimpleJson.DeserializeObject<T?>(text);
     }
 
-    public T? Deserialize<T>(string text, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return SimpleJson.DeserializeObject<T?>(text);
     }
 
-    public string Serialize(object source, IJsonConverterOptions? options = null)
+    public string Serialize(object source, JsonConverterOptions? options = null)
     {
         return SimpleJson.SerializeObject(source!) ?? string.Empty;
     }
