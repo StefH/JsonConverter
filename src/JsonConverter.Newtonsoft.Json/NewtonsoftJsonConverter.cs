@@ -5,9 +5,9 @@ using Stef.Validation;
 
 namespace JsonConverter.Newtonsoft.Json;
 
-public partial class JsonConverter : IJsonConverter
+public partial class NewtonsoftJsonConverter : IJsonConverter
 {
-    public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanRead);
@@ -26,14 +26,14 @@ public partial class JsonConverter : IJsonConverter
         return jsonSerializer.Deserialize<T>(jsonTextReader);
     }
 
-    public T? Deserialize<T>(string text, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return options == null
             ? JsonConvert.DeserializeObject<T>(text)
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
-    public string Serialize(object source, IJsonConverterOptions? options = null)
+    public string Serialize(object source, JsonConverterOptions? options = null)
     {
         return options != null ?
             JsonConvert.SerializeObject(source, ConvertOptions(options)) :
@@ -71,7 +71,7 @@ public partial class JsonConverter : IJsonConverter
         }
     }
 
-    private static JsonSerializerSettings ConvertOptions(IJsonConverterOptions options)
+    private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
     {
         return new JsonSerializerSettings
         {

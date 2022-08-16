@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <VersionPrefix>0.0.3</VersionPrefix>
+        <VersionPrefix>0.1.0</VersionPrefix>
         <PackageProjectUrl>https://github.com/StefH/JsonConverter</PackageProjectUrl>
         <ProjectUrl>https://github.com/StefH/JsonConverter</ProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

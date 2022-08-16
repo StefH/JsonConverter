@@ -1,8 +1,6 @@
-﻿using JsonConverter.Abstractions;
+﻿namespace JsonConverter.Abstractions;
 
-namespace JsonConverter.Newtonsoft.Json;
-
-public class JsonConverterOptions : IJsonConverterOptions
+public class JsonConverterOptions
 {
     public bool PropertyNameCaseInsensitive { get; set; }
 

@@ -6,9 +6,9 @@ using Stef.Validation;
 
 namespace JsonConverter.System.Text.Json;
 
-public class JsonConverter : IJsonConverter
+public class SystemTextJsonConverter : IJsonConverter
 {
-    public T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanSeek);
@@ -17,7 +17,7 @@ public class JsonConverter : IJsonConverter
         return JsonSerializer.Deserialize<T>(stream, options == null ? null : ConvertOptions(options));
     }
 
-    public async Task<T?> DeserializeAsync<T>(Stream stream, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public async Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanSeek);
@@ -26,12 +26,12 @@ public class JsonConverter : IJsonConverter
         return await JsonSerializer.DeserializeAsync<T>(stream, options == null ? null : ConvertOptions(options), cancellationToken).ConfigureAwait(false);
     }
 
-    public T? Deserialize<T>(string text, IJsonConverterOptions? options = null)
+    public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return JsonSerializer.Deserialize<T>(text, ConvertOptions(options));
     }
 
-    public async Task<T?> DeserializeAsync<T>(string text, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public async Task<T?> DeserializeAsync<T>(string text, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return await JsonSerializer.DeserializeAsync<T>(new MemoryStream(Encoding.UTF8.GetBytes(text)), ConvertOptions(options), cancellationToken);
     }
@@ -74,12 +74,12 @@ public class JsonConverter : IJsonConverter
         }
     }
 
-    public string Serialize(object source, IJsonConverterOptions? options)
+    public string Serialize(object source, JsonConverterOptions? options)
     {
         return JsonSerializer.Serialize(source, ConvertOptions(options));
     }
 
-    public async Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public async Task<string> SerializeAsync(object source, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         using var stream = new MemoryStream();
         await JsonSerializer.SerializeAsync(stream, source, options == null ? null : ConvertOptions(options), cancellationToken);
@@ -90,7 +90,7 @@ public class JsonConverter : IJsonConverter
         return endAsync;
     }
 
-    private static JsonSerializerOptions? ConvertOptions(IJsonConverterOptions? options)
+    private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
     {
         if (options == null)
         {
