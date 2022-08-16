@@ -48,15 +48,15 @@ public interface IJsonConverter
 ```
 
 
-### IJsonConverterOptions
+### JsonConverterOptions
 
 ``` csharp
-public interface IJsonConverterOptions
+public class IJsonConverterOptions
 {
-    bool PropertyNameCaseInsensitive { get; set; }
+    public bool PropertyNameCaseInsensitive { get; set; }
 
-    bool WriteIndented { get; set; }
+    public bool WriteIndented { get; set; }
 
-    bool IgnoreNullValues { get; set; }
+    public bool IgnoreNullValues { get; set; }
 }
 ```

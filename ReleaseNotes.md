@@ -1,3 +1,7 @@
+# 0.1.0 (16 August 2022)
+- [#5](https://github.com/StefH/JsonConverter/pull/5) - SignAssembly [Feature] contributed by [StefH](https://github.com/StefH)
+- [#6](https://github.com/StefH/JsonConverter/pull/6) - Change IJsonConverterOptions to JsonConverterOptions and rename JsonConverter classes [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.0.3 (15 August 2022)
 - [#4](https://github.com/StefH/JsonConverter/pull/4) - Change Serialize method to use object instead on T [Feature] contributed by [StefH](https://github.com/StefH)
 
