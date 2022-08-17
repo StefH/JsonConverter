@@ -8,11 +8,6 @@ namespace JsonConverter.NetJSON;
 
 public partial class NetJSONConverter
 {
-    public Task<T?> DeserializeAsync<T>(string text, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(Deserialize<T>(text, options));
-    }
-
     public Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Deserialize<T>(stream, options));

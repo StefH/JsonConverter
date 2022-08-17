@@ -1,21 +1,22 @@
 ﻿using System.Text;
 using JsonConverter.Abstractions;
+using ServiceStack.Text;
 using Stef.Validation;
-using Utf8Json;
+using ServiceStackJsonSerializer = ServiceStack.Text.JsonSerializer;
 #if !NET6_0
 using Nito.AsyncEx;
 #endif
 
-namespace JsonConverter.Utf8Json;
+namespace JsonConverter.ServiceStack.Text;
 
-public class Utf8JsonConverter : IJsonConverter
+public class ServiceStackJsonConverter : IJsonConverter
 {
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanSeek);
 
-        return JsonSerializer.Deserialize<T>(stream);
+        return ServiceStackJsonSerializer.DeserializeFromStream<T>(stream);
     }
 
     public async Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
@@ -23,13 +24,12 @@ public class Utf8JsonConverter : IJsonConverter
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanSeek);
 
-        stream.Seek(0L, SeekOrigin.Begin);
-        return await JsonSerializer.DeserializeAsync<T>(stream).WaitAsync(cancellationToken).ConfigureAwait(false);
+        return await ServiceStackJsonSerializer.DeserializeFromStreamAsync<T>(stream).WaitAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
-        return JsonSerializer.Deserialize<T>(text);
+        return ServiceStackJsonSerializer.DeserializeFromString<T>(text);
     }
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
@@ -61,7 +61,7 @@ public class Utf8JsonConverter : IJsonConverter
 
         try
         {
-            JsonSerializer.Deserialize<object>(input);
+            JsonObject.Parse(input);
             return true;
         }
         catch
@@ -72,29 +72,26 @@ public class Utf8JsonConverter : IJsonConverter
 
     public string Serialize(object value, JsonConverterOptions? options)
     {
-        return options?.WriteIndented == true ?
-            JsonSerializer.PrettyPrint(JsonSerializer.Serialize(value)) :
-            JsonSerializer.ToJsonString(value);
+        var json = ServiceStackJsonSerializer.SerializeToString(value);
+        return options?.WriteIndented == true ? json.IndentJson() : json;
     }
 
     public Task SerializeAsync(Stream stream, object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);
-        Guard.Condition(stream, s => s.CanWrite);
 
         if (options?.WriteIndented != true)
         {
-            return JsonSerializer.SerializeAsync(stream, value).WaitAsync(cancellationToken);
+            ServiceStackJsonSerializer.SerializeToStream(value, stream);
         }
 
-        var bytes = JsonSerializer.PrettyPrintByteArray(JsonSerializer.Serialize(value));
+        var json = Serialize(value, options);
+        var bytes = Encoding.UTF8.GetBytes(json);
         return stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).WaitAsync(cancellationToken);
     }
 
-
     public Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
-        var json = JsonSerializer.ToJsonString(value);
-        return Task.FromResult(options?.WriteIndented == true ? JsonSerializer.PrettyPrint(json) : json);
+        return Task.FromResult(Serialize(value, options));
     }
 }
