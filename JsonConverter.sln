@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.NetJSON", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Utf8Json", "src\JsonConverter.Utf8Json\JsonConverter.Utf8Json.csproj", "{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.XUtf8Json", "src\JsonConverter.XUtf8Json\JsonConverter.XUtf8Json.csproj", "{943C7725-DA3A-4FEA-A9CF-490A7C11F830}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943C7725-DA3A-4FEA-A9CF-490A7C11F830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943C7725-DA3A-4FEA-A9CF-490A7C11F830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943C7725-DA3A-4FEA-A9CF-490A7C11F830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943C7725-DA3A-4FEA-A9CF-490A7C11F830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{C2117F32-FE0A-46AF-ACDF-AE498DBA58CE} = {D2C107F6-2056-4AA1-B288-6AA1654FCEB5}
 		{80B52602-F8C4-428B-B43D-7724211E3158} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 		{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
+		{943C7725-DA3A-4FEA-A9CF-490A7C11F830} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DE0519C-7D3C-4332-9F05-5FE3A9988608}
