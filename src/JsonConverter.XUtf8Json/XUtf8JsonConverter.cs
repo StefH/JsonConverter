@@ -8,7 +8,7 @@ using Nito.AsyncEx;
 
 namespace JsonConverter.XUtf8Json;
 
-public class Utf8JsonConverter : IJsonConverter
+public class XUtf8JsonConverter : IJsonConverter
 {
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
@@ -30,11 +30,6 @@ public class Utf8JsonConverter : IJsonConverter
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return JsonSerializer.Deserialize<T>(text);
-    }
-
-    public Task<T?> DeserializeAsync<T>(string text, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return DeserializeAsync<T>(new MemoryStream(Encoding.UTF8.GetBytes(text)), cancellationToken: cancellationToken);
     }
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)

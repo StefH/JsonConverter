@@ -31,11 +31,6 @@ public class SystemTextJsonConverter : IJsonConverter
         return JsonSerializer.Deserialize<T>(text, ConvertOptions(options));
     }
 
-    public async Task<T?> DeserializeAsync<T>(string text, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return await JsonSerializer.DeserializeAsync<T>(new MemoryStream(Encoding.UTF8.GetBytes(text)), ConvertOptions(options), cancellationToken);
-    }
-
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);
