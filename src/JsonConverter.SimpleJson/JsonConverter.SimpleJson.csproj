@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;netstandard1.3;netstandard1.0;net40;net35</TargetFrameworks>
+        <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0;netstandard1.3;netstandard1.0;net40;net35</TargetFrameworks>
         <Description>Implementation for IJsonConverter using SimpleJson</Description>
         <DefineConstants>$(DefineConstants);SIMPLE_JSON_DATACONTRACT</DefineConstants>
         <SignAssembly>True</SignAssembly>

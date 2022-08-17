@@ -37,6 +37,8 @@ public interface IJsonConverter
 
     string Serialize(object source, IJsonConverterOptions? options = null);
 
+    Task SerializeAsync(Stream stream, object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default);
+
     Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default);
 
     Task<bool> IsValidJsonAsync(string input, CancellationToken cancellationToken = default);

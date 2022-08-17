@@ -74,15 +74,22 @@ public class SystemTextJsonConverter : IJsonConverter
         }
     }
 
-    public string Serialize(object source, JsonConverterOptions? options)
+    public string Serialize(object value, JsonConverterOptions? options)
     {
-        return JsonSerializer.Serialize(source, ConvertOptions(options));
+        return JsonSerializer.Serialize(value, ConvertOptions(options));
     }
 
-    public async Task<string> SerializeAsync(object source, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    public Task SerializeAsync(Stream stream, object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
+    {
+        Guard.NotNull(stream);
+
+        return JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
+    }
+
+    public async Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         using var stream = new MemoryStream();
-        await JsonSerializer.SerializeAsync(stream, source, options == null ? null : ConvertOptions(options), cancellationToken);
+        await JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
         stream.Position = 0L;
 
         using var reader = new StreamReader(stream);
