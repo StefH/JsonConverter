@@ -7,6 +7,7 @@ Common interface + implementation for Json Converters:
 - [NetJSON](https://github.com/rpgmaker/NetJSON)
 - [Utf8Json](https://github.com/neuecc/Utf8Json)
 - [XUtf8Json](https://github.com/geeking/Utf8Json)
+- [ServiceStack.Text](https://docs.servicestack.net/json-format)
 
 ## NuGets
 
@@ -19,7 +20,7 @@ Common interface + implementation for Json Converters:
 | **JsonConverter.NetJSON** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
 | **JsonConverter.Utf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
 | **JsonConverter.XUtf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
-
+| **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
 
 
 ## Interfaces
