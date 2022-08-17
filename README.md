@@ -5,6 +5,8 @@ Common interface + implementation for Json Converters:
 - [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/api/system.text.json)
 - [SimpleJson](https://github.com/facebook-csharp-sdk/simple-json)
 - [NetJSON](https://github.com/rpgmaker/NetJSON)
+- [Utf8Json](https://github.com/neuecc/Utf8Json)
+- [XUtf8Json](https://github.com/geeking/Utf8Json)
 
 ## NuGets
 
@@ -15,6 +17,8 @@ Common interface + implementation for Json Converters:
 | **JsonConverter.System.Text.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
 | **JsonConverter.SimpleJson** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
 | **JsonConverter.NetJSON** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
+| **JsonConverter.Utf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
+| **JsonConverter.XUtf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
 
 
 
