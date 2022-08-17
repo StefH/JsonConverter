@@ -1,3 +1,7 @@
+# 0.2.0 (17 August 2022)
+- [#7](https://github.com/StefH/JsonConverter/pull/7) - Add Utf8Json &amp; XUtf8Json  [Feature] contributed by [StefH](https://github.com/StefH)
+- [#8](https://github.com/StefH/JsonConverter/pull/8) - Add ServiceStack.Text [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.1.0 (16 August 2022)
 - [#5](https://github.com/StefH/JsonConverter/pull/5) - SignAssembly [Feature] contributed by [StefH](https://github.com/StefH)
 - [#6](https://github.com/StefH/JsonConverter/pull/6) - Change IJsonConverterOptions to JsonConverterOptions and rename JsonConverter classes [Feature] contributed by [StefH](https://github.com/StefH)
