@@ -21,9 +21,9 @@ public partial class SimpleJsonConverter : IJsonConverter
         return SimpleJson.DeserializeObject<T?>(text);
     }
 
-    public string Serialize(object source, JsonConverterOptions? options = null)
+    public string Serialize(object value, JsonConverterOptions? options = null)
     {
-        return SimpleJson.SerializeObject(source!) ?? string.Empty;
+        return SimpleJson.SerializeObject(value!) ?? string.Empty;
     }
 
     public bool IsValidJson(Stream stream)

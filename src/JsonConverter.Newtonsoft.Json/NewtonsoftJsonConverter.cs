@@ -33,11 +33,11 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
-    public string Serialize(object source, JsonConverterOptions? options = null)
+    public string Serialize(object value, JsonConverterOptions? options = null)
     {
         return options != null ?
-            JsonConvert.SerializeObject(source, ConvertOptions(options)) :
-            JsonConvert.SerializeObject(source);
+            JsonConvert.SerializeObject(value, ConvertOptions(options)) :
+            JsonConvert.SerializeObject(value);
     }
 
     public bool IsValidJson(Stream stream)

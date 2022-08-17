@@ -26,11 +26,11 @@ public partial class NetJSONConverter : IJsonConverter
             : NetJson.Deserialize<T>(text, ConvertOptions(options));
     }
 
-    public string Serialize(object source, JsonConverterOptions? options = null)
+    public string Serialize(object value, JsonConverterOptions? options = null)
     {
         return options != null ?
-            NetJson.Serialize(source, ConvertOptions(options)) :
-            NetJson.Serialize(source);
+            NetJson.Serialize(value, ConvertOptions(options)) :
+            NetJson.Serialize(value);
     }
 
     public bool IsValidJson(Stream stream)
