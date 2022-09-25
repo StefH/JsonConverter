@@ -22,12 +22,8 @@ public partial class ArgonConverter
         var json = Serialize(value, options);
 
         cancellationToken.ThrowIfCancellationRequested();
-#if NETSTANDARD2_1
+
         await stream.WriteAsync(Encoding.UTF8.GetBytes(json), cancellationToken).ConfigureAwait(false);
-#else
-        var bytes = Encoding.UTF8.GetBytes(json);
-        await stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
-#endif
     }
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)

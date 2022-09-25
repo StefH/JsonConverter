@@ -13,4 +13,11 @@ internal static class StreamExtensions
         return new StreamReader(stream).ReadToEndAsync();
     }
 #endif
+
+#if NET45 || NET461 || NETSTANDARD1_0_OR_GREATER
+    public static Task WriteAsync(this Stream stream, byte[] buffer, CancellationToken cancellationToken = default)
+    {
+        return stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
+    }
+#endif
 }
