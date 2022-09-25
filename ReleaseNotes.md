@@ -1,3 +1,6 @@
+# 0.3.0 (25 September 2022)
+- [#9](https://github.com/StefH/JsonConverter/pull/9) - JsonConverter.Argon [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.2.0 (17 August 2022)
 - [#7](https://github.com/StefH/JsonConverter/pull/7) - Add Utf8Json &amp; XUtf8Json  [Feature] contributed by [StefH](https://github.com/StefH)
 - [#8](https://github.com/StefH/JsonConverter/pull/8) - Add ServiceStack.Text [Feature] contributed by [StefH](https://github.com/StefH)
