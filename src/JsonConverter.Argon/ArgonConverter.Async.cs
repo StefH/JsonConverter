@@ -1,12 +1,10 @@
-﻿#if !(NET35 || NET40)
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using JsonConverter.Abstractions;
 using Stef.Validation;
 
-namespace JsonConverter.NetJSON;
+namespace JsonConverter.Argon;
 
-public partial class NetJSONConverter
+public partial class ArgonConverter
 {
     public Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
@@ -17,7 +15,6 @@ public partial class NetJSONConverter
     {
         return Task.FromResult(Serialize(value, options));
     }
-    
     public async Task SerializeAsync(Stream stream, object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);
@@ -36,4 +33,3 @@ public partial class NetJSONConverter
         return IsValidJson(await stream.ReadAsStringAsync().ConfigureAwait(false));
     }
 }
-#endif

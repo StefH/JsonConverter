@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.0;net472</TargetFrameworks>
-        <Description>Implementation for IJsonConverter using ServiceStack.Text</Description>
+        <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+        <Description>Implementation for IJsonConverter using Argon</Description>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
@@ -13,16 +13,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ServiceStack.Text" Version="6.3.0" />
+        <PackageReference Include="Argon" Version="0.1.0-beta.18" />
         <PackageReference Include="Stef.Validation" Version="0.1.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)' != 'net6.0' ">
-        <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Extensions\" />
     </ItemGroup>
 
 </Project>

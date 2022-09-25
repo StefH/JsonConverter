@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.XUtf8Json", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.ServiceStack.Text", "src\JsonConverter.ServiceStack.Text\JsonConverter.ServiceStack.Text.csproj", "{AD13AE87-C1BB-4BE9-A588-5D398456FB54}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Argon", "src\JsonConverter.Argon\JsonConverter.Argon.csproj", "{CE249E77-4873-4F4B-A1C0-2764813CD66A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{AD13AE87-C1BB-4BE9-A588-5D398456FB54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD13AE87-C1BB-4BE9-A588-5D398456FB54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD13AE87-C1BB-4BE9-A588-5D398456FB54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE249E77-4873-4F4B-A1C0-2764813CD66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE249E77-4873-4F4B-A1C0-2764813CD66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE249E77-4873-4F4B-A1C0-2764813CD66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE249E77-4873-4F4B-A1C0-2764813CD66A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{1B528C1F-DFEC-4A20-8771-9631DA7A9D4C} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 		{943C7725-DA3A-4FEA-A9CF-490A7C11F830} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 		{AD13AE87-C1BB-4BE9-A588-5D398456FB54} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
+		{CE249E77-4873-4F4B-A1C0-2764813CD66A} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DE0519C-7D3C-4332-9F05-5FE3A9988608}
