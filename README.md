@@ -8,6 +8,7 @@ Common interface + implementation for Json Converters:
 - [Utf8Json](https://github.com/neuecc/Utf8Json)
 - [XUtf8Json](https://github.com/geeking/Utf8Json)
 - [ServiceStack.Text](https://docs.servicestack.net/json-format)
+- [Argon](https://github.com/SimonCropp/Argon)
 
 ## NuGets
 
