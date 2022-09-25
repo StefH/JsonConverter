@@ -21,6 +21,7 @@ Common interface + implementation for Json Converters:
 | **JsonConverter.Utf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
 | **JsonConverter.XUtf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
 | **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
+| **JsonConverter.Argon** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Argon)](https://www.nuget.org/packages/JsonConverter.Argon)
 
 
 ## Interfaces
