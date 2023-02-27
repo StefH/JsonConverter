@@ -7,6 +7,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using JsonConverter.Abstractions.Models;
 using JsonConverter.Newtonsoft.Json.Utils;
 using Stef.Validation;
 

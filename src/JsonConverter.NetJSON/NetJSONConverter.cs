@@ -64,6 +64,16 @@ public partial class NetJSONConverter : IJsonConverter
         }
     }
 
+    public object? ConvertToDynamicJsonClass(object value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
+
     private static NetJSONSettings ConvertOptions(JsonConverterOptions options)
     {
         return new NetJSONSettings

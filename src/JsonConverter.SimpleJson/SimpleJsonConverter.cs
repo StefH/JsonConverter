@@ -46,4 +46,14 @@ public partial class SimpleJsonConverter : IJsonConverter
 
         return SimpleJson.TryDeserializeObject(input, out _);
     }
+
+    public object? ConvertToDynamicJsonClass(object value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
 }

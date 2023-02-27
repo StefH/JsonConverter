@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--<TargetFrameworks>net6.0;netstandard2.1;netstandard2.0;netstandard1.3;net45;net40;net35</TargetFrameworks>-->
-    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0;net45;net40;net35</TargetFrameworks>
+    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0;netstandard1.3;net45;net40;net35</TargetFrameworks>
     <Description>Implementation for IJsonConverter using Newtonsoft.Json</Description>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    <DefineConstants>$(DefineConstants);NEWTON</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Stef.Validation" Version="0.1.0" />
+    <PackageReference Include="Stef.Validation" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,11 +29,8 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
-    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
-    <!--<PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />-->
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">

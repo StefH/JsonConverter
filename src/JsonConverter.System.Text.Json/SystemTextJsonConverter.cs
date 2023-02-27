@@ -69,6 +69,16 @@ public class SystemTextJsonConverter : IJsonConverter
         }
     }
 
+    public object? ConvertToDynamicJsonClass(object value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
+
     public string Serialize(object value, JsonConverterOptions? options)
     {
         return JsonSerializer.Serialize(value, ConvertOptions(options));

@@ -1,8 +1,8 @@
 ﻿using JsonConverter.Abstractions;
+using JsonConverter.Newtonsoft.Json.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stef.Validation;
-using JsonConverter.Newtonsoft.Json.Extensions;
 
 namespace JsonConverter.Newtonsoft.Json;
 
@@ -72,8 +72,10 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         }
     }
 
-    public object? ToDynamicJsonClass(object value)
+    public object? ConvertToDynamicJsonClass(object value)
     {
+        Guard.NotNull(value);
+
         if (value is JObject jObject)
         {
             return jObject.ToDynamicJsonClass();
@@ -95,6 +97,14 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         }
 
         return value;
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    {
+        Guard.NotNullOrEmpty(text);
+
+        var result = options == null ? JsonConvert.DeserializeObject(text) : JsonConvert.DeserializeObject(text, ConvertOptions(options));
+        return result != null ? ConvertToDynamicJsonClass(result) : null;
     }
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)

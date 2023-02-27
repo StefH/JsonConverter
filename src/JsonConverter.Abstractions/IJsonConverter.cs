@@ -12,5 +12,7 @@ public partial interface IJsonConverter
 
     bool IsValidJson(string input);
 
-    object? ToDynamicJsonClass(object value);
+    object? ConvertToDynamicJsonClass(object value);
+
+    object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null);
 }

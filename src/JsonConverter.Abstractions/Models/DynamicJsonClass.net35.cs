@@ -1,10 +1,10 @@
 ﻿#if NET35
-namespace JsonConverter.Newtonsoft.Json.Dynamic;
+namespace JsonConverter.Abstractions.Models;
 
 /// <summary>
 /// Provides a base class for dynamic objects for Net 3.5
 /// </summary>
-internal abstract class DynamicJsonClass
+public abstract class DynamicJsonClass
 {
     /// <summary>
     /// Gets the dynamic property by name.

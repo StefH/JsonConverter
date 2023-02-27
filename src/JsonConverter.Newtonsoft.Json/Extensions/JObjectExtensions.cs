@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JsonConverter.Abstractions.Models;
 using JsonConverter.Newtonsoft.Json.Dynamic;
+#if NEWTON
 using Newtonsoft.Json.Linq;
 
 namespace JsonConverter.Newtonsoft.Json.Extensions;
+#else
+using Argon;
+
+namespace JsonConverter.Argon.Extensions;
+#endif
 
 /// <summary>
 /// Based on https://github.com/fluffynuts/PeanutButter/blob/master/source/Utils/PeanutButter.JObjectExtensions/JObjectExtensions.cs
@@ -17,7 +24,7 @@ internal static class JObjectExtensions
         { JTokenType.None, _ => null },
         { JTokenType.Array, ConvertJTokenArray },
         { JTokenType.Property, ConvertJTokenProperty },
-        { JTokenType.Integer, o => o.Value<int>() },
+        { JTokenType.Integer, o => o.Value<long>() },
         { JTokenType.String, o => o.Value<string>() },
         { JTokenType.Boolean, o => o.Value<bool>() },
         { JTokenType.Null, _ => null },
@@ -54,22 +61,6 @@ internal static class JObjectExtensions
         }
 
         return DynamicJsonClassFactory.CreateInstance(dynamicPropertyWithValues);
-    }
-
-    public static Dictionary<string, object?> ToDictionary(this JObject? src)
-    {
-        var result = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        if (src == null)
-        {
-            return result;
-        }
-
-        foreach (var prop in src.Properties())
-        {
-            result[prop.Name] = Resolvers[prop.Type](prop.Value);
-        }
-
-        return result;
     }
 
     public static IEnumerable ToDynamicJsonClassArray(this JArray? src)

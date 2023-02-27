@@ -51,6 +51,10 @@ public interface IJsonConverter
     bool IsValidJson(Stream stream);
 
     bool IsValidJson(string input);
+
+    object? ConvertToDynamicJsonClass(object value);
+
+    object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null);
 }
 ```
 

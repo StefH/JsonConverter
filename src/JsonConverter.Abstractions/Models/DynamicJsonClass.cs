@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 
-namespace JsonConverter.Newtonsoft.Json.Dynamic;
+namespace JsonConverter.Abstractions.Models;
 
 /// <summary>
 /// Provides a base class for dynamic objects.
@@ -16,7 +16,7 @@ namespace JsonConverter.Newtonsoft.Json.Dynamic;
 /// - Equals() method
 /// - GetHashCode() method
 /// </summary>
-internal abstract class DynamicJsonClass : DynamicObject
+public abstract class DynamicJsonClass : DynamicObject
 {
     private Dictionary<string, object?>? _propertiesDictionary;
 
