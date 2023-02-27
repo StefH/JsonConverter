@@ -11,4 +11,6 @@ public partial interface IJsonConverter
     bool IsValidJson(Stream stream);
 
     bool IsValidJson(string input);
+
+    object? ToDynamicJsonClass(object value);
 }

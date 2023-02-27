@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Stef.Validation;
+using JsonConverter.Newtonsoft.Json.Extensions;
 
 namespace JsonConverter.Newtonsoft.Json;
 
@@ -69,6 +70,31 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         {
             return false;
         }
+    }
+
+    public object? ToDynamicJsonClass(object value)
+    {
+        if (value is JObject jObject)
+        {
+            return jObject.ToDynamicJsonClass();
+        }
+
+        if (value is JArray jArray)
+        {
+            return jArray.ToDynamicJsonClassArray();
+        }
+
+        if (value is JValue jValue)
+        {
+            return jValue.ToDynamicJsonClass();
+        }
+
+        if (value is JToken jToken)
+        {
+            return jToken.ToDynamicJsonClass();
+        }
+
+        return value;
     }
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)

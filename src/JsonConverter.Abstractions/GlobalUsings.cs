@@ -1,6 +1,6 @@
-global using global::System;
-global using global::System.IO;
+global using System;
+global using System.IO;
 #if !(NET35 || NET40)
-global using global::System.Threading;
-global using global::System.Threading.Tasks;
+global using System.Threading;
+global using System.Threading.Tasks;
 #endif
