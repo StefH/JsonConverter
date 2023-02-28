@@ -19,6 +19,10 @@ namespace JsonConverter.Argon.Extensions;
 /// </summary>
 internal static class JObjectExtensions
 {
+    private class JTokenResolvers : Dictionary<JTokenType, Func<JToken, DynamicJsonClassOptions?, object?>>
+    {
+    }
+
     private static readonly JTokenResolvers Resolvers = new()
     {
         { JTokenType.Array, ConvertJTokenArray },
@@ -61,7 +65,7 @@ internal static class JObjectExtensions
             }
         }
 
-        return DynamicJsonClassFactory.CreateInstance(dynamicPropertyWithValues);
+        return CreateInstance(dynamicPropertyWithValues);
     }
 
     public static IEnumerable ToDynamicJsonClassArray(this JArray? src, DynamicJsonClassOptions? options = null)
@@ -206,7 +210,8 @@ internal static class JObjectExtensions
         return src.Cast<T>().ToArray();
     }
 
-    private class JTokenResolvers : Dictionary<JTokenType, Func<JToken, DynamicJsonClassOptions?, object?>>
+    private static DynamicJsonClass CreateInstance(IList<DynamicPropertyWithValue> dynamicPropertyWithValues)
     {
+        return DynamicJsonClassFactory.CreateInstance(dynamicPropertyWithValues);
     }
 }
