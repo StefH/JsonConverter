@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using Stef.Validation;
 
 namespace JsonConverter.System.Text.Json;
@@ -69,12 +70,12 @@ public class SystemTextJsonConverter : IJsonConverter
         }
     }
 
-    public object? ConvertToDynamicJsonClass(object value)
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }
 
-    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }

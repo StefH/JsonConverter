@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using ServiceStack.Text;
 using Stef.Validation;
 using ServiceStackJsonSerializer = ServiceStack.Text.JsonSerializer;
@@ -70,16 +71,6 @@ public class ServiceStackJsonConverter : IJsonConverter
         }
     }
 
-    public object? ConvertToDynamicJsonClass(object value)
-    {
-        throw new NotImplementedException();
-    }
-
-    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
-    {
-        throw new NotImplementedException();
-    }
-
     public string Serialize(object value, JsonConverterOptions? options)
     {
         var json = ServiceStackJsonSerializer.SerializeToString(value);
@@ -103,5 +94,15 @@ public class ServiceStackJsonConverter : IJsonConverter
     public Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Serialize(value, options));
+    }
+
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
     }
 }

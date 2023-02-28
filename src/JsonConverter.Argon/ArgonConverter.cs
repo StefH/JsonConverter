@@ -1,5 +1,6 @@
 ﻿using Argon;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using JsonConverter.Argon.Extensions;
 using Stef.Validation;
 
@@ -73,36 +74,39 @@ public partial class ArgonConverter : IJsonConverter
         }
     }
 
-    public object? ConvertToDynamicJsonClass(object value)
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
     {
         if (value is JObject jObject)
         {
-            return jObject.ToDynamicJsonClass();
+            return jObject.ToDynamicJsonClass(options);
         }
 
         if (value is JArray jArray)
         {
-            return jArray.ToDynamicJsonClassArray();
+            return jArray.ToDynamicJsonClassArray(options);
         }
 
         if (value is JValue jValue)
         {
-            return jValue.ToDynamicJsonClass();
+            return jValue.ToDynamicJsonClass(options);
         }
 
         if (value is JToken jToken)
         {
-            return jToken.ToDynamicJsonClass();
+            return jToken.ToDynamicJsonClass(options);
         }
 
         return value;
     }
 
-    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
     {
         Guard.NotNullOrEmpty(text);
 
-        var result = options == null ? JsonConvert.DeserializeObject(text) : JsonConvert.DeserializeObject(text, ConvertOptions(options));
+        var result = options?.JsonConverterOptions == null ?
+            JsonConvert.DeserializeObject(text) :
+            JsonConvert.DeserializeObject(text, ConvertOptions(options.JsonConverterOptions));
+
         return ConvertToDynamicJsonClass(result);
     }
 

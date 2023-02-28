@@ -1,4 +1,5 @@
 ﻿using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using NetJSON;
 using Stef.Validation;
 using NetJson = NetJSON.NetJSON;
@@ -64,12 +65,12 @@ public partial class NetJSONConverter : IJsonConverter
         }
     }
 
-    public object? ConvertToDynamicJsonClass(object value)
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }
 
-    public object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null)
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }
