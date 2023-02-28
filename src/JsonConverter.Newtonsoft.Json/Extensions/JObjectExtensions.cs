@@ -25,12 +25,12 @@ internal static class JObjectExtensions
         { JTokenType.Boolean, (jToken, _) => jToken.Value<bool>() },
         { JTokenType.Bytes, (jToken, _) => jToken.Value<byte[]>() },
         { JTokenType.Date, (jToken, _) => jToken.Value<DateTime>() },
-        { JTokenType.Float, ConvertJTokenToDoubleOrFloat },
+        { JTokenType.Float, ConvertJTokenFloat },
         { JTokenType.Guid, (jToken, _) => jToken.Value<Guid>() },
-        { JTokenType.Integer, ConvertJTokenToLongOrInt },
+        { JTokenType.Integer, ConvertJTokenInteger },
         { JTokenType.None, (_, _) => null },
         { JTokenType.Null, (_, _) => null },
-        { JTokenType.Object, TryConvertObject },
+        { JTokenType.Object, ConvertJObject },
         { JTokenType.Property, ConvertJTokenProperty },
         { JTokenType.String, (jToken, _) => jToken.Value<string>() },
         { JTokenType.TimeSpan, (jToken, _) => jToken.Value<TimeSpan>() },
@@ -71,7 +71,7 @@ internal static class JObjectExtensions
             return new object?[0];
         }
 
-        return ConvertJTokenArray(src);
+        return ConvertJTokenArray(src, options);
     }
 
     public static object? ToDynamicJsonClass(this JToken? src, DynamicJsonClassOptions? options = null)
@@ -84,7 +84,7 @@ internal static class JObjectExtensions
         return GetResolverFor(src)(src, options);
     }
 
-    private static object? TryConvertObject(JToken arg, DynamicJsonClassOptions? options = null)
+    private static object? ConvertJObject(JToken arg, DynamicJsonClassOptions? options = null)
     {
         if (arg is JObject asJObject)
         {
@@ -104,7 +104,7 @@ internal static class JObjectExtensions
         return Resolvers.TryGetValue(arg.Type, out var result) ? result : PassThrough;
     }
 
-    private static object ConvertJTokenToDoubleOrFloat(JToken arg, DynamicJsonClassOptions? options = null)
+    private static object ConvertJTokenFloat(JToken arg, DynamicJsonClassOptions? options = null)
     {
         if (arg.Type != JTokenType.Float)
         {
@@ -134,12 +134,12 @@ internal static class JObjectExtensions
                 return arg.Value<double>();
             }
         }
-        
+
 
         return arg.Value<double>();
     }
 
-    private static object ConvertJTokenToLongOrInt(JToken arg, DynamicJsonClassOptions? options = null)
+    private static object ConvertJTokenInteger(JToken arg, DynamicJsonClassOptions? options = null)
     {
         if (arg.Type != JTokenType.Integer)
         {
@@ -180,7 +180,7 @@ internal static class JObjectExtensions
         var result = new List<object?>();
         foreach (var item in array)
         {
-            result.Add(TryConvertObject(item));
+            result.Add(ConvertJObject(item));
         }
 
         var distinctType = FindSameTypeOf(result);
