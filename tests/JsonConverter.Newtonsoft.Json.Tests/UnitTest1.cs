@@ -52,7 +52,7 @@ public class UnitTest1
 
     private static JObject GetJObject()
     {
-        var jObject = new JObject
+        return new JObject
         {
             { "U", new JValue(new Uri("http://localhost:80/abc?a=5")) },
             { "N", new JValue((object?)null) },
@@ -73,6 +73,5 @@ public class UnitTest1
             { "Name", new JValue("Test") },
             { "Array", new JArray("stef", "test", "other") }
         };
-        return jObject;
     }
 }
