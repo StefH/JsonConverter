@@ -52,10 +52,21 @@ public interface IJsonConverter
 
     bool IsValidJson(string input);
 
-    object? ConvertToDynamicJsonClass(object value);
+    /// <summary>
+    /// Convert an object to a DynamicJsonClass or DynamicJsonClass-array. 
+    /// </summary>.
+    /// <param name="value">The object (e.g. JObject in case of Newtonsoft.Json).</param>
+    /// <param name="options">The <see cref="DynamicJsonClassOptions"/> (optional).</param>
+    /// <returns>object, DynamicJsonClass or DynamicJsonClass-array</returns>
+    object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null);
 
-    object? DeserializeToDynamicJsonClass(string text, JsonConverterOptions? options = null);
-}
+    /// <summary>
+    /// Convert Json Text to a DynamicJsonClass or DynamicJsonClass-array. 
+    /// </summary>.
+    /// <param name="text">The Json Text.</param>
+    /// <param name="options">The <see cref="DynamicJsonClassOptions"/> (optional).</param>
+    /// <returns>object, DynamicJsonClass or DynamicJsonClass-array</returns>
+    object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null);
 ```
 
 
