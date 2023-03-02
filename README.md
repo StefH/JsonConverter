@@ -73,12 +73,25 @@ public interface IJsonConverter
 ### JsonConverterOptions
 
 ``` csharp
-public class IJsonConverterOptions
+public class JsonConverterOptions
 {
     public bool PropertyNameCaseInsensitive { get; set; }
 
     public bool WriteIndented { get; set; }
 
     public bool IgnoreNullValues { get; set; }
+}
+```
+
+### JsonConverterOptions
+
+``` csharp
+public class DynamicJsonClassOptions
+{
+    public JsonConverterOptions? JsonConverterOptions { get; set; }
+
+    public IntegerBehavior IntegerConvertBehavior { get; set; } = IntegerBehavior.UseLong;
+
+    public FloatBehavior FloatConvertBehavior { get; set; } = FloatBehavior.UseDouble;
 }
 ```
