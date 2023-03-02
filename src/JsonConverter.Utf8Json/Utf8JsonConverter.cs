@@ -1,5 +1,5 @@
-﻿using System.Text;
-using JsonConverter.Abstractions;
+﻿using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using Stef.Validation;
 using Utf8Json;
 #if !NET6_0
@@ -96,5 +96,15 @@ public class Utf8JsonConverter : IJsonConverter
     {
         var json = JsonSerializer.ToJsonString(value);
         return Task.FromResult(options?.WriteIndented == true ? JsonSerializer.PrettyPrint(json) : json);
+    }
+
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Argon;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
+using JsonConverter.Argon.Extensions;
 using Stef.Validation;
 
 namespace JsonConverter.Argon;
@@ -70,6 +72,42 @@ public partial class ArgonConverter : IJsonConverter
         {
             return false;
         }
+    }
+
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
+    {
+        if (value is JObject jObject)
+        {
+            return jObject.ToDynamicJsonClass(options);
+        }
+
+        if (value is JArray jArray)
+        {
+            return jArray.ToDynamicJsonClassArray(options);
+        }
+
+        if (value is JValue jValue)
+        {
+            return jValue.ToDynamicJsonClass(options);
+        }
+
+        if (value is JToken jToken)
+        {
+            return jToken.ToDynamicJsonClass(options);
+        }
+
+        return value;
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
+    {
+        Guard.NotNullOrEmpty(text);
+
+        var result = options?.JsonConverterOptions == null ?
+            JsonConvert.DeserializeObject(text) :
+            JsonConvert.DeserializeObject(text, ConvertOptions(options.JsonConverterOptions));
+
+        return ConvertToDynamicJsonClass(result);
     }
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)

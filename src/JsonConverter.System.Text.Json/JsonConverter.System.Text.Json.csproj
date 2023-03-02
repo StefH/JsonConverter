@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="System.Text.Json" Version="6.0.6" />
-        <PackageReference Include="Stef.Validation" Version="0.1.0" />
+        <PackageReference Include="Stef.Validation" Version="0.1.1" />
     </ItemGroup>
 
     <ItemGroup>

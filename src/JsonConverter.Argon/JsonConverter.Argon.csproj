@@ -1,28 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
-        <Description>Implementation for IJsonConverter using Argon</Description>
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+    <Description>Implementation for IJsonConverter using Argon</Description>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\JsonConverter.snk</AssemblyOriginatorKeyFile>
+    <DefineConstants>$(DefineConstants);ARGON</DefineConstants>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
-        <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\JObjectExtensions.cs" Link="Extensions\JObjectExtensions.cs" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Dynamic\*.cs" LinkBase="Dynamic" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Compatibility\*.cs" LinkBase="Compatibility" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Utils\*.cs" LinkBase="Utils" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Argon" Version="0.1.0-beta.18" />
-        <PackageReference Include="Stef.Validation" Version="0.1.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Argon" Version="0.1.0" />
+    <PackageReference Include="Stef.Validation" Version="0.1.1" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj" />
-    </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj" />
+  </ItemGroup>
 
 </Project>

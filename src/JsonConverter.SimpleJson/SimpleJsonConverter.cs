@@ -1,4 +1,5 @@
 ﻿using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using Stef.Validation;
 
 namespace JsonConverter.SimpleJson;
@@ -45,5 +46,15 @@ public partial class SimpleJsonConverter : IJsonConverter
         }
 
         return SimpleJson.TryDeserializeObject(input, out _);
+    }
+
+    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
+    {
+        throw new NotImplementedException();
     }
 }
