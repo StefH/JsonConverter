@@ -1,6 +1,6 @@
 ﻿namespace JsonConverter.Newtonsoft.Json.Dynamic;
 
-internal struct DynamicPropertyWithValue
+public struct DynamicPropertyWithValue
 {
     public string Name { get; } = null!;
 
