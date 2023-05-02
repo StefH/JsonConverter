@@ -5,11 +5,13 @@ using Stef.Validation;
 
 namespace JsonConverter.LitJson;
 
-public class LitJsonConverter : IJsonConverter
+public partial class LitJsonConverter : IJsonConverter
 {
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
-        throw new NotImplementedException();
+        Guard.NotNull(stream);
+
+        return JsonMapper.ToObject<T>(stream.ReadAsString());
     }
 
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
@@ -19,7 +21,7 @@ public class LitJsonConverter : IJsonConverter
 
     public string Serialize(object value, JsonConverterOptions? options = null)
     {
-        throw new NotImplementedException();
+        return JsonMapper.ToJson(value);
     }
 
     public bool IsValidJson(Stream stream)
@@ -31,7 +33,7 @@ public class LitJsonConverter : IJsonConverter
 
     public bool IsValidJson(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
+        if (input.IsNullOrWhiteSpaceInternal())
         {
             return false;
         }
@@ -53,32 +55,12 @@ public class LitJsonConverter : IJsonConverter
         }
     }
 
-    public object? ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
+    public object ConvertToDynamicJsonClass(object value, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }
 
-    public object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task SerializeAsync(Stream stream, object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
+    public object DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null)
     {
         throw new NotImplementedException();
     }
