@@ -1,3 +1,6 @@
+# 0.5.0 (21 December 2023)
+- [#11](https://github.com/StefH/JsonConverter/pull/11) - Add &quot;object? Deserialize(string text, Type type, ...)&quot; method [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.4.0 (02 March 2023)
 - [#10](https://github.com/StefH/JsonConverter/pull/10) - Add ConvertToDynamicJsonClass and DeserializeToDynamicJsonClass [Feature] contributed by [StefH](https://github.com/StefH)
 
