@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
@@ -30,6 +29,11 @@ public class SystemTextJsonConverter : IJsonConverter
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return JsonSerializer.Deserialize<T>(text, ConvertOptions(options));
+    }
+
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return JsonSerializer.Deserialize(text, type, ConvertOptions(options));
     }
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)

@@ -33,6 +33,11 @@ public class ServiceStackJsonConverter : IJsonConverter
         return ServiceStackJsonSerializer.DeserializeFromString<T>(text);
     }
 
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return ServiceStackJsonSerializer.DeserializeFromString(text, type);
+    }
+
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);

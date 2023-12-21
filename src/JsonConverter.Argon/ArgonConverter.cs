@@ -36,6 +36,14 @@ public partial class ArgonConverter : IJsonConverter
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
+    // ReSharper disable once ReturnTypeCanBeNotNullable
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return options == null
+            ? JsonConvert.DeserializeObject(text, type)
+            : JsonConvert.DeserializeObject(text, type, ConvertOptions(options));
+    }
+
     public string Serialize(object value, JsonConverterOptions? options = null)
     {
         return options != null ?
