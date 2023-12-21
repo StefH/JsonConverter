@@ -38,6 +38,8 @@ public interface IJsonConverter
 
     T? Deserialize<T>(string text, IJsonConverterOptions? options = null);
 
+    object? Deserialize(string text, Type type, JsonConverterOptions? options = null);
+
     Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default);
 
     string Serialize(object source, IJsonConverterOptions? options = null);

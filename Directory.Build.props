@@ -1,25 +1,25 @@
 <Project>
-    <PropertyGroup>
-        <VersionPrefix>0.4.0</VersionPrefix>
-        <PackageProjectUrl>https://github.com/StefH/JsonConverter</PackageProjectUrl>
-        <ProjectUrl>https://github.com/StefH/JsonConverter</ProjectUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryType>git</RepositoryType>
-        <LangVersion>10</LangVersion>
-        <Nullable>enable</Nullable>
-        <GlobalUsings>false</GlobalUsings>
-        <Authors>Stef Heyenrath</Authors>
-        <Copyright>Copyright © Stef Heyenrath</Copyright>
-    </PropertyGroup>
+	<PropertyGroup>
+		<VersionPrefix>0.5.0</VersionPrefix>
+		<PackageProjectUrl>https://github.com/StefH/JsonConverter</PackageProjectUrl>
+		<ProjectUrl>https://github.com/StefH/JsonConverter</ProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<LangVersion>10</LangVersion>
+		<Nullable>enable</Nullable>
+		<GlobalUsings>false</GlobalUsings>
+		<Authors>Stef Heyenrath</Authors>
+		<Copyright>Copyright © Stef Heyenrath</Copyright>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 </Project>
