@@ -54,11 +54,5 @@
             <_Parameter1>SimpleJson.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100cdc4442b2bcf19626107dddee45e71c0771b7ec1f62f027133b86ff6ae3589b6d93480d8bd69302ec4ef3f399d19cdbe7b78d061859a0f096fbcdef9253f178ea2581c0d1830581a1ef9683ffa7ad4b4827ce3fc0379212a0b11829045fdf3df1111b865994ffd3dfc754464db963a195d1479aa3ea42e243d5464532d670ab9</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
-    <ItemGroup>
-      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-    </ItemGroup>
 
 </Project>
