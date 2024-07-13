@@ -1,3 +1,6 @@
+# 0.6.0 (13 July 2024)
+- [#12](https://github.com/StefH/JsonConverter/pull/12) - Add .NET 8 support to JsonConverter.System.Text.Json [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.5.0 (21 December 2023)
 - [#11](https://github.com/StefH/JsonConverter/pull/11) - Add &quot;object? Deserialize(string text, Type type, ...)&quot; method [Feature] contributed by [StefH](https://github.com/StefH)
 
