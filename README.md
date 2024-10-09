@@ -14,15 +14,15 @@ Common interface + implementation for Json Converters:
 
 | Name | Version |
 | - | - |
-| **JsonConverter.Abstractions** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Abstractions)](https://www.nuget.org/packages/JsonConverter.Abstractions)
-| **JsonConverter.Newtonsoft.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Newtonsoft.Json)](https://www.nuget.org/packages/JsonConverter.Newtonsoft.Json)
-| **JsonConverter.System.Text.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
-| **JsonConverter.SimpleJson** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
-| **JsonConverter.NetJSON** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
-| **JsonConverter.Utf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
-| **JsonConverter.XUtf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
-| **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
-| **JsonConverter.Argon** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Argon)](https://www.nuget.org/packages/JsonConverter.Argon)
+| **JsonConverter.Abstractions** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Abstractions)](https://www.nuget.org/packages/JsonConverter.Abstractions)
+| **JsonConverter.Newtonsoft.Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Newtonsoft.Json)](https://www.nuget.org/packages/JsonConverter.Newtonsoft.Json)
+| **JsonConverter.System.Text.Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
+| **JsonConverter.SimpleJson** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
+| **JsonConverter.NetJSON** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
+| **JsonConverter.Utf8Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
+| **JsonConverter.XUtf8Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
+| **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
+| **JsonConverter.Argon** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Argon)](https://www.nuget.org/packages/JsonConverter.Argon)
 
 
 ## Interfaces
