@@ -1,3 +1,7 @@
+# 0.7.0 (10 October 2024)
+- [#13](https://github.com/StefH/JsonConverter/pull/13) - Bump System.Text.Json from 6.0.6 to 6.0.10 in /src/JsonConverter.System.Text.Json [dependencies] contributed by [dependabot[bot]](https://github.com/apps/dependabot)
+- [#14](https://github.com/StefH/JsonConverter/pull/14) - Bump System.Text.Json from 8.0.4 to 8.0.5 + upgrade some other packages [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.6.0 (13 July 2024)
 - [#12](https://github.com/StefH/JsonConverter/pull/12) - Add .NET 8 support to JsonConverter.System.Text.Json [Feature] contributed by [StefH](https://github.com/StefH)
 
