@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
+using JsonConverter.Newtonsoft.Json.Extensions;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
-namespace HandlebarsDotNet.Helpers.Tests.DynamicLinq;
+namespace JsonConverter.Newtonsoft.Json.Tests;
 
 public class JArrayMergerTests
 {
