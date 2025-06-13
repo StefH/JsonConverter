@@ -1,3 +1,6 @@
+# 0.7.2 (13 June 2025)
+- [#16](https://github.com/StefH/JsonConverter/pull/16) - Newtonsoft.Json: support incompatible types in array (merge to common structure) [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.7.1 (16 November 2024)
 - [#15](https://github.com/StefH/JsonConverter/pull/15) - Update JsonConverter.System.Text.Json to .NET 9 [Feature] contributed by [StefH](https://github.com/StefH)
 
