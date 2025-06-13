@@ -10,6 +10,7 @@
 		<GlobalUsings>false</GlobalUsings>
 		<Authors>Stef Heyenrath</Authors>
 		<Copyright>Copyright © Stef Heyenrath</Copyright>
+    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,6 +19,10 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../PackageReadme.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
