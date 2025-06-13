@@ -10,8 +10,7 @@
 
   <ItemGroup>
     <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
-    <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\JObjectExtensions.cs" Link="Extensions\JObjectExtensions.cs" />
-    <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
+    <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\*.cs" LinkBase="Extensions" />
     <Compile Include="..\JsonConverter.Newtonsoft.Json\Dynamic\*.cs" LinkBase="Dynamic" />
     <Compile Include="..\JsonConverter.Newtonsoft.Json\Compatibility\*.cs" LinkBase="Compatibility" />
     <Compile Include="..\JsonConverter.Newtonsoft.Json\Utils\*.cs" LinkBase="Utils" />

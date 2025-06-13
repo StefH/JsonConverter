@@ -103,8 +103,12 @@ public class SystemTextJsonConverter : IJsonConverter
         stream.Position = 0L;
 
         using var reader = new StreamReader(stream);
-        var endAsync = await reader.ReadToEndAsync();
-        return endAsync;
+
+#if NET8_0_OR_GREATER
+        return await reader.ReadToEndAsync(cancellationToken);
+#else
+        return await reader.ReadToEndAsync();
+#endif
     }
 
     private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
