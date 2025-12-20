@@ -123,7 +123,7 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         return new JsonSerializerSettings
         {
             Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Include : NullValueHandling.Ignore
+            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
         };
     }
 }
