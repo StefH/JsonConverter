@@ -1,3 +1,7 @@
+# 0.8.0 (20 December 2025)
+- [#17](https://github.com/StefH/JsonConverter/pull/17) - Fix IgnoreNullValues for NewtonsoftJsonConverter [bug] contributed by [StefH](https://github.com/StefH)
+- [#18](https://github.com/StefH/JsonConverter/pull/18) - .NET 10 [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.7.2 (13 June 2025)
 - [#16](https://github.com/StefH/JsonConverter/pull/16) - Newtonsoft.Json: support incompatible types in array (merge to common structure) [Feature] contributed by [StefH](https://github.com/StefH)
 
