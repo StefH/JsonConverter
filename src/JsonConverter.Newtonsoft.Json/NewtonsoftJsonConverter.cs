@@ -120,10 +120,18 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
     {
+        var dateParseHandling = options.DateParseHandling switch
+        {
+            0 => DateParseHandling.None,
+            2 => DateParseHandling.DateTimeOffset,
+            _ => DateParseHandling.DateTime
+        };
+
         return new JsonSerializerSettings
         {
             Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
+            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+            DateParseHandling = dateParseHandling
         };
     }
 }

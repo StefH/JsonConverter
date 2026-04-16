@@ -95,6 +95,48 @@ public class UnitTest1
         instance.Should().BeAssignableTo<DynamicJsonClass>();
     }
 
+    [Fact]
+    public void Deserialize_DateParseHandlingString_KeepsDateAsString()
+    {
+        // Arrange
+        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 0 // None - keep as string
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue.Type.Should().Be(JTokenType.String);
+        dateValue.Value<string>().Should().Be("2021-11-10T13:39:13.705");
+    }
+
+    [Fact]
+    public void Deserialize_DateParseHandlingDateTime_ParsesDateAsDateTime()
+    {
+        // Arrange
+        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 1 // DateTime
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue.Type.Should().Be(JTokenType.Date);
+        ((DateTime)dateValue).Should().Be(new DateTime(2021, 11, 10, 13, 39, 13, 705));
+    }
+
     private static JObject GetJObject()
     {
         return new JObject
