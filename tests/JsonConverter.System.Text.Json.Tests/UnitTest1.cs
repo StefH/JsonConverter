@@ -1,14 +1,14 @@
+using System.Text.Json.Serialization;
 using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace JsonConverter.Newtonsoft.Json.Tests;
 
 public class DateTestModel
 {
     [JsonPropertyName("dateString")]
-    public string DateString { get; set; }
+    public string DateString { get; set; } = string.Empty;
 }
 
 public class UnitTest1
