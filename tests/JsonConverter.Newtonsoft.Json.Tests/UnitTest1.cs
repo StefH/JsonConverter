@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using CultureAwareTesting.xUnit;
 using FluentAssertions;
 using JsonConverter.Abstractions;
@@ -127,29 +128,7 @@ public class UnitTest1
         {
             DateParseHandling = 0 // None - keep as string
         };
-        using var stream = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(json));
-
-        // Act
-        var result = _sut.Deserialize<JObject>(stream, options);
-
-        // Assert
-        result.Should().NotBeNull();
-        var dateValue = result!["dateString"];
-        dateValue.Should().NotBeNull();
-        dateValue!.Type.Should().Be(JTokenType.String);
-        dateValue.Value<string>().Should().Be("2021-11-10T13:39:13.705");
-    }
-
-    [Fact]
-    public void Deserialize_Stream_DateParseHandlingNone_KeepsDateAsString()
-    {
-        // Arrange
-        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
-        var options = new JsonConverterOptions
-        {
-            DateParseHandling = (int)DateParseHandling.None // None - keep as string
-        };
-        using var stream = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(json));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
         // Act
         var result = _sut.Deserialize<JObject>(stream, options);
