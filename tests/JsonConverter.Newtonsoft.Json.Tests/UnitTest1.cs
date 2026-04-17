@@ -98,7 +98,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Deserialize_DateParseHandlingString_KeepsDateAsString()
+    public void Deserialize_DateParseHandlingNone_KeepsDateAsString()
     {
         // Arrange
         var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
