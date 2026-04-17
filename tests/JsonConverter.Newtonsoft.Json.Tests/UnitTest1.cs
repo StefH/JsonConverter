@@ -104,7 +104,7 @@ public class UnitTest1
         var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
         var options = new JsonConverterOptions
         {
-            DateParseHandling = 0 // None - keep as string
+            DateParseHandling = (int)DateParseHandling.None // None - keep as string
         };
 
         // Act
@@ -125,7 +125,7 @@ public class UnitTest1
         var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
         var options = new JsonConverterOptions
         {
-            DateParseHandling = 0 // None - keep as string
+            DateParseHandling = (int)DateParseHandling.None // None - keep as string
         };
         using var stream = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(json));
 
