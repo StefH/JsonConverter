@@ -8,6 +8,8 @@ public partial interface IJsonConverter
 
     T? Deserialize<T>(string text, JsonConverterOptions? options = null);
 
+    object? Deserialize(string text, Type type, JsonConverterOptions? options = null);
+
     string Serialize(object value, JsonConverterOptions? options = null);
 
     bool IsValidJson(Stream stream);

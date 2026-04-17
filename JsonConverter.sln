@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32804.467
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Abstractions", "src\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj", "{F2712B16-66C4-4E16-AAAA-C8674285165F}"
 EndProject
@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Generate-ReleaseNotes.bat = Generate-ReleaseNotes.bat
+		PackageReadme.md = PackageReadme.md
 		src\push to nuget.txt = src\push to nuget.txt
 		README.md = README.md
 		ReleaseNotes.md = ReleaseNotes.md
@@ -35,9 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.ServiceStack.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Argon", "src\JsonConverter.Argon\JsonConverter.Argon.csproj", "{CE249E77-4873-4F4B-A1C0-2764813CD66A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.Newtonsoft.Json.Tests", "tests\JsonConverter.Newtonsoft.Json.Tests\JsonConverter.Newtonsoft.Json.Tests.csproj", "{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.Newtonsoft.Json.Tests", "tests\JsonConverter.Newtonsoft.Json.Tests\JsonConverter.Newtonsoft.Json.Tests.csproj", "{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter.LitJson", "src\JsonConverter.LitJson\JsonConverter.LitJson.csproj", "{3F9DD51A-FA87-4B8E-AF45-594DC9D14931}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.System.Text.Json.Tests", "tests\JsonConverter.System.Text.Json.Tests\JsonConverter.System.Text.Json.Tests.csproj", "{8918676F-12C4-B830-D2D6-5B17AEE3CB44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonConverter.LitJson", "src\JsonConverter.LitJson\JsonConverter.LitJson.csproj", "{8D0E5052-0B0D-2334-99FC-48C9A00224A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +92,14 @@ Global
 		{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F9DD51A-FA87-4B8E-AF45-594DC9D14931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F9DD51A-FA87-4B8E-AF45-594DC9D14931}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F9DD51A-FA87-4B8E-AF45-594DC9D14931}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F9DD51A-FA87-4B8E-AF45-594DC9D14931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8918676F-12C4-B830-D2D6-5B17AEE3CB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8918676F-12C4-B830-D2D6-5B17AEE3CB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8918676F-12C4-B830-D2D6-5B17AEE3CB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8918676F-12C4-B830-D2D6-5B17AEE3CB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0E5052-0B0D-2334-99FC-48C9A00224A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0E5052-0B0D-2334-99FC-48C9A00224A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0E5052-0B0D-2334-99FC-48C9A00224A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0E5052-0B0D-2334-99FC-48C9A00224A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,7 +116,8 @@ Global
 		{AD13AE87-C1BB-4BE9-A588-5D398456FB54} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 		{CE249E77-4873-4F4B-A1C0-2764813CD66A} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 		{BC26AD77-1CF1-4663-AB33-F8FA1CE7FE13} = {D2C107F6-2056-4AA1-B288-6AA1654FCEB5}
-		{3F9DD51A-FA87-4B8E-AF45-594DC9D14931} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
+		{8918676F-12C4-B830-D2D6-5B17AEE3CB44} = {D2C107F6-2056-4AA1-B288-6AA1654FCEB5}
+		{8D0E5052-0B0D-2334-99FC-48C9A00224A2} = {50EFF4D2-FD8B-48A2-9A1E-70A7E9AF01A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DE0519C-7D3C-4332-9F05-5FE3A9988608}

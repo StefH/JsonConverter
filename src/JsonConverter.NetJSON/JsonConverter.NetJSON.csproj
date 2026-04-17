@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NetJSON" Version="1.4.0" />
+        <PackageReference Include="NetJSON" Version="1.4.4" />
         <PackageReference Include="Stef.Validation" Version="0.1.1" />
     </ItemGroup>
 

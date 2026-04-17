@@ -23,6 +23,8 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
             var serializerSettings = ConvertOptions(options);
             jsonSerializer.Formatting = serializerSettings.Formatting;
             jsonSerializer.NullValueHandling = serializerSettings.NullValueHandling;
+            jsonSerializer.DateParseHandling = serializerSettings.DateParseHandling;
+            jsonTextReader.DateParseHandling = serializerSettings.DateParseHandling;
         }
 
         return jsonSerializer.Deserialize<T>(jsonTextReader);
@@ -33,6 +35,13 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         return options == null
             ? JsonConvert.DeserializeObject<T>(text)
             : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
+    }
+
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return options == null
+            ? JsonConvert.DeserializeObject(text, type)
+            : JsonConvert.DeserializeObject(text, type, ConvertOptions(options));
     }
 
     public string Serialize(object value, JsonConverterOptions? options = null)
@@ -113,10 +122,18 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
     {
+        var dateParseHandling = options.DateParseHandling switch
+        {
+            0 => DateParseHandling.None,
+            2 => DateParseHandling.DateTimeOffset,
+            _ => DateParseHandling.DateTime
+        };
+
         return new JsonSerializerSettings
         {
             Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Include : NullValueHandling.Ignore
+            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+            DateParseHandling = dateParseHandling
         };
     }
 }

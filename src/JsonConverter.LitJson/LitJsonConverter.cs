@@ -64,4 +64,9 @@ public partial class LitJsonConverter : IJsonConverter
     {
         throw new NotImplementedException();
     }
+
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+       // TODO?
+    }
 }

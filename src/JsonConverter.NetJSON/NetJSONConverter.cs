@@ -27,6 +27,13 @@ public partial class NetJSONConverter : IJsonConverter
             : NetJson.Deserialize<T>(text, ConvertOptions(options));
     }
 
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return options == null
+            ? NetJson.Deserialize(type, text)
+            : NetJson.Deserialize(type, text, ConvertOptions(options));
+    }
+
     public string Serialize(object value, JsonConverterOptions? options = null)
     {
         return options != null ?

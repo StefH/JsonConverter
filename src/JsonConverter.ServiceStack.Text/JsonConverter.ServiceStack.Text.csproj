@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ServiceStack.Text" Version="6.3.0" />
+        <PackageReference Include="ServiceStack.Text" Version="8.4.0" />
         <PackageReference Include="Stef.Validation" Version="0.1.1" />
     </ItemGroup>
 

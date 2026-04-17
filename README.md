@@ -14,15 +14,15 @@ Common interface + implementation for Json Converters:
 
 | Name | Version |
 | - | - |
-| **JsonConverter.Abstractions** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Abstractions)](https://www.nuget.org/packages/JsonConverter.Abstractions)
-| **JsonConverter.Newtonsoft.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Newtonsoft.Json)](https://www.nuget.org/packages/JsonConverter.Newtonsoft.Json)
-| **JsonConverter.System.Text.Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
-| **JsonConverter.SimpleJson** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
-| **JsonConverter.NetJSON** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
-| **JsonConverter.Utf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
-| **JsonConverter.XUtf8Json** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
-| **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
-| **JsonConverter.Argon** | [![NuGet Badge](https://buildstats.info/nuget/JsonConverter.Argon)](https://www.nuget.org/packages/JsonConverter.Argon)
+| **JsonConverter.Abstractions** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Abstractions)](https://www.nuget.org/packages/JsonConverter.Abstractions)
+| **JsonConverter.Newtonsoft.Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Newtonsoft.Json)](https://www.nuget.org/packages/JsonConverter.Newtonsoft.Json)
+| **JsonConverter.System.Text.Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.System.Text.Json)](https://www.nuget.org/packages/JsonConverter.System.Text.Json)
+| **JsonConverter.SimpleJson** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.SimpleJson)](https://www.nuget.org/packages/JsonConverter.SimpleJson)
+| **JsonConverter.NetJSON** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.NetJSON)](https://www.nuget.org/packages/JsonConverter.NetJSON)
+| **JsonConverter.Utf8Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Utf8Json)](https://www.nuget.org/packages/JsonConverter.Utf8Json)
+| **JsonConverter.XUtf8Json** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.XUtf8Json)](https://www.nuget.org/packages/JsonConverter.XUtf8Json)
+| **JsonConverter.ServiceStack.Text** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.ServiceStack.Text)](https://www.nuget.org/packages/JsonConverter.ServiceStack.Text)
+| **JsonConverter.Argon** | [![NuGet Badge](https://img.shields.io/nuget/v/JsonConverter.Argon)](https://www.nuget.org/packages/JsonConverter.Argon)
 
 
 ## Interfaces
@@ -37,6 +37,8 @@ public interface IJsonConverter
     T? Deserialize<T>(Stream stream, IJsonConverterOptions? options = null);
 
     T? Deserialize<T>(string text, IJsonConverterOptions? options = null);
+
+    object? Deserialize(string text, Type type, JsonConverterOptions? options = null);
 
     Task<string> SerializeAsync(object source, IJsonConverterOptions? options = null, CancellationToken cancellationToken = default);
 
@@ -95,3 +97,11 @@ public class DynamicJsonClassOptions
     public FloatBehavior FloatConvertBehavior { get; set; } = FloatBehavior.UseDouble;
 }
 ```
+
+## Sponsors
+
+[Entity Framework Extensions](https://entityframework-extensions.net/?utm_source=StefH) and [Dapper Plus](https://dapper-plus.net/?utm_source=StefH) are major sponsors and proud to contribute to the development of **JsonConverter**.
+
+[![Entity Framework Extensions](https://raw.githubusercontent.com/StefH/resources/main/sponsor/entity-framework-extensions-sponsor.png)](https://entityframework-extensions.net/bulk-insert?utm_source=StefH)
+
+[![Dapper Plus](https://raw.githubusercontent.com/StefH/resources/main/sponsor/dapper-plus-sponsor.png)](https://dapper-plus.net/bulk-insert?utm_source=StefH)

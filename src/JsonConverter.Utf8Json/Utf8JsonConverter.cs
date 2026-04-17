@@ -32,6 +32,11 @@ public class Utf8JsonConverter : IJsonConverter
         return JsonSerializer.Deserialize<T>(text);
     }
 
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        throw new NotSupportedException();
+    }
+
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);

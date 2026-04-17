@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
@@ -30,6 +29,11 @@ public class SystemTextJsonConverter : IJsonConverter
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
         return JsonSerializer.Deserialize<T>(text, ConvertOptions(options));
+    }
+
+    public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
+    {
+        return JsonSerializer.Deserialize(text, type, ConvertOptions(options));
     }
 
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
@@ -99,8 +103,12 @@ public class SystemTextJsonConverter : IJsonConverter
         stream.Position = 0L;
 
         using var reader = new StreamReader(stream);
-        var endAsync = await reader.ReadToEndAsync();
-        return endAsync;
+
+#if NET8_0_OR_GREATER
+        return await reader.ReadToEndAsync(cancellationToken);
+#else
+        return await reader.ReadToEndAsync();
+#endif
     }
 
     private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
@@ -110,11 +118,17 @@ public class SystemTextJsonConverter : IJsonConverter
             return null;
         }
 
-        return new JsonSerializerOptions
+        var jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
             WriteIndented = options.WriteIndented,
             DefaultIgnoreCondition = options.IgnoreNullValues ? JsonIgnoreCondition.WhenWritingNull : JsonIgnoreCondition.Never
         };
+
+        // Note: DateParseHandling is currently ignored by this System.Text.Json implementation.
+        // No custom date parsing behavior is configured here; string properties remain strings by default.
+        // DateParseHandling is mainly supported by the Newtonsoft.Json implementation.
+
+        return jsonOptions;
     }
 }
