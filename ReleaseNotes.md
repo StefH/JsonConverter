@@ -1,3 +1,6 @@
+# 0.9.0 (17 April 2026)
+- [#19](https://github.com/StefH/JsonConverter/pull/19) - JsonConverterOptions:DateParseHandling [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.8.0 (20 December 2025)
 - [#17](https://github.com/StefH/JsonConverter/pull/17) - Fix IgnoreNullValues for NewtonsoftJsonConverter [bug] contributed by [StefH](https://github.com/StefH)
 - [#18](https://github.com/StefH/JsonConverter/pull/18) - .NET 10 [Feature] contributed by [StefH](https://github.com/StefH)
