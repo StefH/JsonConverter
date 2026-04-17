@@ -3,7 +3,7 @@ using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.System.Text.Json;
 
-namespace JsonConverter.Newtonsoft.Json.Tests;
+namespace JsonConverter.System.Text.Json.Tests;
 
 public class DateTestModel
 {
