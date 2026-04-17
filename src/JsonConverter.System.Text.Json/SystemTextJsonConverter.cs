@@ -125,9 +125,9 @@ public class SystemTextJsonConverter : IJsonConverter
             DefaultIgnoreCondition = options.IgnoreNullValues ? JsonIgnoreCondition.WhenWritingNull : JsonIgnoreCondition.Never
         };
 
-        // Note: Custom converter for date handling when DateParseHandling is 0 (None - keep as string)
-        // is not implemented for System.Text.Json as it handles string properties as strings by default.
-        // The DateParseHandling option is mainly supported for Newtonsoft.Json implementation.
+        // Note: DateParseHandling is currently ignored by this System.Text.Json implementation.
+        // No custom date parsing behavior is configured here; string properties remain strings by default.
+        // DateParseHandling is mainly supported by the Newtonsoft.Json implementation.
 
         return jsonOptions;
     }
