@@ -1,3 +1,5 @@
+using System.Globalization;
+using CultureAwareTesting.xUnit;
 using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
@@ -110,9 +112,9 @@ public class UnitTest1
 
         // Assert
         result.Should().NotBeNull();
-        var dateValue = result["dateString"];
+        var dateValue = result!["dateString"];
         dateValue.Should().NotBeNull();
-        dateValue.Type.Should().Be(JTokenType.String);
+        dateValue!.Type.Should().Be(JTokenType.String);
         dateValue.Value<string>().Should().Be("2021-11-10T13:39:13.705");
     }
 
@@ -131,10 +133,32 @@ public class UnitTest1
 
         // Assert
         result.Should().NotBeNull();
-        var dateValue = result["dateString"];
+        var dateValue = result!["dateString"];
         dateValue.Should().NotBeNull();
-        dateValue.Type.Should().Be(JTokenType.Date);
+        dateValue!.Type.Should().Be(JTokenType.Date);
         ((DateTime)dateValue).Should().Be(new DateTime(2021, 11, 10, 13, 39, 13, 705));
+    }
+
+    [CulturedFact("en-US")]
+    public void Deserialize_DateParseHandlingDateTime_ParsesDateAsDateTimeOffset()
+    {
+        // Arrange
+        var offset = new DateTimeOffset(2021, 11, 10, 13, 39, 13, 705, TimeSpan.Zero);
+        var json = $"{{\"dateString\":\"{offset.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz", CultureInfo.InvariantCulture)}\"}}";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 2 // DateTimeOffset
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result!["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue!.Type.Should().Be(JTokenType.Date);
+        ((DateTimeOffset)dateValue).Should().Be(offset);
     }
 
     private static JObject GetJObject()
