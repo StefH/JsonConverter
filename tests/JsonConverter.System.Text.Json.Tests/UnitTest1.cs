@@ -3,7 +3,7 @@ using JsonConverter.Abstractions;
 using JsonConverter.System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace JsonConverter.Newtonsoft.Json.Tests;
+namespace JsonConverter.System.Text.Json.Tests;
 
 public class DateTestModel
 {
