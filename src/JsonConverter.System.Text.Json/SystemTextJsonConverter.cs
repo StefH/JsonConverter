@@ -118,11 +118,17 @@ public class SystemTextJsonConverter : IJsonConverter
             return null;
         }
 
-        return new JsonSerializerOptions
+        var jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
             WriteIndented = options.WriteIndented,
             DefaultIgnoreCondition = options.IgnoreNullValues ? JsonIgnoreCondition.WhenWritingNull : JsonIgnoreCondition.Never
         };
+
+        // Note: DateParseHandling is currently ignored by this System.Text.Json implementation.
+        // No custom date parsing behavior is configured here; string properties remain strings by default.
+        // DateParseHandling is mainly supported by the Newtonsoft.Json implementation.
+
+        return jsonOptions;
     }
 }

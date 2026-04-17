@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Text;
+using CultureAwareTesting.xUnit;
 using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
@@ -93,6 +96,92 @@ public class UnitTest1
 
         // Assert
         instance.Should().BeAssignableTo<DynamicJsonClass>();
+    }
+
+    [Fact]
+    public void Deserialize_DateParseHandlingNone_KeepsDateAsString()
+    {
+        // Arrange
+        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = (int)DateParseHandling.None // None - keep as string
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result!["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue!.Type.Should().Be(JTokenType.String);
+        dateValue.Value<string>().Should().Be("2021-11-10T13:39:13.705");
+    }
+
+    [Fact]
+    public void Deserialize_Stream_DateParseHandlingNone_KeepsDateAsString()
+    {
+        // Arrange
+        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 0 // None - keep as string
+        };
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
+
+        // Act
+        var result = _sut.Deserialize<JObject>(stream, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result!["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue!.Type.Should().Be(JTokenType.String);
+        dateValue.Value<string>().Should().Be("2021-11-10T13:39:13.705");
+    }
+
+    [Fact]
+    public void Deserialize_DateParseHandlingDateTime_ParsesDateAsDateTime()
+    {
+        // Arrange
+        var json = """{"dateString":"2021-11-10T13:39:13.705"}""";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 1 // DateTime
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result!["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue!.Type.Should().Be(JTokenType.Date);
+        ((DateTime)dateValue).Should().Be(new DateTime(2021, 11, 10, 13, 39, 13, 705));
+    }
+
+    [CulturedFact("en-US")]
+    public void Deserialize_DateParseHandlingDateTimeOffset_ParsesDateAsDateTimeOffset()
+    {
+        // Arrange
+        var offset = new DateTimeOffset(2021, 11, 10, 13, 39, 13, 705, TimeSpan.Zero);
+        var json = $"{{\"dateString\":\"{offset.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz", CultureInfo.InvariantCulture)}\"}}";
+        var options = new JsonConverterOptions
+        {
+            DateParseHandling = 2 // DateTimeOffset
+        };
+
+        // Act
+        var result = _sut.Deserialize<JObject>(json, options);
+
+        // Assert
+        result.Should().NotBeNull();
+        var dateValue = result!["dateString"];
+        dateValue.Should().NotBeNull();
+        dateValue!.Type.Should().Be(JTokenType.Date);
+        ((DateTimeOffset)dateValue).Should().Be(offset);
     }
 
     private static JObject GetJObject()
