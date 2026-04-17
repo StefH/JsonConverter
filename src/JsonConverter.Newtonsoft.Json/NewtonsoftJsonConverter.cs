@@ -23,6 +23,8 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
             var serializerSettings = ConvertOptions(options);
             jsonSerializer.Formatting = serializerSettings.Formatting;
             jsonSerializer.NullValueHandling = serializerSettings.NullValueHandling;
+            jsonSerializer.DateParseHandling = serializerSettings.DateParseHandling;
+            jsonTextReader.DateParseHandling = serializerSettings.DateParseHandling;
         }
 
         return jsonSerializer.Deserialize<T>(jsonTextReader);
