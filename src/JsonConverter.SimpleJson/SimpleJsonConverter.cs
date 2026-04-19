@@ -34,7 +34,7 @@ public partial class SimpleJsonConverter : IJsonConverter
 
     public JsonType GetJsonType(Stream stream)
     {
-        return GetJsonType(stream.ReadAsString());
+        return JsonTypeHelper.GetJsonType(stream);
     }
 
     public JsonType GetJsonType(string value)

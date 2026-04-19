@@ -4,6 +4,16 @@ namespace JsonConverter.Abstractions;
 
 public static class JsonTypeHelper
 {
+    public static JsonType GetJsonType(Stream stream)
+    {
+        if (stream == null)
+        {
+            throw new ArgumentNullException(nameof(stream));
+        }
+
+        return GetJsonType(stream.ReadAsString());
+    }
+
     public static JsonType GetJsonType(string value)
     {
         if (value.IsNullOrWhiteSpace())
