@@ -8,5 +8,4 @@ VS rebuild
 
 dir /S/b *.nupkg
 
-
 dotnet nuget push **\*.nupkg -n true -s https://api.nuget.org/v3/index.json --skip-duplicate -k xxx

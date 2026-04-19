@@ -1,3 +1,6 @@
+# 0.10.0 (19 April 2026)
+- [#20](https://github.com/StefH/JsonConverter/pull/20) - Add JsonType [Feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.9.0 (17 April 2026)
 - [#19](https://github.com/StefH/JsonConverter/pull/19) - JsonConverterOptions:DateParseHandling [Feature] contributed by [StefH](https://github.com/StefH)
 
