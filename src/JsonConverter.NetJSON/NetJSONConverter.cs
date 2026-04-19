@@ -41,6 +41,18 @@ public partial class NetJSONConverter : IJsonConverter
             NetJson.Serialize(value);
     }
 
+    public JsonType GetJsonType(Stream stream)
+    {
+        Guard.NotNull(stream);
+
+        return GetJsonType(stream.ReadAsString());
+    }
+
+    public JsonType GetJsonType(string value)
+    {
+        return JsonTypeHelper.GetJsonType(value);
+    }
+
     public bool IsValidJson(Stream stream)
     {
         Guard.NotNull(stream);

@@ -1,6 +1,8 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using FluentAssertions;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Models;
 using JsonConverter.System.Text.Json;
 
 namespace JsonConverter.System.Text.Json.Tests;
@@ -106,5 +108,34 @@ public class UnitTest1
         result.Should().NotBeNull();
         result!.DateString.Should().NotBeNull();
         result.DateString.Should().Be(dateString);
+    }
+
+    [Theory]
+    [InlineData("{\"a\":1}", JsonType.Object)]
+    [InlineData("[1,2,3]", JsonType.Array)]
+    [InlineData("\"value\"", JsonType.String)]
+    [InlineData("123", JsonType.Number)]
+    [InlineData("-1.5", JsonType.Number)]
+    [InlineData("true", JsonType.True)]
+    [InlineData("false", JsonType.False)]
+    [InlineData("null", JsonType.Null)]
+    [InlineData("", JsonType.Undefined)]
+    [InlineData("   ", JsonType.Undefined)]
+    [InlineData("abc", JsonType.Undefined)]
+    public void GetJsonType_String_ReturnsExpectedType(string input, JsonType expected)
+    {
+        var result = _sut.GetJsonType(input);
+
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void GetJsonType_Stream_ReturnsExpectedType()
+    {
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(" { \"a\": 1 } "));
+
+        var result = _sut.GetJsonType(stream);
+
+        result.Should().Be(JsonType.Object);
     }
 }

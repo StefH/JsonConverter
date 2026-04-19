@@ -12,6 +12,10 @@ public partial interface IJsonConverter
 
     string Serialize(object value, JsonConverterOptions? options = null);
 
+    JsonType GetJsonType(Stream stream);
+
+    JsonType GetJsonType(string value);
+
     bool IsValidJson(Stream stream);
 
     bool IsValidJson(string input);
