@@ -1,7 +1,7 @@
 ﻿// ReSharper disable once CheckNamespace
 namespace System;
 
-internal static class StringExtensions
+public static class StringExtensions
 {
     public static bool IsNullOrWhiteSpace(this string? value)
     {

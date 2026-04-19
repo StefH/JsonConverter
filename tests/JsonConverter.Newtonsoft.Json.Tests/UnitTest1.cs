@@ -184,6 +184,35 @@ public class UnitTest1
         ((DateTimeOffset)dateValue).Should().Be(offset);
     }
 
+    [Theory]
+    [InlineData("{\"a\":1}", JsonType.Object)]
+    [InlineData("[1,2,3]", JsonType.Array)]
+    [InlineData("\"value\"", JsonType.String)]
+    [InlineData("123", JsonType.Number)]
+    [InlineData("-1.5", JsonType.Number)]
+    [InlineData("true", JsonType.True)]
+    [InlineData("false", JsonType.False)]
+    [InlineData("null", JsonType.Null)]
+    [InlineData("", JsonType.Undefined)]
+    [InlineData("   ", JsonType.Undefined)]
+    [InlineData("abc", JsonType.Undefined)]
+    public void GetJsonType_String_ReturnsExpectedType(string input, JsonType expected)
+    {
+        var result = _sut.GetJsonType(input);
+
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void GetJsonType_Stream_ReturnsExpectedType()
+    {
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(" [1,2,3] "));
+
+        var result = _sut.GetJsonType(stream);
+
+        result.Should().Be(JsonType.Array);
+    }
+
     private static JObject GetJObject()
     {
         return new JObject

@@ -5,7 +5,7 @@
 		<ProjectUrl>https://github.com/StefH/JsonConverter</ProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryType>git</RepositoryType>
-		<LangVersion>10</LangVersion>
+		<LangVersion>12</LangVersion>
 		<Nullable>enable</Nullable>
 		<GlobalUsings>false</GlobalUsings>
 		<Authors>Stef Heyenrath</Authors>

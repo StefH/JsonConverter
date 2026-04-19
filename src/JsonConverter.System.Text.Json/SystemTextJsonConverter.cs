@@ -36,6 +36,16 @@ public class SystemTextJsonConverter : IJsonConverter
         return JsonSerializer.Deserialize(text, type, ConvertOptions(options));
     }
 
+    public JsonType GetJsonType(Stream stream)
+    {
+        return JsonTypeHelper.GetJsonType(stream);
+    }
+
+    public JsonType GetJsonType(string value)
+    {
+        return JsonTypeHelper.GetJsonType(value);
+    }
+
     public async Task<bool> IsValidJsonAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(stream);

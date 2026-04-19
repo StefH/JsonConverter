@@ -32,6 +32,16 @@ public partial class SimpleJsonConverter : IJsonConverter
         return SimpleJson.SerializeObject(value!) ?? string.Empty;
     }
 
+    public JsonType GetJsonType(Stream stream)
+    {
+        return JsonTypeHelper.GetJsonType(stream);
+    }
+
+    public JsonType GetJsonType(string value)
+    {
+        return JsonTypeHelper.GetJsonType(value);
+    }
+
     public bool IsValidJson(Stream stream)
     {
         return IsValidJson(stream.ReadAsString());

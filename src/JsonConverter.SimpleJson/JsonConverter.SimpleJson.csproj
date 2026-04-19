@@ -30,8 +30,6 @@
 
     <ItemGroup>
       <Compile Include="..\JsonConverter.Abstractions\GlobalUsings.cs" Link="GlobalUsings.cs" />
-      <Compile Include="..\JsonConverter.Newtonsoft.Json\Compatibility\StringExtensions.cs" Link="Compatibility\StringExtensions.cs" />
-      <Compile Include="..\JsonConverter.Newtonsoft.Json\Extensions\StreamExtensions.cs" Link="Extensions\StreamExtensions.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,11 +39,6 @@
         </PackageReference>
         <PackageReference Include="Stef.Validation" Version="0.1.1" />
         <ProjectReference Include="..\JsonConverter.Abstractions\JsonConverter.Abstractions.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-      <Folder Include="Compatibility\" />
     </ItemGroup>
 
     <!-- https://www.meziantou.net/declaring-internalsvisibleto-in-the-csproj.htm -->
