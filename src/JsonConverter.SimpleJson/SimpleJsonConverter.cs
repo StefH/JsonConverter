@@ -72,4 +72,29 @@ public partial class SimpleJsonConverter : IJsonConverter
     {
         throw new NotImplementedException();
     }
+
+    public T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null)
+    {
+        if (value != null && value.GetType() == typeof(T))
+        {
+            return (T)value;
+        }
+
+        return value switch
+        {
+            string stringValue => Deserialize<T>(stringValue, options)!,
+            _ => Deserialize<T>(Serialize(value!, options), options)!
+        };
+    }
+
+    public object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null)
+    {
+        return value switch
+        {
+            JsonObject jsonObject => jsonObject,
+            JsonArray jsonArray => jsonArray,
+            string stringValue => Deserialize<object>(stringValue, options)!,
+            _ => Deserialize<object>(Serialize(value, options), options)!
+        };
+    }
 }

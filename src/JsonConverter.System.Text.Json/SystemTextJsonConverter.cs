@@ -121,6 +121,32 @@ public class SystemTextJsonConverter : IJsonConverter
 #endif
     }
 
+    public T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null)
+    {
+        if (value != null && value.GetType() == typeof(T))
+        {
+            return (T)value;
+        }
+
+        return value switch
+        {
+            JsonElement elementValue => elementValue.Deserialize<T>(ConvertOptions(options))!,
+            JsonDocument documentValue => documentValue.RootElement.Deserialize<T>(ConvertOptions(options))!,
+            _ => throw new NotSupportedException($"Unable to convert value to {typeof(T)}.")
+        };
+    }
+
+    public object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null)
+    {
+        return value switch
+        {
+            JsonElement elementValue => elementValue,
+            JsonDocument documentValue => documentValue.RootElement.Clone(),
+            string stringValue => Deserialize<JsonElement>(stringValue, options),
+            _ => JsonSerializer.SerializeToElement(value, ConvertOptions(options))
+        };
+    }
+
     private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
     {
         if (options == null)

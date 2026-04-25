@@ -1,9 +1,9 @@
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
-using JsonConverter.System.Text.Json;
 
 namespace JsonConverter.System.Text.Json.Tests;
 
@@ -137,5 +137,45 @@ public class UnitTest1
         var result = _sut.GetJsonType(stream);
 
         result.Should().Be(JsonType.Object);
+    }
+
+    [Fact]
+    public void ParseJsonTokenToObject_FromJsonElement_ReturnsTypedObject()
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>("""{"Name":"test","Value":123}""");
+
+        var result = _sut.ParseJsonTokenToObject<TestModel>(element);
+
+        result.Name.Should().Be("test");
+        result.Value.Should().Be(123);
+    }
+
+    [Fact]
+    public void ConvertValueToJsonToken_FromJsonString_ReturnsJsonElement()
+    {
+        var result = _sut.ConvertValueToJsonToken("""{"name":"test","value":123}""");
+
+        result.Should().BeOfType<JsonElement>();
+        var element = (JsonElement)result;
+        element.GetProperty("name").GetString().Should().Be("test");
+        element.GetProperty("value").GetInt32().Should().Be(123);
+    }
+
+    [Fact]
+    public void ConvertValueToJsonToken_FromObject_ReturnsJsonElement()
+    {
+        var result = _sut.ConvertValueToJsonToken(new TestModel { Name = "test", Value = 123 });
+
+        result.Should().BeOfType<JsonElement>();
+        var element = (JsonElement)result;
+        element.GetProperty("Name").GetString().Should().Be("test");
+        element.GetProperty("Value").GetInt32().Should().Be(123);
+    }
+
+    private sealed class TestModel
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public int Value { get; set; }
     }
 }

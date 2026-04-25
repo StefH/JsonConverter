@@ -213,6 +213,53 @@ public class UnitTest1
         result.Should().Be(JsonType.Array);
     }
 
+    [Fact]
+    public void ParseJsonTokenToObject_FromJToken_ReturnsTypedObject()
+    {
+        // Arrange
+        var token = JToken.Parse("""{"name":"test","value":123}""");
+
+        // Act
+        var result = _sut.ParseJsonTokenToObject<TestModel>(token);
+
+        // Assert
+        result.Name.Should().Be("test");
+        result.Value.Should().Be(123);
+    }
+
+    [Fact]
+    public void ConvertValueToJsonToken_FromJsonString_ReturnsJToken()
+    {
+        // Act
+        var result = _sut.ConvertValueToJsonToken("""{"name":"test","value":123}""");
+
+        // Assert
+        result.Should().BeAssignableTo<JToken>();
+        var token = (JToken)result;
+        token["name"]!.Value<string>().Should().Be("test");
+        token["value"]!.Value<int>().Should().Be(123);
+    }
+
+    [Fact]
+    public void ConvertValueToJsonToken_FromObject_ReturnsJObject()
+    {
+        // Act
+        var result = _sut.ConvertValueToJsonToken(new TestModel { Name = "test", Value = 123 });
+
+        // Assert
+        result.Should().BeOfType<JObject>();
+        var token = (JObject)result;
+        token["Name"]!.Value<string>().Should().Be("test");
+        token["Value"]!.Value<int>().Should().Be(123);
+    }
+
+    private sealed class TestModel
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public int Value { get; set; }
+    }
+
     private static JObject GetJObject()
     {
         return new JObject

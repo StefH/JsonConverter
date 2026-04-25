@@ -1,4 +1,5 @@
-﻿using JsonConverter.Abstractions;
+﻿using System.Collections;
+using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
 using JsonConverter.Newtonsoft.Json.Extensions;
 using Newtonsoft.Json;
@@ -128,6 +129,33 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
             JsonConvert.DeserializeObject(text, ConvertOptions(options.JsonConverterOptions));
 
         return result != null ? ConvertToDynamicJsonClass(result) : null;
+    }
+
+    public T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null)
+    {
+        if (value != null && value.GetType() == typeof(T))
+        {
+            return (T)value;
+        }
+
+        return value switch
+        {
+            JToken tokenValue => tokenValue.ToObject<T>()!,
+
+            _ => throw new NotSupportedException($"Unable to convert value to {typeof(T)}.")
+        };
+    }
+
+    public object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null)
+    {
+        // Check if JToken, string, IEnumerable or object
+        return value switch
+        {
+            JToken tokenValue => tokenValue,
+            string stringValue => Deserialize<JToken>(stringValue, options)!,
+            IEnumerable enumerableValue => JArray.FromObject(enumerableValue),
+            _ => JObject.FromObject(value),
+        };
     }
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
