@@ -35,4 +35,8 @@ public partial interface IJsonConverter
     /// <param name="options">The <see cref="DynamicJsonClassOptions"/> (optional).</param>
     /// <returns>object, DynamicJsonClass or DynamicJsonClass-array</returns>
     object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null);
+
+    T ParseJsonToken<T>(object? value, JsonConverterOptions? options = null);
+
+    object ToJsonToken(object value, JsonConverterOptions? options = null);
 }

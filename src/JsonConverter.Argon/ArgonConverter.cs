@@ -1,4 +1,5 @@
-﻿using Argon;
+﻿using System.Collections;
+using Argon;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
 using JsonConverter.Argon.Extensions;
@@ -126,6 +127,36 @@ public partial class ArgonConverter : IJsonConverter
             JsonConvert.DeserializeObject(text, ConvertOptions(options.JsonConverterOptions));
 
         return ConvertToDynamicJsonClass(result);
+    }
+
+    public T ParseJsonToken<T>(object? value, JsonConverterOptions? options = null)
+    {
+        if (value == null)
+        {
+            return default!;
+        }
+
+        if (value.GetType() == typeof(T))
+        {
+            return (T)value;
+        }
+
+        return value switch
+        {
+            JToken tokenValue => tokenValue.ToObject<T>()!,
+            _ => Deserialize<T>(Serialize(value, options), options)!
+        };
+    }
+
+    public object ToJsonToken(object value, JsonConverterOptions? options = null)
+    {
+        return value switch
+        {
+            JToken tokenValue => tokenValue,
+            string stringValue => Deserialize<JToken>(stringValue, options)!,
+            IEnumerable enumerableValue => JArray.FromObject(enumerableValue),
+            _ => JObject.FromObject(value),
+        };
     }
 
     private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)

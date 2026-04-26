@@ -1,9 +1,9 @@
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAssertions;
 using JsonConverter.Abstractions;
 using JsonConverter.Abstractions.Models;
-using JsonConverter.System.Text.Json;
 
 namespace JsonConverter.System.Text.Json.Tests;
 
@@ -137,5 +137,68 @@ public class UnitTest1
         var result = _sut.GetJsonType(stream);
 
         result.Should().Be(JsonType.Object);
+    }
+
+    [Fact]
+    public void ParseJsonToken_FromJsonElement_ReturnsTypedObject()
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>("""{"Name":"test","Value":123}""");
+
+        var result = _sut.ParseJsonToken<TestModel>(element);
+
+        result.Name.Should().Be("test");
+        result.Value.Should().Be(123);
+    }
+
+    [Fact]
+    public void ToJsonToken_FromJsonString_ReturnsJsonElement()
+    {
+        var result = _sut.ToJsonToken("""{"name":"test","value":123}""");
+
+        result.Should().BeOfType<JsonElement>();
+        var element = (JsonElement)result;
+        element.GetProperty("name").GetString().Should().Be("test");
+        element.GetProperty("value").GetInt32().Should().Be(123);
+    }
+
+    [Fact]
+    public void ToJsonToken_FromObject_ReturnsJsonElement()
+    {
+        var result = _sut.ToJsonToken(new TestModel { Name = "test", Value = 123 });
+
+        result.Should().BeOfType<JsonElement>();
+        var element = (JsonElement)result;
+        element.GetProperty("Name").GetString().Should().Be("test");
+        element.GetProperty("Value").GetInt32().Should().Be(123);
+    }
+
+    [Fact]
+    public void ParseJsonToken_WhenValueIsNull_ReturnsDefault()
+    {
+        var result = _sut.ParseJsonToken<TestModel>(null);
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void ParseJsonToken_WhenValueIsPlainObject_UsesFallbackSerialization()
+    {
+        var source = new
+        {
+            Name = "fallback",
+            Value = 99
+        };
+
+        var result = _sut.ParseJsonToken<TestModel>(source);
+
+        result.Name.Should().Be("fallback");
+        result.Value.Should().Be(99);
+    }
+
+    private sealed class TestModel
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public int Value { get; set; }
     }
 }
