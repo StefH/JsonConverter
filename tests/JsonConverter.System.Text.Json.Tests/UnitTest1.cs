@@ -140,7 +140,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ParseJsonTokenToObject_FromJsonElement_ReturnsTypedObject()
+    public void ParseJsonToken_FromJsonElement_ReturnsTypedObject()
     {
         var element = JsonSerializer.Deserialize<JsonElement>("""{"Name":"test","Value":123}""");
 
@@ -151,7 +151,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ConvertValueToJsonToken_FromJsonString_ReturnsJsonElement()
+    public void ToJsonToken_FromJsonString_ReturnsJsonElement()
     {
         var result = _sut.ToJsonToken("""{"name":"test","value":123}""");
 
@@ -162,7 +162,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ConvertValueToJsonToken_FromObject_ReturnsJsonElement()
+    public void ToJsonToken_FromObject_ReturnsJsonElement()
     {
         var result = _sut.ToJsonToken(new TestModel { Name = "test", Value = 123 });
 
@@ -173,7 +173,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ParseJsonTokenToObject_WhenValueIsNull_ReturnsDefault()
+    public void ParseJsonToken_WhenValueIsNull_ReturnsDefault()
     {
         var result = _sut.ParseJsonToken<TestModel>(null);
 
@@ -181,7 +181,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ParseJsonTokenToObject_WhenValueIsPlainObject_UsesFallbackSerialization()
+    public void ParseJsonToken_WhenValueIsPlainObject_UsesFallbackSerialization()
     {
         var source = new
         {

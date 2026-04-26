@@ -214,7 +214,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ParseJsonTokenToObject_FromJToken_ReturnsTypedObject()
+    public void ParseJsonToken_FromJToken_ReturnsTypedObject()
     {
         // Arrange
         var token = JToken.Parse("""{"name":"test","value":123}""");
@@ -228,7 +228,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ConvertValueToJsonToken_FromJsonString_ReturnsJToken()
+    public void ToJsonToken_FromJsonString_ReturnsJToken()
     {
         // Act
         var result = _sut.ToJsonToken("""{"name":"test","value":123}""");
@@ -241,7 +241,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void ConvertValueToJsonToken_FromObject_ReturnsJObject()
+    public void ToJsonToken_FromObject_ReturnsJObject()
     {
         // Act
         var result = _sut.ToJsonToken(new TestModel { Name = "test", Value = 123 });
