@@ -121,9 +121,14 @@ public class ServiceStackJsonConverter : IJsonConverter
         throw new NotImplementedException();
     }
 
-    public T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null)
+    public T ParseJsonToken<T>(object? value, JsonConverterOptions? options = null)
     {
-        if (value != null && value.GetType() == typeof(T))
+        if (value == null)
+        {
+            return default!;
+        }
+
+        if (value.GetType() == typeof(T))
         {
             return (T)value;
         }
@@ -131,11 +136,11 @@ public class ServiceStackJsonConverter : IJsonConverter
         return value switch
         {
             string stringValue => Deserialize<T>(stringValue, options)!,
-            _ => Deserialize<T>(Serialize(value!, options), options)!
+            _ => Deserialize<T>(Serialize(value, options), options)!
         };
     }
 
-    public object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null)
+    public object ToJsonToken(object value, JsonConverterOptions? options = null)
     {
         return value switch
         {

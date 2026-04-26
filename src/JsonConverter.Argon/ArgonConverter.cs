@@ -129,9 +129,14 @@ public partial class ArgonConverter : IJsonConverter
         return ConvertToDynamicJsonClass(result);
     }
 
-    public T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null)
+    public T ParseJsonToken<T>(object? value, JsonConverterOptions? options = null)
     {
-        if (value != null && value.GetType() == typeof(T))
+        if (value == null)
+        {
+            return default!;
+        }
+
+        if (value.GetType() == typeof(T))
         {
             return (T)value;
         }
@@ -139,11 +144,11 @@ public partial class ArgonConverter : IJsonConverter
         return value switch
         {
             JToken tokenValue => tokenValue.ToObject<T>()!,
-            _ => throw new NotSupportedException($"Unable to convert value to {typeof(T)}.")
+            _ => Deserialize<T>(Serialize(value, options), options)!
         };
     }
 
-    public object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null)
+    public object ToJsonToken(object value, JsonConverterOptions? options = null)
     {
         return value switch
         {

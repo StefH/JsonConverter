@@ -36,7 +36,7 @@ public partial interface IJsonConverter
     /// <returns>object, DynamicJsonClass or DynamicJsonClass-array</returns>
     object? DeserializeToDynamicJsonClass(string text, DynamicJsonClassOptions? options = null);
 
-    T ParseJsonTokenToObject<T>(object? value, JsonConverterOptions? options = null);
+    T ParseJsonToken<T>(object? value, JsonConverterOptions? options = null);
 
-    object ConvertValueToJsonToken(object value, JsonConverterOptions? options = null);
+    object ToJsonToken(object value, JsonConverterOptions? options = null);
 }

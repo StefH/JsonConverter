@@ -220,7 +220,7 @@ public class UnitTest1
         var token = JToken.Parse("""{"name":"test","value":123}""");
 
         // Act
-        var result = _sut.ParseJsonTokenToObject<TestModel>(token);
+        var result = _sut.ParseJsonToken<TestModel>(token);
 
         // Assert
         result.Name.Should().Be("test");
@@ -231,7 +231,7 @@ public class UnitTest1
     public void ConvertValueToJsonToken_FromJsonString_ReturnsJToken()
     {
         // Act
-        var result = _sut.ConvertValueToJsonToken("""{"name":"test","value":123}""");
+        var result = _sut.ToJsonToken("""{"name":"test","value":123}""");
 
         // Assert
         result.Should().BeAssignableTo<JToken>();
@@ -244,13 +244,41 @@ public class UnitTest1
     public void ConvertValueToJsonToken_FromObject_ReturnsJObject()
     {
         // Act
-        var result = _sut.ConvertValueToJsonToken(new TestModel { Name = "test", Value = 123 });
+        var result = _sut.ToJsonToken(new TestModel { Name = "test", Value = 123 });
 
         // Assert
         result.Should().BeOfType<JObject>();
         var token = (JObject)result;
         token["Name"]!.Value<string>().Should().Be("test");
         token["Value"]!.Value<int>().Should().Be(123);
+    }
+
+    [Fact]
+    public void ParseJsonToken_WhenValueIsNull_ReturnsDefault()
+    {
+        // Act
+        var result = _sut.ParseJsonToken<TestModel>(null);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void ParseJsonToken_WhenValueIsPlainObject_UsesFallbackSerialization()
+    {
+        // Arrange
+        var source = new
+        {
+            Name = "fallback",
+            Value = 99
+        };
+
+        // Act
+        var result = _sut.ParseJsonToken<TestModel>(source);
+
+        // Assert
+        result.Name.Should().Be("fallback");
+        result.Value.Should().Be(99);
     }
 
     private sealed class TestModel
