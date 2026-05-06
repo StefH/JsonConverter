@@ -8,6 +8,21 @@ namespace JsonConverter.System.Text.Json;
 
 public class SystemTextJsonConverter : IJsonConverter
 {
+    private readonly JsonSerializerOptions? _jsonSerializerOptions;
+
+    public SystemTextJsonConverter() : this(jsonSerializerOptions: null)
+    {
+    }
+
+    /// <summary>
+    /// Ctor with user provided <see cref="JsonSerializerOptions"/>
+    /// </summary>
+    /// <param name="jsonSerializerOptions">If not <c>null</c> then <see cref="JsonConverterOptions"/> will be ignored</param>
+    public SystemTextJsonConverter(JsonSerializerOptions? jsonSerializerOptions)
+    {
+        _jsonSerializerOptions = jsonSerializerOptions;
+    }
+
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
@@ -152,8 +167,13 @@ public class SystemTextJsonConverter : IJsonConverter
         };
     }
 
-    private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
+    private JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
     {
+        if (_jsonSerializerOptions != null)
+        {
+            return _jsonSerializerOptions;
+        }
+
         if (options == null)
         {
             return null;
