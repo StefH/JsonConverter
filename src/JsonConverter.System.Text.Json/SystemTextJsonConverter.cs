@@ -29,7 +29,7 @@ public class SystemTextJsonConverter : IJsonConverter
         Guard.Condition(stream, s => s.CanSeek);
 
         stream.Seek(0L, SeekOrigin.Begin);
-        return JsonSerializer.Deserialize<T>(stream, options == null ? null : ConvertOptions(options));
+        return JsonSerializer.Deserialize<T>(stream, ConvertOptions(options));
     }
 
     public async Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
@@ -38,7 +38,7 @@ public class SystemTextJsonConverter : IJsonConverter
         Guard.Condition(stream, s => s.CanSeek);
 
         stream.Seek(0L, SeekOrigin.Begin);
-        return await JsonSerializer.DeserializeAsync<T>(stream, options == null ? null : ConvertOptions(options), cancellationToken).ConfigureAwait(false);
+        return await JsonSerializer.DeserializeAsync<T>(stream, ConvertOptions(options), cancellationToken).ConfigureAwait(false);
     }
 
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
@@ -118,13 +118,13 @@ public class SystemTextJsonConverter : IJsonConverter
     {
         Guard.NotNull(stream);
 
-        return JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
+        return JsonSerializer.SerializeAsync(stream, value, ConvertOptions(options), cancellationToken);
     }
 
     public async Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         using var stream = new MemoryStream();
-        await JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
+        await JsonSerializer.SerializeAsync(stream, value, ConvertOptions(options), cancellationToken);
         stream.Position = 0L;
 
         using var reader = new StreamReader(stream);
