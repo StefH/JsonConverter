@@ -10,6 +10,21 @@ namespace JsonConverter.Newtonsoft.Json;
 
 public partial class NewtonsoftJsonConverter : IJsonConverter
 {
+    private readonly JsonSerializerSettings? _jsonSerializerSettings;
+
+    public NewtonsoftJsonConverter() : this(jsonSerializerSettings: null)
+    {
+    }
+
+    /// <summary>
+    /// Ctor with user provided <see cref="JsonSerializerSettings"/>
+    /// </summary>
+    /// <param name="jsonSerializerSettings">If not <c>null</c> then <see cref="JsonConverterOptions"/> will be applied</param>
+    public NewtonsoftJsonConverter(JsonSerializerSettings? jsonSerializerSettings)
+    {
+        _jsonSerializerSettings = jsonSerializerSettings;
+    }
+
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
@@ -162,20 +177,23 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         };
     }
 
-    private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
+    private JsonSerializerSettings ConvertOptions(JsonConverterOptions? options)
     {
-        var dateParseHandling = options.DateParseHandling switch
+        var result = _jsonSerializerSettings ?? new JsonSerializerSettings();
+
+        result.Formatting = options?.WriteIndented == true
+            ? Formatting.Indented
+            : Formatting.None;
+        result.NullValueHandling = options?.IgnoreNullValues == true
+            ? NullValueHandling.Ignore
+            : NullValueHandling.Include;
+        result.DateParseHandling = options?.DateParseHandling switch
         {
             0 => DateParseHandling.None,
             2 => DateParseHandling.DateTimeOffset,
             _ => DateParseHandling.DateTime
         };
 
-        return new JsonSerializerSettings
-        {
-            Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-            DateParseHandling = dateParseHandling
-        };
+        return result;
     }
 }
