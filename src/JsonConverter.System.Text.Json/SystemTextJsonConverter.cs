@@ -167,29 +167,24 @@ public class SystemTextJsonConverter : IJsonConverter
         };
     }
 
-    private JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
+    private JsonSerializerOptions ConvertOptions(JsonConverterOptions? options)
     {
-        if (_jsonSerializerOptions != null)
+#if NET8_0_OR_GREATER
+        var defaultJsonSerializerOptions = JsonSerializerOptions.Default;
+#else
+        var defaultJsonSerializerOptions = new JsonSerializerOptions();
+#endif
+        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? defaultJsonSerializerOptions);
+
+        if (options != null)
         {
-            return _jsonSerializerOptions;
+            result.PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive;
+            result.WriteIndented = options.WriteIndented;
+            result.DefaultIgnoreCondition = options.IgnoreNullValues
+                ? JsonIgnoreCondition.WhenWritingNull
+                : JsonIgnoreCondition.Never;
         }
 
-        if (options == null)
-        {
-            return null;
-        }
-
-        var jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
-            WriteIndented = options.WriteIndented,
-            DefaultIgnoreCondition = options.IgnoreNullValues ? JsonIgnoreCondition.WhenWritingNull : JsonIgnoreCondition.Never
-        };
-
-        // Note: DateParseHandling is currently ignored by this System.Text.Json implementation.
-        // No custom date parsing behavior is configured here; string properties remain strings by default.
-        // DateParseHandling is mainly supported by the Newtonsoft.Json implementation.
-
-        return jsonOptions;
+        return result;
     }
 }
