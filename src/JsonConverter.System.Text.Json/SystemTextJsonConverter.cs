@@ -174,16 +174,15 @@ public class SystemTextJsonConverter : IJsonConverter
 #else
         var defaultJsonSerializerOptions = new JsonSerializerOptions();
 #endif
-        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? defaultJsonSerializerOptions);
 
-        if (options != null)
+        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? defaultJsonSerializerOptions)
         {
-            result.PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive;
-            result.WriteIndented = options.WriteIndented;
-            result.DefaultIgnoreCondition = options.IgnoreNullValues
+            PropertyNameCaseInsensitive = options?.PropertyNameCaseInsensitive ?? false,
+            WriteIndented = options?.WriteIndented ?? false,
+            DefaultIgnoreCondition = options?.IgnoreNullValues == true
                 ? JsonIgnoreCondition.WhenWritingNull
-                : JsonIgnoreCondition.Never;
-        }
+                : JsonIgnoreCondition.Never
+        };
 
         return result;
     }
