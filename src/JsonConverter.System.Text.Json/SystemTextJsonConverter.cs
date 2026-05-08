@@ -16,15 +16,14 @@ public class SystemTextJsonConverter : IJsonConverter
 
     private readonly JsonSerializerOptions? _jsonSerializerOptions;
 
-    public SystemTextJsonConverter() : this(jsonSerializerOptions: null)
+    public SystemTextJsonConverter()
     {
     }
 
     /// <summary>
     /// Ctor with user provided <see cref="JsonSerializerOptions"/>
     /// </summary>
-    /// <param name="jsonSerializerOptions">If not <c>null</c> then <see cref="JsonConverterOptions"/> will be applied</param>
-    public SystemTextJsonConverter(JsonSerializerOptions? jsonSerializerOptions)
+    public SystemTextJsonConverter(JsonSerializerOptions jsonSerializerOptions)
     {
         _jsonSerializerOptions = jsonSerializerOptions;
     }

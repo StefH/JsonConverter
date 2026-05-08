@@ -14,15 +14,14 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
     private readonly JsonSerializerSettings? _jsonSerializerSettings;
 
-    public NewtonsoftJsonConverter() : this(jsonSerializerSettings: null)
+    public NewtonsoftJsonConverter()
     {
     }
 
     /// <summary>
     /// Ctor with user provided <see cref="JsonSerializerSettings"/>
     /// </summary>
-    /// <param name="jsonSerializerSettings">If not <c>null</c> then <see cref="JsonConverterOptions"/> will be applied</param>
-    public NewtonsoftJsonConverter(JsonSerializerSettings? jsonSerializerSettings)
+    public NewtonsoftJsonConverter(JsonSerializerSettings jsonSerializerSettings)
     {
         _jsonSerializerSettings = jsonSerializerSettings;
     }
