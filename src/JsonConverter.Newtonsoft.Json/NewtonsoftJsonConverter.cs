@@ -10,6 +10,8 @@ namespace JsonConverter.Newtonsoft.Json;
 
 public partial class NewtonsoftJsonConverter : IJsonConverter
 {
+    private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
+
     private readonly JsonSerializerSettings? _jsonSerializerSettings;
 
     public NewtonsoftJsonConverter() : this(jsonSerializerSettings: null)
@@ -162,7 +164,7 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
     private JsonSerializerSettings ConvertOptions(JsonConverterOptions? options)
     {
-        var result = _jsonSerializerSettings ?? new JsonSerializerSettings();
+        var result = new JsonSerializerSettings(_jsonSerializerSettings ?? DefaultSettings);
 
         result.Formatting = options?.WriteIndented == true
             ? Formatting.Indented

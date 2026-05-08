@@ -8,6 +8,12 @@ namespace JsonConverter.System.Text.Json;
 
 public class SystemTextJsonConverter : IJsonConverter
 {
+#if NET8_0_OR_GREATER
+    private static readonly JsonSerializerOptions DefaultOptions = JsonSerializerOptions.Default;
+#else
+    private static readonly JsonSerializerOptions DefaultOptions = new JsonSerializerOptions();
+#endif
+
     private readonly JsonSerializerOptions? _jsonSerializerOptions;
 
     public SystemTextJsonConverter() : this(jsonSerializerOptions: null)
@@ -169,13 +175,7 @@ public class SystemTextJsonConverter : IJsonConverter
 
     private JsonSerializerOptions ConvertOptions(JsonConverterOptions? options)
     {
-#if NET8_0_OR_GREATER
-        var defaultJsonSerializerOptions = JsonSerializerOptions.Default;
-#else
-        var defaultJsonSerializerOptions = new JsonSerializerOptions();
-#endif
-
-        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? defaultJsonSerializerOptions)
+        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? DefaultOptions)
         {
             PropertyNameCaseInsensitive = options?.PropertyNameCaseInsensitive ?? false,
             WriteIndented = options?.WriteIndented ?? false,
