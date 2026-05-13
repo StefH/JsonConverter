@@ -174,6 +174,10 @@ public class SystemTextJsonConverter : IJsonConverter
 
     private JsonSerializerOptions ConvertOptions(JsonConverterOptions? options)
     {
+        // Note: DateParseHandling is currently ignored by JsonConverterOptions in this System.Text.Json implementation.
+        // To have custom date parsing behavior configured use user-provided JsonSerializerOptions
+        // More on that in https://learn.microsoft.com/en-us/dotnet/standard/datetime/system-text-json-support
+
         return new JsonSerializerOptions(_jsonSerializerOptions ?? DefaultOptions)
         {
             PropertyNameCaseInsensitive = options?.PropertyNameCaseInsensitive ?? false,
