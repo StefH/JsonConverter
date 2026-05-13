@@ -163,21 +163,20 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
     private JsonSerializerSettings ConvertOptions(JsonConverterOptions? options)
     {
-        var result = new JsonSerializerSettings(_jsonSerializerSettings ?? DefaultSettings);
-
-        result.Formatting = options?.WriteIndented == true
-            ? Formatting.Indented
-            : Formatting.None;
-        result.NullValueHandling = options?.IgnoreNullValues == true
-            ? NullValueHandling.Ignore
-            : NullValueHandling.Include;
-        result.DateParseHandling = options?.DateParseHandling switch
+        return new JsonSerializerSettings(_jsonSerializerSettings ?? DefaultSettings)
         {
-            0 => DateParseHandling.None,
-            2 => DateParseHandling.DateTimeOffset,
-            _ => DateParseHandling.DateTime
+            Formatting = options?.WriteIndented == true
+                ? Formatting.Indented
+                : Formatting.None,
+            NullValueHandling = options?.IgnoreNullValues == true
+                ? NullValueHandling.Ignore
+                : NullValueHandling.Include,
+            DateParseHandling = options?.DateParseHandling switch
+            {
+                0 => DateParseHandling.None,
+                2 => DateParseHandling.DateTimeOffset,
+                _ => DateParseHandling.DateTime
+            }
         };
-
-        return result;
     }
 }

@@ -174,7 +174,7 @@ public class SystemTextJsonConverter : IJsonConverter
 
     private JsonSerializerOptions ConvertOptions(JsonConverterOptions? options)
     {
-        var result = new JsonSerializerOptions(_jsonSerializerOptions ?? DefaultOptions)
+        return new JsonSerializerOptions(_jsonSerializerOptions ?? DefaultOptions)
         {
             PropertyNameCaseInsensitive = options?.PropertyNameCaseInsensitive ?? false,
             WriteIndented = options?.WriteIndented ?? false,
@@ -182,7 +182,5 @@ public class SystemTextJsonConverter : IJsonConverter
                 ? JsonIgnoreCondition.WhenWritingNull
                 : JsonIgnoreCondition.Never
         };
-
-        return result;
     }
 }
