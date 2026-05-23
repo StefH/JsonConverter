@@ -1,3 +1,7 @@
+# 0.12.0 (23 May 2026)
+- [#22](https://github.com/StefH/JsonConverter/pull/22) - System.Text.Json and Newtonsoft.Json accept user-provided JsonSerializerOptions [feature] contributed by [Stepami](https://github.com/Stepami)
+- [#23](https://github.com/StefH/JsonConverter/pull/23) - Add GitHub actions to build, test and publish NuGet packages [feature] contributed by [StefH](https://github.com/StefH)
+
 # 0.11.0 (26 April 2026)
 - [#21](https://github.com/StefH/JsonConverter/pull/21) - Add ParseJsonTokenToObject and ConvertValueToJsonToken [feature] contributed by [StefH](https://github.com/StefH)
 
