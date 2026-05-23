@@ -195,10 +195,44 @@ public class UnitTest1
         result.Value.Should().Be(99);
     }
 
+    [Fact]
+    public void Serialize_UserProvidedSettings_Success()
+    {
+        // Arrange
+        var jsonSerializerOptions = new JsonSerializerOptions
+        {
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        };
+        var sut = new SystemTextJsonConverter(jsonSerializerOptions);
+
+        var classWithEnum = new ClassWithEnum
+        {
+            Type = (ClassWithEnumType)Random.Shared.Next(3)
+        };
+
+        // Act
+        var result = sut.Serialize(classWithEnum, options: null);
+
+        // Assert
+        result.Should().Contain(classWithEnum.Type.ToString().ToLower());
+    }
+
     private sealed class TestModel
     {
         public string Name { get; set; } = string.Empty;
 
         public int Value { get; set; }
+    }
+
+    private sealed class ClassWithEnum
+    {
+        public ClassWithEnumType Type { get; set; }
+    }
+
+    private enum ClassWithEnumType
+    {
+        Default = 0,
+        First = 1,
+        Second = 2
     }
 }

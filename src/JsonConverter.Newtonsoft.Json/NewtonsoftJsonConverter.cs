@@ -10,6 +10,22 @@ namespace JsonConverter.Newtonsoft.Json;
 
 public partial class NewtonsoftJsonConverter : IJsonConverter
 {
+    private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
+
+    private readonly JsonSerializerSettings? _jsonSerializerSettings;
+
+    public NewtonsoftJsonConverter()
+    {
+    }
+
+    /// <summary>
+    /// Ctor with user provided <see cref="JsonSerializerSettings"/>
+    /// </summary>
+    public NewtonsoftJsonConverter(JsonSerializerSettings jsonSerializerSettings)
+    {
+        _jsonSerializerSettings = jsonSerializerSettings;
+    }
+
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
@@ -17,39 +33,24 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
 
         using var streamReader = new StreamReader(stream);
         using var jsonTextReader = new JsonTextReader(streamReader);
-        var jsonSerializer = new JsonSerializer();
-
-        if (options != null)
-        {
-            var serializerSettings = ConvertOptions(options);
-            jsonSerializer.Formatting = serializerSettings.Formatting;
-            jsonSerializer.NullValueHandling = serializerSettings.NullValueHandling;
-            jsonSerializer.DateParseHandling = serializerSettings.DateParseHandling;
-            jsonTextReader.DateParseHandling = serializerSettings.DateParseHandling;
-        }
+        var jsonSerializer = JsonSerializer.Create(ConvertOptions(options));
 
         return jsonSerializer.Deserialize<T>(jsonTextReader);
     }
 
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
     {
-        return options == null
-            ? JsonConvert.DeserializeObject<T>(text)
-            : JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
+        return JsonConvert.DeserializeObject<T>(text, ConvertOptions(options));
     }
 
     public object? Deserialize(string text, Type type, JsonConverterOptions? options = null)
     {
-        return options == null
-            ? JsonConvert.DeserializeObject(text, type)
-            : JsonConvert.DeserializeObject(text, type, ConvertOptions(options));
+        return JsonConvert.DeserializeObject(text, type, ConvertOptions(options));
     }
 
     public string Serialize(object value, JsonConverterOptions? options = null)
     {
-        return options != null ?
-            JsonConvert.SerializeObject(value, ConvertOptions(options)) :
-            JsonConvert.SerializeObject(value);
+        return JsonConvert.SerializeObject(value, ConvertOptions(options));
     }
 
     public JsonType GetJsonType(Stream stream)
@@ -124,9 +125,7 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
     {
         Guard.NotNullOrEmpty(text);
 
-        var result = options?.JsonConverterOptions == null ? 
-            JsonConvert.DeserializeObject(text) : 
-            JsonConvert.DeserializeObject(text, ConvertOptions(options.JsonConverterOptions));
+        var result = JsonConvert.DeserializeObject(text, ConvertOptions(options?.JsonConverterOptions));
 
         return result != null ? ConvertToDynamicJsonClass(result) : null;
     }
@@ -162,20 +161,22 @@ public partial class NewtonsoftJsonConverter : IJsonConverter
         };
     }
 
-    private static JsonSerializerSettings ConvertOptions(JsonConverterOptions options)
+    private JsonSerializerSettings ConvertOptions(JsonConverterOptions? options)
     {
-        var dateParseHandling = options.DateParseHandling switch
+        return new JsonSerializerSettings(_jsonSerializerSettings ?? DefaultSettings)
         {
-            0 => DateParseHandling.None,
-            2 => DateParseHandling.DateTimeOffset,
-            _ => DateParseHandling.DateTime
-        };
-
-        return new JsonSerializerSettings
-        {
-            Formatting = options.WriteIndented ? Formatting.Indented : Formatting.None,
-            NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-            DateParseHandling = dateParseHandling
+            Formatting = options?.WriteIndented == true
+                ? Formatting.Indented
+                : Formatting.None,
+            NullValueHandling = options?.IgnoreNullValues == true
+                ? NullValueHandling.Ignore
+                : NullValueHandling.Include,
+            DateParseHandling = options?.DateParseHandling switch
+            {
+                0 => DateParseHandling.None,
+                2 => DateParseHandling.DateTimeOffset,
+                _ => DateParseHandling.DateTime
+            }
         };
     }
 }

@@ -8,13 +8,33 @@ namespace JsonConverter.System.Text.Json;
 
 public class SystemTextJsonConverter : IJsonConverter
 {
+#if NET8_0_OR_GREATER
+    private static readonly JsonSerializerOptions DefaultOptions = JsonSerializerOptions.Default;
+#else
+    private static readonly JsonSerializerOptions DefaultOptions = new JsonSerializerOptions();
+#endif
+
+    private readonly JsonSerializerOptions? _jsonSerializerOptions;
+
+    public SystemTextJsonConverter()
+    {
+    }
+
+    /// <summary>
+    /// Ctor with user provided <see cref="JsonSerializerOptions"/>
+    /// </summary>
+    public SystemTextJsonConverter(JsonSerializerOptions jsonSerializerOptions)
+    {
+        _jsonSerializerOptions = jsonSerializerOptions;
+    }
+
     public T? Deserialize<T>(Stream stream, JsonConverterOptions? options = null)
     {
         Guard.NotNull(stream);
         Guard.Condition(stream, s => s.CanSeek);
 
         stream.Seek(0L, SeekOrigin.Begin);
-        return JsonSerializer.Deserialize<T>(stream, options == null ? null : ConvertOptions(options));
+        return JsonSerializer.Deserialize<T>(stream, ConvertOptions(options));
     }
 
     public async Task<T?> DeserializeAsync<T>(Stream stream, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
@@ -23,7 +43,7 @@ public class SystemTextJsonConverter : IJsonConverter
         Guard.Condition(stream, s => s.CanSeek);
 
         stream.Seek(0L, SeekOrigin.Begin);
-        return await JsonSerializer.DeserializeAsync<T>(stream, options == null ? null : ConvertOptions(options), cancellationToken).ConfigureAwait(false);
+        return await JsonSerializer.DeserializeAsync<T>(stream, ConvertOptions(options), cancellationToken).ConfigureAwait(false);
     }
 
     public T? Deserialize<T>(string text, JsonConverterOptions? options = null)
@@ -103,13 +123,13 @@ public class SystemTextJsonConverter : IJsonConverter
     {
         Guard.NotNull(stream);
 
-        return JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
+        return JsonSerializer.SerializeAsync(stream, value, ConvertOptions(options), cancellationToken);
     }
 
     public async Task<string> SerializeAsync(object value, JsonConverterOptions? options = null, CancellationToken cancellationToken = default)
     {
         using var stream = new MemoryStream();
-        await JsonSerializer.SerializeAsync(stream, value, options == null ? null : ConvertOptions(options), cancellationToken);
+        await JsonSerializer.SerializeAsync(stream, value, ConvertOptions(options), cancellationToken);
         stream.Position = 0L;
 
         using var reader = new StreamReader(stream);
@@ -152,24 +172,19 @@ public class SystemTextJsonConverter : IJsonConverter
         };
     }
 
-    private static JsonSerializerOptions? ConvertOptions(JsonConverterOptions? options)
+    private JsonSerializerOptions ConvertOptions(JsonConverterOptions? options)
     {
-        if (options == null)
-        {
-            return null;
-        }
+        // Note: DateParseHandling is currently ignored by JsonConverterOptions in this System.Text.Json implementation.
+        // To have custom date parsing behavior configured use user-provided JsonSerializerOptions
+        // More on that in https://learn.microsoft.com/en-us/dotnet/standard/datetime/system-text-json-support
 
-        var jsonOptions = new JsonSerializerOptions
+        return new JsonSerializerOptions(_jsonSerializerOptions ?? DefaultOptions)
         {
-            PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
-            WriteIndented = options.WriteIndented,
-            DefaultIgnoreCondition = options.IgnoreNullValues ? JsonIgnoreCondition.WhenWritingNull : JsonIgnoreCondition.Never
+            PropertyNameCaseInsensitive = options?.PropertyNameCaseInsensitive ?? false,
+            WriteIndented = options?.WriteIndented ?? false,
+            DefaultIgnoreCondition = options?.IgnoreNullValues == true
+                ? JsonIgnoreCondition.WhenWritingNull
+                : JsonIgnoreCondition.Never
         };
-
-        // Note: DateParseHandling is currently ignored by this System.Text.Json implementation.
-        // No custom date parsing behavior is configured here; string properties remain strings by default.
-        // DateParseHandling is mainly supported by the Newtonsoft.Json implementation.
-
-        return jsonOptions;
     }
 }
