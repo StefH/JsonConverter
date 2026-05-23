@@ -1,0 +1,32 @@
+name: Build and Test
+
+on: 
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-and-test:
+    name: Build and Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2022]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: 'Build'
+      run: dotnet build ./JsonConverter.sln -c Release
+
+    - name: 'Test Newtonsoft.Json'  
+      run: dotnet test ./tests/JsonConverter.Newtonsoft.Json.Tests/JsonConverter.Newtonsoft.Json.Tests.csproj -c Release
+
+    - name: 'Test System.Text.Json'
+      run: dotnet test ./tests/JsonConverter.System.Text.Json.Tests/JsonConverter.System.Text.Json.Tests.csproj -c Release
+
+    - name: 'Test SimpleJson'
+      run: dotnet test ./tests/SimpleJson.Tests/SimpleJson.Tests.csproj -c Release
