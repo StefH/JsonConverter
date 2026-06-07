@@ -1,5 +1,6 @@
 # 0.13.0 (07 June 2026)
 - [#25](https://github.com/StefH/JsonConverter/pull/25) - Change namespace for extension-classes in JsonConverter.Abstractions [bug] contributed by [StefH](https://github.com/StefH)
+- [#24](https://github.com/StefH/JsonConverter/issues/24) - Adding StringExtensions.IsNullOrWhiteSpace in the System namespace breaks existing code [bug]
 
 # 0.12.0 (23 May 2026)
 - [#22](https://github.com/StefH/JsonConverter/pull/22) - System.Text.Json and Newtonsoft.Json accept user-provided JsonSerializerOptions [feature] contributed by [Stepami](https://github.com/Stepami)
