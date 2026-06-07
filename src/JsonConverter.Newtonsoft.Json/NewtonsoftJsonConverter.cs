@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Extensions;
 using JsonConverter.Abstractions.Models;
 using JsonConverter.Newtonsoft.Json.Extensions;
 using Newtonsoft.Json;

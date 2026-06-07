@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Extensions;
 using JsonConverter.Abstractions.Models;
 using Stef.Validation;
 
