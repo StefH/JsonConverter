@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace System;
+﻿namespace JsonConverter.Abstractions.Extensions;
 
 public static class StringExtensions
 {

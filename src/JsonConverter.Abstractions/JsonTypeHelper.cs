@@ -1,4 +1,5 @@
-﻿using JsonConverter.Abstractions.Models;
+﻿using JsonConverter.Abstractions.Extensions;
+using JsonConverter.Abstractions.Models;
 
 namespace JsonConverter.Abstractions;
 

@@ -1,4 +1,4 @@
-﻿namespace System.IO;
+﻿namespace JsonConverter.Abstractions.Extensions;
 
 public static class StreamExtensions
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Argon;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Extensions;
 using JsonConverter.Abstractions.Models;
 using JsonConverter.Argon.Extensions;
 using Stef.Validation;

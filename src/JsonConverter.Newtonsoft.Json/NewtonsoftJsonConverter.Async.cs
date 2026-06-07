@@ -1,6 +1,7 @@
 ﻿#if !(NET35 || NET40)
 using System.Text;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Extensions;
 using Stef.Validation;
 
 namespace JsonConverter.Newtonsoft.Json;

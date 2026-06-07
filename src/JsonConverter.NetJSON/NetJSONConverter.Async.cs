@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using JsonConverter.Abstractions;
+using JsonConverter.Abstractions.Extensions;
 using Stef.Validation;
 
 namespace JsonConverter.NetJSON;
